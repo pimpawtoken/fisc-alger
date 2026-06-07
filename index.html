@@ -1,22 +1,22 @@
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@500&family=Noto+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
 <div id="app"></div>
-<div id="report-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:300;align-items:center;justify-content:center;padding:10px;">
-  <div id="report-box" style="background:#fff;border-radius:14px;width:min(680px,94vw);max-height:88vh;overflow-y:auto;padding:1.5rem;position:relative;">
+<div id="report-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:300;align-items:center;justify-content:center;">
+  <div id="report-box" style="background:#fff;border-radius:14px;width:min(680px,94vw);max-height:88vh;overflow-y:auto;padding:2rem;position:relative;">
     <button onclick="closeReport()" style="position:absolute;top:12px;right:14px;background:none;border:none;cursor:pointer;font-size:20px;color:#aaa;line-height:1;" aria-label="Close">✕</button>
     <div id="report-content"></div>
     <div style="display:flex;gap:.65rem;margin-top:1.25rem;flex-wrap:wrap;">
       <button onclick="downloadCSV()" class="cbtn"
-        style="flex:1;min-width:120px;padding:12px;border-radius:8px;border:none;background:#1D9E75;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">
+        style="flex:1;min-width:150px;padding:10px;border-radius:8px;border:none;background:#1D9E75;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">
         ⬇ CSV
       </button>
       <button onclick="downloadTXT()" class="cbtn"
-        style="flex:1;min-width:120px;padding:12px;border-radius:8px;border:none;background:#378ADD;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">
+        style="flex:1;min-width:150px;padding:10px;border-radius:8px;border:none;background:#378ADD;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">
         ⬇ TXT
       </button>
       <button onclick="closeReport()" class="cbtn"
-        style="padding:12px 16px;border-radius:8px;border:1px solid #ddd;background:#fafaf8;color:#555;font-size:12px;font-weight:500;font-family:inherit;">
+        style="padding:10px 16px;border-radius:8px;border:1px solid #ddd;background:#fafaf8;color:#555;font-size:12px;font-weight:500;font-family:inherit;">
         ✕
       </button>
     </div>
@@ -25,7 +25,6 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{overflow-x:hidden;}
 .ntab,.seg,.cbtn,.lbtn{cursor:pointer;font-family:inherit;border:none;transition:all .14s;}
 .cbtn:hover{filter:brightness(.91);}
 .cbtn:active{transform:scale(.98);}
@@ -37,19 +36,15 @@ input[type=text]:focus,input[type=number]:focus,select:focus{outline:2px solid #
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
 .g2h{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem;}
-.cfg-input{width:100%;padding:10px 12px;border-radius:6px;border:1px solid #ddd;font-size:14px;font-weight:500;background:#fafaf8;color:#111;font-family:inherit;}
+.cfg-input{width:100%;padding:7px 10px;border-radius:6px;border:1px solid #ddd;font-size:12px;font-weight:500;background:#fafaf8;color:#111;font-family:inherit;}
 .cfg-input:focus{outline:2px solid #1D9E75;outline-offset:1px;border-color:#1D9E75!important;}
 .tag{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:600;}
-.exp-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid #eee;margin-bottom:5px;background:#fff;transition:background .12s;flex-wrap:wrap;}
+.exp-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid #eee;margin-bottom:5px;background:#fff;transition:background .12s;}
 .exp-row:hover{background:#f8fffe;}
-.exp-row input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:#1D9E75;}
-.exp-amt{width:100%;max-width:130px;padding:7px 10px;border-radius:6px;border:1px solid #ddd;font-size:13px;font-family:'DM Mono',monospace;background:#fafaf8;color:#111;text-align:end;}
+.exp-row input[type=checkbox]{width:15px;height:15px;cursor:pointer;accent-color:#1D9E75;}
+.exp-amt{width:110px;padding:5px 8px;border-radius:6px;border:1px solid #ddd;font-size:12px;font-family:'DM Mono',monospace;background:#fafaf8;color:#111;text-align:end;}
 .exp-amt:focus{outline:2px solid #1D9E75;outline-offset:1px;border-color:#1D9E75!important;}
-@media(max-width:768px){
-  .g2,.g2h,.g3{grid-template-columns:1fr!important;}
-  .exp-row {justify-content:space-between;}
-  .exp-amt {max-width:100%;width:100%;margin-top:5px;text-align:start;}
-}
+@media(max-width:640px){.g2,.g2h,.g3{grid-template-columns:1fr!important;}}
 </style>
 
 <script>
@@ -154,7 +149,7 @@ fr:{
   params:"Paramètres", results:"Résultats",
   /* IFU 8M threshold warning */
   ifuOverThresholdTitle:"⛔ Seuil IFU Dépassé — Régime Réel Obligatoire",
-  ifuOverThresholdMsg:"Le chiffre d'affaires d'épassé le seuil de l'IFU (8 000 000 DA). Vous devez obligatoirement passer au Régime Réel d'imposition conformément à la législation fiscale algérienne.",
+  ifuOverThresholdMsg:"Le chiffre d'affaires dépasse le seuil de l'IFU (8 000 000 DA). Vous devez obligatoirement passer au Régime Réel d'imposition conformément à la législation fiscale algérienne.",
   ifuOverThresholdCTA:"→ Aller au Régime Réel",
   /* Settings */
   settingsTitle:"Configuration Fiscale Dynamique",
@@ -197,7 +192,7 @@ fr:{
   lCA:"Chiffre d'affaires", lRate:"Taux applicable",
   lRaw:"IFU calculé (brut)", lMin:"Minimum légal", lFinal:"IFU à payer",
   minStdNote:"Minimum légal général de 30 000 DA appliqué (Production / Services / Commerce).",
-  minMicroNote:"Minimum legal Micro-Import de 10 000 DA appliqué.",
+  minMicroNote:"Minimum légal Micro-Import de 10 000 DA appliqué.",
   ifuRoadTitle:"Comment et quand payer votre IFU ?",
   ifuRoad:[
     {icon:"ti-file-text",    title:"Déclaration G50 Ter",   desc:"G50 Ter auprès du CDI ou en ligne. Obligatoire même si C.A. nul.", c:"#1D9E75"},
@@ -507,7 +502,6 @@ function doIFU(){
   const MIN=act.micro?c.ifu_min_micro:c.ifu_min_std;
   const raw=v*act.r,final=Math.max(raw,MIN);
   st.res={ca:v,rate:act.r,raw,final,minApplied:raw<MIN,isMicro:act.micro,minAmt:MIN};
-
   /* cache for report */
   reportCache=reportCache.filter(r=>r.module!=="IFU");
   reportCache.push({module:"IFU",label:t.ifuTitle,rows:[
@@ -524,7 +518,6 @@ function doReel(){
   const expenses=isNaN(ex)?0:ex;
   st.err="";
   reportCache=reportCache.filter(r=>r.module!=="REEL");
-
   if(st.sector==="export"){
     st.res={mode:"export",gr,expenses,profit:gr-expenses};
     reportCache.push({module:"REEL",label:t.reelTitle,rows:[
@@ -532,12 +525,10 @@ function doReel(){
     ],note:""});
     return render();
   }
-
   let acompteAmt=null;
   if(st.sector==="import"){
     acompteAmt=gr*(st.acompteType==="goods"?c.acompte_goods/100:c.acompte_services/100);
   }
-
   const profit=gr-expenses;
   if(profit<0){
     st.res={mode:"loss",profit,gr,expenses,acompteAmt};
@@ -547,7 +538,6 @@ function doReel(){
     ],note:t.lossTitle});
     return render();
   }
-
   let taxRaw=0,ibsRate=0,irgDetails=null;
   if(st.entity==="company"){
     const act=ibsActs().find(a=>a.v===st.ibsAct);
@@ -556,22 +546,19 @@ function doReel(){
     const{tax,details}=calcIRG(profit);
     taxRaw=tax; irgDetails=details;
   }
-
   const final=Math.max(taxRaw,c.ifu_min_std);
   let tvaAmt=null;
   if(st.tva){tvaAmt=gr*(st.tvaRate==="normal"?c.tva_normal/100:c.tva_reduced/100);}
-
   st.res={mode:"normal",gr,expenses,profit,ibsRate,taxRaw,final,
           minApplied:taxRaw<c.ifu_min_std,irgDetails,tvaAmt,acompteAmt,entity:st.entity};
-
   const rows=[[t.lRevenue,fmt(gr)],[t.lExp,fmt(expenses)],[t.lProfit,fmt(profit)],
-              [t.lTaxRate,st.entity==="company"?(ibsRate*100).toFixed(0)+"%":"IRG progressif"],
-              [t.lTaxRaw,fmt(taxRaw)]];
+    [t.lTaxRate,st.entity==="company"?(ibsRate*100).toFixed(0)+"%":"IRG progressif"],
+    [t.lTaxRaw,fmt(taxRaw)]];
   if(tvaAmt!=null) rows.push([t.lTvaEst,fmt(tvaAmt)]);
   if(acompteAmt!=null) rows.push([t.lAcompte,fmt(acompteAmt)]);
   rows.push([t.lFinalTax,fmt(final)]);
-
-  reportCache.push({module:"REEL",label:t.reelTitle,rows, note:taxRaw<c.ifu_min_std?t.minStdNote:""});
+  reportCache.push({module:"REEL",label:t.reelTitle,rows,
+    note:taxRaw<c.ifu_min_std?t.minStdNote:""});
   render();
 }
 
@@ -581,704 +568,701 @@ function doSimp(){
   if(isNaN(rec)||rec<0){st.err=t.errPos;st.res=null;return render();}
   const expenses=isNaN(ex)?0:ex;
   st.err="";
-  
-  const net=Math.max(0,rec-expenses);
-  const rate=c.bnc_rate/100;
-  const taxRaw=net*rate;
-  const final=Math.max(taxRaw,c.bnc_min);
-  st.res={rec,expenses,net,rate,taxRaw,final,minApplied:taxRaw<c.bnc_min};
-
+  const profit=Math.max(rec-expenses,0);
+  const raw=profit*(c.bnc_rate/100),final=Math.max(raw,c.bnc_min);
+  st.res={rec,expenses,profit,raw,final,minApplied:raw<c.bnc_min};
   reportCache=reportCache.filter(r=>r.module!=="SIMP");
   reportCache.push({module:"SIMP",label:t.simpTitle,rows:[
-    [t.lRec,fmt(rec)],[t.lSimpExp,fmt(expenses)],[t.lNet,fmt(net)],
-    [t.lSimpRate,(c.bnc_rate).toFixed(0)+"%"],[t.lTaxRaw,fmt(taxRaw)],[t.lSimpFinal,fmt(final)],
-  ],note:taxRaw<c.bnc_min?t.simpMinNote:""});
+    [t.lRec,fmt(rec)],[t.lSimpExp,fmt(expenses)],[t.lNet,fmt(profit)],
+    [t.lSimpRate,c.bnc_rate+"%"],[t.lSimpFinal,fmt(final)],
+  ],note:raw<c.bnc_min?t.simpMinNote:""});
   render();
 }
 
 /* ═══════════════════════════════
-   EXPORT UTILS
+   SETTINGS
 ═══════════════════════════════ */
-function buildReportText(){
-  if(reportCache.length===0) return d().reportNoData;
-  let txt=`========================================\n`;
-  txt+=`      ${d().reportTitle}\n`;
-  txt+=`========================================\n`;
-  txt+=`${d().reportGenerated} : ${new Date().toLocaleString()}\n\n`;
-  reportCache.forEach(m=>{
-    txt+=`[ ${m.label} ]\n`;
-    m.rows.forEach(r=>{txt+=`  ${r[0]} : ${r[1]}\n`;});
-    if(m.note) txt+=`  Note : ${m.note}\n`;
-    txt+=`----------------------------------------\n`;
-  });
-  txt+=`\n${d().reportFooter}\n`;
-  return txt;
-}
-function downloadTXT(){
-  const str=buildReportText();
-  const blob=new Blob([str],{type:"text/plain;charset=utf-8"});
-  const link=document.createElement("a");
-  link.href=URL.createObjectURL(blob);
-  link.download=`FiscAlgerie_Report_${new Date().toISOString().slice(0,10)}.txt`;
-  link.click();
-}
-function downloadCSV(){
-  if(reportCache.length===0) return alert(d().reportNoData);
-  let csv="\uFEFF"; // UTF-8 BOM
-  csv+=`"${d().reportTitle}"\n`;
-  csv+=`"${d().reportGenerated}","${new Date().toLocaleString()}"\n\n`;
-  reportCache.forEach(m=>{
-    csv+=`"${m.label}"\n`;
-    m.rows.forEach(r=>{csv+=`"${r[0]}","${r[1]}"\n`;});
-    if(m.note) csv+=`"${m.note}"\n`;
-    csv+=`\n`;
-  });
-  csv+=`"${d().reportFooter}"\n`;
-  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
-  const link=document.createElement("a");
-  link.href=URL.createObjectURL(blob);
-  link.download=`FiscAlgerie_Report_${new Date().toISOString().slice(0,10)}.csv`;
-  link.click();
-}
-function openReport(){
-  const content=$("report-content");
-  if(!content)return;
-  if(reportCache.length===0){
-    content.innerHTML=`<div style="text-align:center;color:#666;padding:2rem 0;font-size:14px;">${d().reportNoData}</div>`;
-  } else {
-    let h=`<h3 style="margin-bottom:1.25rem;font-size:16px;font-weight:600;color:#111;border-bottom:2px solid #1D9E75;padding-bottom:6px;">${d().reportTitle}</h3>`;
-    h+=`<div style="font-size:11px;color:#777;margin-bottom:1rem;">${d().reportGenerated} : ${new Date().toLocaleString()}</div>`;
-    reportCache.forEach(m=>{
-      h+=`<div style="background:#fafaf8;border:1px solid #eee;border-radius:10px;padding:12px;margin-bottom:1rem;">`;
-      h+=`<div style="font-size:12px;font-weight:600;color:#1D9E75;margin-bottom:8px;">${m.label}</div>`;
-      m.rows.forEach(r=>{
-        h+=`<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px dashed #eaeAea;">
-              <span style="color:#555;">${r[0]}</span>
-              <span style="font-family:'DM Mono',monospace;font-weight:600;color:#111;">${r[1]}</span>
-            </div>`;
-      });
-      if(m.note) h+=`<div style="font-size:11px;color:#ba7517;margin-top:6px;font-style:italic;">⚠️ ${m.note}</div>`;
-      h+=`</div>`;
-    });
-    h+=`<div style="font-size:11px;color:#999;text-align:center;margin-top:1.5rem;line-height:1.4;">${d().reportFooter}</div>`;
-    content.innerHTML=h;
+function applySettings(){
+  const keys=["ifu_min_std","ifu_min_micro","ifu_rate_prod","ifu_rate_serv","ifu_rate_micro",
+              "ibs_rate_prod","ibs_rate_btp","ibs_rate_trade","tva_normal","tva_reduced",
+              "acompte_goods","acompte_services","bnc_rate","bnc_min"];
+  for(const k of keys){
+    const el=$("cfg_"+k);if(!el)continue;
+    const v=parseFloat(el.value);if(!isNaN(v)&&v>=0)S.edit[k]=v;
   }
-  $("report-modal").style.display="flex";
-}
-function closeReport(){$("report-modal").style.display="none";}
-
-/* ═══════════════════════════════
-   SETTINGS LOGIC
-═══════════════════════════════ */
-function changeCfgInput(key,val,idx=null){
-  const n=Number(val);
-  if(isNaN(n))return;
-  if(idx!==null){S.edit.irg[idx].rate=n;}
-  else if(key.startsWith("irg_max_")){
-    const i=parseInt(key.split("_")[2]);
-    S.edit.irg[i].max=n;
-  }else{S.edit[key]=n;}
-}
-function applySettings(e){
-  e.preventDefault();
-  S.cfg=cloneCfg(S.edit);
-  saveCfg(S.cfg);
-  S.settingsSaved=true;
-  [S.ifu,S.reel,S.simp].forEach(m=>{m.res=null;m.err="";});
-  S.ifu.overThreshold=false;
+  S.edit.irg.forEach((_,i)=>{
+    const maxEl=$("irg_max_"+i),rateEl=$("irg_rate_"+i);
+    if(rateEl){const rv=parseFloat(rateEl.value);if(!isNaN(rv)&&rv>=0)S.edit.irg[i].rate=rv;}
+    if(maxEl&&i<S.edit.irg.length-1){const mv=parseFloat(maxEl.value);if(!isNaN(mv)&&mv>0)S.edit.irg[i].max=mv;}
+  });
+  S.cfg=cloneCfg(S.edit); saveCfg(S.cfg);
+  [S.ifu,S.reel,S.simp].forEach(m=>{m.res=null;});
   reportCache=[];
-  render();
-  setTimeout(()=>{S.settingsSaved=false;render();},2500);
+  S.settingsSaved=true; render();
+  setTimeout(()=>{S.settingsSaved=false;render();},3000);
 }
 function resetSettings(){
-  if(confirm(d().dir==="rtl"?"هل أنت متأكد من إعادة التعيين؟":"Reset to defaults?")){
-    S.cfg=cloneCfg(DEFAULT_CFG);
-    S.edit=cloneCfg(DEFAULT_CFG);
-    saveCfg(S.cfg);
-    [S.ifu,S.reel,S.simp].forEach(m=>{m.res=null;m.err="";});
-    S.ifu.overThreshold=false;
-    reportCache=[];
-    render();
-  }
+  S.cfg=cloneCfg(DEFAULT_CFG); S.edit=cloneCfg(DEFAULT_CFG); saveCfg(S.cfg);
+  [S.ifu,S.reel,S.simp].forEach(m=>{m.res=null;m.err="";});
+  S.ifu.overThreshold=false; S.expChecked={}; S.expAmounts={}; reportCache=[]; render();
 }
 
 /* ═══════════════════════════════
-   EXPENSE ASSISTANT UI
+   EXPENSE CHECKLIST
 ═══════════════════════════════ */
-function toggleExpCheck(id){
-  S.expChecked[id]=!S.expChecked[id];
+function toggleExp(id){S.expChecked[id]=!S.expChecked[id];renderExpChecklist();}
+function setExpAmt(id,val){S.expAmounts[id]=parseFloat(val)||0;renderExpChecklist();}
+function applyExpToReel(){
+  const total=expTotal(); S.reel.exp=String(total); S.reel.res=null;
+  const el=$("reel-exp");if(el)el.value=String(total);
   renderExpChecklist();
 }
-function changeExpAmt(id,val){
-  S.expAmounts[id]=val;
-  renderExpChecklist();
-}
-function applyExpToChecklist(){
-  S.reel.exp=String(expTotal());
-  S.reel.res=null;
-  render();
-  const el=$("reel-exp"); if(el)el.focus();
-}
-function resetExpChecklist(){
-  S.expChecked={}; S.expAmounts={};
-  renderExpChecklist();
-}
+function resetExp(){S.expChecked={};S.expAmounts={};renderExpChecklist();}
+
 function renderExpChecklist(){
-  const t=d();
-  const container=$("exp-checklist-container");
-  if(!container)return;
-  const cats=t.dir==="rtl"?EXP_AR:EXP_FR;
-  let h=`<div style="margin-top:.75rem;">`;
-  cats.forEach(c=>{
-    const checked=!!S.expChecked[c.id];
-    const val=S.expAmounts[c.id]||"";
-    h+=`<div class="exp-row">
-          <label style="display:flex;align-items:center;gap:8px;flex:1;cursor:pointer;font-size:12px;font-weight:500;color:#333;">
-            <input type="checkbox" ${checked?"checked":""} onchange="toggleExpCheck('${c.id}')">
-            <i class="${c.icon}" style="color:#1D9E75;font-size:15px;"></i>
-            <span>${c.label}</span>
-          </label>
-          <input type="number" placeholder="0" class="exp-amt" value="${val}" 
-            ${checked?"":"disabled"} oninput="changeExpAmt('${c.id}',this.value)">
-        </div>`;
-  });
-  h+=`<div style="display:flex;justify-content:space-between;align-items:center;background:#e1f5ee;padding:12px;border-radius:8px;margin-top:12px;">
-        <span style="font-size:12px;font-weight:600;color:#0F6E56;">${t.expCheckTotal}:</span>
-        <span style="font-family:'DM Mono',monospace;font-weight:600;color:#1D9E75;font-size:14px;">${fmt(expTotal())}</span>
-      </div>`;
-  h+=`<div style="display:flex;gap:.5rem;margin-top:.75rem;">
-        <button onclick="applyExpToChecklist()" class="cbtn" style="flex:2;background:#1D9E75;color:#fff;padding:8px;border-radius:6px;font-size:12px;font-weight:600;">${t.expCheckApply}</button>
-        <button onclick="resetExpChecklist()" class="cbtn" style="flex:1;background:#fff;border:1px solid #ddd;color:#666;padding:8px;border-radius:6px;font-size:12px;">${t.expCheckReset}</button>
-      </div>`;
-  h+=`</div>`;
-  container.innerHTML=h;
+  const container=$("exp-checklist-container");if(!container)return;
+  const t=d(),cats=t.dir==="rtl"?EXP_AR:EXP_FR;
+  const total=expTotal(),checked=cats.filter(c=>S.expChecked[c.id]).length;
+  container.innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem;flex-wrap:wrap;gap:5px;">
+      <span style="font-size:11px;color:#888;">${checked} ${t.dir==="rtl"?"عنصر محدد":"élément(s) coché(s)"}</span>
+      <button class="cbtn" onclick="resetExp()" style="padding:4px 10px;border-radius:6px;border:1px solid #ddd;background:#fafaf8;font-size:11px;color:#666;font-family:inherit;">
+        <i class="ti ti-refresh" style="font-size:11px;"></i> ${t.expCheckReset}
+      </button>
+    </div>
+    <div style="max-height:280px;overflow-y:auto;padding-inline-end:2px;">
+      ${cats.map(cat=>`
+      <div class="exp-row">
+        <input type="checkbox" id="exp_${cat.id}" ${S.expChecked[cat.id]?"checked":""}
+          onchange="toggleExp('${cat.id}')">
+        <i class="ti ${cat.icon}" style="font-size:14px;color:${S.expChecked[cat.id]?"#1D9E75":"#bbb"};flex-shrink:0;transition:color .15s;"></i>
+        <label for="exp_${cat.id}" style="flex:1;font-size:12px;color:${S.expChecked[cat.id]?"#222":"#666"};cursor:pointer;line-height:1.4;">${cat.label}</label>
+        ${S.expChecked[cat.id]
+          ?`<input type="number" class="exp-amt" min="0" step="1000" placeholder="0" value="${S.expAmounts[cat.id]||""}"
+              oninput="setExpAmt('${cat.id}',this.value)">`
+          :`<span style="width:110px;font-size:11px;color:#ddd;text-align:end;padding-inline-end:6px;">—</span>`}
+      </div>`).join("")}
+    </div>
+    <div style="margin-top:.85rem;border-top:1.5px solid #e8e6e1;padding-top:.85rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;">
+        <span style="font-size:13px;font-weight:600;color:#222;">${t.expCheckTotal}</span>
+        <span style="font-size:15px;font-weight:700;color:#1D9E75;font-family:'DM Mono',monospace;">${fmt(total)}</span>
+      </div>
+      <button class="cbtn" onclick="applyExpToReel()"
+        style="width:100%;padding:9px;border-radius:8px;border:none;background:#1D9E75;color:#fff;font-size:12px;font-weight:600;font-family:inherit;">
+        <i class="ti ti-arrow-right" style="font-size:13px;"></i> ${t.expCheckApply}
+      </button>
+    </div>`;
 }
 
 /* ═══════════════════════════════
-   RENDER ENGINE
+   REPORT — CSV & TXT (no print)
 ═══════════════════════════════ */
-function render(){
-  const t=d(),c=cfg();
-  document.documentElement.dir=t.dir;
-  document.body.style.fontFamily=t.ff;
+function buildReportData(){
+  const t=d();
+  if(!reportCache.length) return null;
+  const now=new Date().toLocaleDateString("fr-FR",{year:"numeric",month:"2-digit",day:"2-digit"});
+  return{t,now,sections:reportCache};
+}
 
-  let h=`
-  <div style="background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.02);">
-    <div style="max-width:1100px;margin:0 auto;padding:.5rem 1rem;display:flex;justify-content:space-between;align-items:center;">
-      <div style="display:flex;align-items:center;gap:6px;">
-        <div style="background:#1D9E75;color:#fff;width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:14px;box-shadow:0 2px 4px rgba(29,158,117,.2);">🇩🇿</div>
-        <div>
-          <h1 style="font-size:15px;font-weight:600;color:#111;line-height:1.1;">${t.appName}</h1>
-          <span style="font-size:10px;color:#777;font-weight:500;">${t.appTagline}</span>
+function openReport(){
+  const data=buildReportData();
+  const t=d();
+  if(!data){
+    /* Show inline message in modal */
+    $("report-content").innerHTML=`<div style="text-align:center;padding:2rem;color:#999;font-size:13px;">${t.reportNoData}</div>`;
+    $("report-modal").style.display="flex";
+    return;
+  }
+  let html=`
+    <div style="font-family:${t.ff};direction:${t.dir};color:#111;">
+      <div style="text-align:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid #1D9E75;">
+        <div style="font-size:10px;color:#999;margin-bottom:4px;">FiscAlgérie — ${t.reportGenerated}: ${data.now}</div>
+        <h2 style="font-size:18px;font-weight:700;color:#0F6E56;">${t.reportTitle}</h2>
+      </div>`;
+  data.sections.forEach(sec=>{
+    const colorMap={IFU:"#1D9E75",REEL:"#378ADD",SIMP:"#854F0B"};
+    const color=colorMap[sec.module]||"#334155";
+    html+=`<div style="margin-bottom:1.1rem;border-radius:9px;border:1px solid #e8e6e1;overflow:hidden;">
+      <div style="background:${color};color:#fff;padding:8px 14px;font-size:12px;font-weight:600;">${sec.label}</div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        ${sec.rows.map(([l,v],i)=>`
+        <tr style="background:${i%2===0?"#fafaf8":"#fff"};">
+          <td style="padding:7px 14px;color:#555;width:58%;">${l}</td>
+          <td style="padding:7px 14px;font-weight:600;font-family:'DM Mono',monospace;text-align:end;color:#111;">${v}</td>
+        </tr>`).join("")}
+      </table>
+      ${sec.note?`<div style="padding:7px 14px;background:#FAEEDA;font-size:11px;color:#633806;">⚠ ${sec.note}</div>`:""}
+    </div>`;
+  });
+  html+=`<div style="margin-top:1rem;padding:9px 14px;background:#f8f7f4;border-radius:8px;font-size:11px;color:#999;text-align:center;">${t.reportFooter}</div></div>`;
+  $("report-content").innerHTML=html;
+  $("report-modal").style.display="flex";
+}
+
+function closeReport(){$("report-modal").style.display="none";}
+
+function _triggerDownload(content,filename,mime){
+  const blob=new Blob([content],{type:mime});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=filename; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+}
+
+function downloadCSV(){
+  const data=buildReportData();
+  const t=d();
+  if(!data){alert(t.reportNoData);return;}
+  const BOM="\uFEFF";
+  let csv=BOM+`"${t.reportTitle}"\n"${t.reportGenerated}","${data.now}"\n\n`;
+  data.sections.forEach(sec=>{
+    csv+=`"${sec.label}"\n`;
+    csv+=`"${t.reportInput}","${t.reportResult}"\n`;
+    sec.rows.forEach(([l,v])=>{ csv+=`"${l}","${v}"\n`; });
+    if(sec.note) csv+=`"⚠","${sec.note}"\n`;
+    csv+="\n";
+  });
+  csv+=`"${t.reportFooter}"\n`;
+  _triggerDownload(csv,"FiscAlgerie_Rapport.csv","text/csv;charset=utf-8");
+}
+
+function downloadTXT(){
+  const data=buildReportData();
+  const t=d();
+  if(!data){alert(t.reportNoData);return;}
+  const sep="═".repeat(48);
+  let txt=`${sep}\n  ${t.reportTitle}\n  ${t.reportGenerated}: ${data.now}\n${sep}\n\n`;
+  data.sections.forEach(sec=>{
+    txt+=`▌ ${sec.label}\n${"─".repeat(40)}\n`;
+    sec.rows.forEach(([l,v])=>{ txt+=`  ${l.padEnd(30," ")} ${v}\n`; });
+    if(sec.note) txt+=`  ⚠ ${sec.note}\n`;
+    txt+="\n";
+  });
+  txt+=`${sep}\n${t.reportFooter}\n${sep}\n`;
+  _triggerDownload(txt,"FiscAlgerie_Rapport.txt","text/plain;charset=utf-8");
+}
+
+/* ════════════════════════════
+   UI COMPONENT HELPERS
+════════════════════════════ */
+const secHead=(badge,color,sub,title,desc)=>`
+  <div style="margin-bottom:1.2rem;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <span class="tag" style="background:${color};color:#fff;">${badge}</span>
+      <span style="font-size:10px;color:#aaa;">${sub}</span>
+    </div>
+    <h1 style="font-size:18px;font-weight:600;letter-spacing:-.4px;margin-bottom:4px;color:#111;">${title}</h1>
+    <p style="font-size:12px;color:#666;line-height:1.6;">${desc}</p>
+  </div>`;
+
+const rrow=(l,v,vc="#333")=>`
+  <div class="rrow">
+    <span style="font-size:12px;color:#666;">${l}</span>
+    <span style="font-size:12px;font-weight:500;font-family:'DM Mono',monospace;color:${vc};">${v}</span>
+  </div>`;
+
+const finalBox=(label,val,bg="#0F6E56",ac="#9FE1CB")=>`
+  <div style="margin-top:.75rem;background:${bg};border-radius:8px;padding:11px 14px;">
+    <div style="font-size:10px;color:${ac};margin-bottom:2px;font-weight:500;">${label}</div>
+    <div style="font-size:19px;font-weight:700;color:#fff;font-family:'DM Mono',monospace;">${val}</div>
+  </div>`;
+
+const warnBox=msg=>`
+  <div style="margin-top:6px;background:#FAEEDA;border-radius:7px;padding:8px 11px;display:flex;gap:7px;align-items:flex-start;">
+    <i class="ti ti-alert-triangle" style="font-size:13px;color:#854F0B;margin-top:1px;flex-shrink:0;"></i>
+    <p style="font-size:11px;color:#633806;line-height:1.5;">${msg}</p>
+  </div>`;
+
+const emptyState=(icon,hint)=>`
+  <div style="background:#fafaf8;border-radius:12px;border:1px dashed #d0cec9;padding:1.1rem;
+       display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;gap:8px;">
+    <i class="ti ${icon}" style="font-size:34px;color:#ddd;"></i>
+    <p style="font-size:11px;color:#bbb;">${hint}</p>
+  </div>`;
+
+const pLabel=text=>`<label style="display:block;font-size:12px;font-weight:500;color:#444;margin-bottom:4px;">${text}</label>`;
+const pInput=(id,val,ph,err,disabled=false)=>`
+  <input id="${id}" type="text" inputmode="numeric" value="${val}" placeholder="${ph}"
+    ${disabled?"disabled":""}
+    style="width:100%;padding:9px 11px;border-radius:7px;
+           border:1px solid ${err?"#E24B4A":"#ddd"};
+           font-size:13px;font-weight:500;background:${disabled?"#f5f5f5":"#fafaf8"};
+           color:${disabled?"#aaa":"#111"};font-family:inherit;">
+  ${err?`<p style="font-size:11px;color:#A32D2D;margin-top:3px;">${err}</p>`:""}`;
+
+const segGroup=(opts,cur,fn,ac="#1D9E75")=>`
+  <div style="display:flex;gap:5px;">
+    ${opts.map(o=>`<button class="seg cbtn" onclick="${fn}('${o.v}')"
+      style="flex:1;padding:7px 5px;border-radius:7px;border:none;font-size:11px;font-weight:500;
+             font-family:inherit;background:${cur===o.v?ac:"#f0efec"};
+             color:${cur===o.v?"#fff":"#555"};">${o.l}</button>`).join("")}
+  </div>`;
+
+function roadmap(title,steps){
+  return`<div style="background:#fff;border-radius:12px;border:1px solid #e8e6e1;padding:1.1rem;margin-top:1rem;">
+    <h2 style="font-size:13px;font-weight:600;color:#111;margin-bottom:.9rem;">${title}</h2>
+    <div class="g2h">
+      ${steps.map((s,i)=>`<div class="scard">
+        <div style="width:32px;height:32px;border-radius:8px;background:${s.c}18;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i class="ti ${s.icon}" style="font-size:15px;color:${s.c};"></i>
         </div>
+        <div>
+          <div style="font-size:11px;font-weight:600;color:#222;margin-bottom:2px;">
+            <span style="font-size:9px;font-weight:700;color:${s.c};margin-inline-end:4px;">0${i+1}</span>${s.title}
+          </div>
+          <p style="font-size:11px;color:#666;line-height:1.55;">${s.desc}</p>
+        </div>
+      </div>`).join("")}
+    </div>
+  </div>`;
+}
+
+const cfgField=(id,label,val,unit="")=>`
+  <div>
+    <label style="display:block;font-size:11px;color:#666;margin-bottom:3px;line-height:1.4;">${label}</label>
+    <div style="position:relative;">
+      <input id="${id}" type="number" min="0" step="any" value="${val}" class="cfg-input"
+        style="padding-inline-end:${unit?"26px":"10px"};">
+      ${unit?`<span style="position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);font-size:11px;color:#999;pointer-events:none;">${unit}</span>`:""}
+    </div>
+  </div>`;
+
+const cfgBlock=(title,color,rows)=>`
+  <div style="background:#fff;border-radius:10px;border:1px solid #e8e6e1;padding:1rem;margin-bottom:.75rem;">
+    <div style="display:flex;align-items:center;gap:7px;margin-bottom:.85rem;">
+      <div style="width:3px;height:18px;background:${color};border-radius:2px;flex-shrink:0;"></div>
+      <h3 style="font-size:12px;font-weight:600;color:#222;">${title}</h3>
+    </div>
+    <div class="g3">${rows}</div>
+  </div>`;
+
+/* ════════════════════════════
+   PANELS
+════════════════════════════ */
+function panelSettings(){
+  const t=d(),c=S.edit,br=c.irg;
+  return`
+  <div style="margin-bottom:1.25rem;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <span class="tag" style="background:#334155;color:#fff;">⚙ CONFIG</span>
+    </div>
+    <h1 style="font-size:18px;font-weight:600;margin-bottom:4px;color:#111;">${t.settingsTitle}</h1>
+    <p style="font-size:12px;color:#666;line-height:1.6;">${t.settingsSubtitle}</p>
+  </div>
+  <div style="background:#e1f5ee;border-radius:8px;padding:9px 13px;margin-bottom:.85rem;border-inline-start:3px solid #1D9E75;display:flex;align-items:center;gap:8px;">
+    <i class="ti ti-device-floppy" style="color:#0F6E56;font-size:15px;flex-shrink:0;"></i>
+    <p style="font-size:11px;color:#0F6E56;">${t.lsNote}</p>
+  </div>
+  <div style="background:#FAEEDA;border-radius:8px;padding:9px 13px;margin-bottom:.85rem;border-inline-start:3px solid #BA7517;">
+    <p style="font-size:11px;color:#633806;">${t.cfgWarning}</p>
+  </div>
+  ${cfgBlock(t.cfgIFU,"#1D9E75",`
+    ${cfgField("cfg_ifu_min_std",  t.cfgIFUMin30,   c.ifu_min_std,  "DA")}
+    ${cfgField("cfg_ifu_min_micro",t.cfgIFUMin10,   c.ifu_min_micro,"DA")}
+    ${cfgField("cfg_ifu_rate_prod",t.cfgIFURateProd, c.ifu_rate_prod, "%")}
+    ${cfgField("cfg_ifu_rate_serv",t.cfgIFURateServ, c.ifu_rate_serv, "%")}
+    ${cfgField("cfg_ifu_rate_micro",t.cfgIFURateMicro,c.ifu_rate_micro,"%")}
+  `)}
+  ${cfgBlock(t.cfgIBS,"#378ADD",`
+    ${cfgField("cfg_ibs_rate_prod", t.cfgIBSProd,  c.ibs_rate_prod,  "%")}
+    ${cfgField("cfg_ibs_rate_btp",  t.cfgIBSBtp,   c.ibs_rate_btp,   "%")}
+    ${cfgField("cfg_ibs_rate_trade",t.cfgIBSTrade, c.ibs_rate_trade, "%")}
+  `)}
+  <div class="g2" style="gap:.75rem;margin-bottom:.75rem;">
+    <div style="background:#fff;border-radius:10px;border:1px solid #e8e6e1;padding:1rem;">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:.85rem;">
+        <div style="width:3px;height:18px;background:#854F0B;border-radius:2px;"></div>
+        <h3 style="font-size:12px;font-weight:600;color:#222;">${t.cfgTVA}</h3>
       </div>
-      <div style="display:flex;align-items:center;gap:.5rem;">
-        <button onclick="openReport()" class="cbtn" style="background:#f4f3f0;color:#444;padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px;">
-          <i class="ti-file-analytics" style="font-size:14px;color:#1D9E75;"></i>
-          <span>${t.dir==="rtl"?"التقرير":"Rapport"}</span>
-        </button>
-        <button onclick="toggleLang()" class="ntab" style="background:#e1f5ee;color:#0F6E56;font-size:11px;font-weight:600;padding:5px 10px;border-radius:6px;">${t.langToggle}</button>
+      <div style="display:flex;flex-direction:column;gap:.55rem;">
+        ${cfgField("cfg_tva_normal",  t.cfgTVANormal,  c.tva_normal,  "%")}
+        ${cfgField("cfg_tva_reduced", t.cfgTVAReduced, c.tva_reduced, "%")}
       </div>
     </div>
-    <div style="background:#fafaf8;border-top:1px solid #f0eeeb;">
-      <div style="max-width:1100px;margin:0 auto;display:flex;overflow-x:auto;padding:0 .5rem;" class="no-scrollbar">
-        ${t.tabs.map(tab=>{
-          const active=S.tab===tab.id;
-          return `<button onclick="setTab('${tab.id}')" class="ntab" style="padding:10px 14px;font-size:12px;font-weight:600;white-space:nowrap;border-bottom:2px solid ${active?"#1D9E75":"transparent"};color:${active?"#1D9E75":"#666"};background:transparent;">${tab.label}</button>`;
-        }).join("")}
+    <div style="background:#fff;border-radius:10px;border:1px solid #e8e6e1;padding:1rem;">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:.85rem;">
+        <div style="width:3px;height:18px;background:#A32D2D;border-radius:2px;"></div>
+        <h3 style="font-size:12px;font-weight:600;color:#222;">${t.cfgAcompte}</h3>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.55rem;">
+        ${cfgField("cfg_acompte_goods",    t.cfgAcompteGoods,    c.acompte_goods,    "%")}
+        ${cfgField("cfg_acompte_services", t.cfgAcompteServices, c.acompte_services, "%")}
       </div>
     </div>
   </div>
-
-  <div style="max-width:1100px;margin:1.25rem auto;padding:0 1rem;min-height:72vh;">
-  `;
-
-  /* ────────────────────────────────────────────────────────
-     TAB: IFU
-     ──────────────────────────────────────────────────────── */
-  if(S.tab==="ifu"){
-    const st=S.ifu;
-    h+=`
-    <div class="g2">
-      <div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:1.25rem;box-shadow:0 4px 12px rgba(0,0,0,.01);">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:.5rem;">
-          <span class="tag" style="background:#e1f5ee;color:#0F6E56;">${t.ifuBadge}</span>
-          <span style="font-size:11px;color:#888;font-weight:500;">${t.ifuSub}</span>
-        </div>
-        <h2 style="font-size:15px;font-weight:600;color:#111;margin-bottom:.4rem;">${t.ifuTitle}</h2>
-        <p style="font-size:11px;color:#666;margin-bottom:1.25rem;line-height:1.4;">${t.ifuDesc}</p>
-
-        ${st.overThreshold?`
-          <div style="background:#fdf2f2;border:1px solid #fbd5d5;border-radius:10px;padding:1rem;margin-bottom:1rem;text-align:center;">
-            <div style="font-size:13px;font-weight:600;color:#9b1c1c;margin-bottom:6px;">${t.ifuOverThresholdTitle}</div>
-            <div style="font-size:11px;color:#c81e1e;line-height:1.4;margin-bottom:12px;">${t.ifuOverThresholdMsg}</div>
-            <button onclick="setTab('reel')" class="cbtn" style="background:#e02424;color:#fff;padding:8px 14px;border-radius:6px;font-size:11px;font-weight:600;">
-              ${t.ifuOverThresholdCTA}
-            </button>
-          </div>
-        `:""}
-
-        <div style="margin-bottom:1rem;">
-          <label style="display:block;font-size:12px;font-weight:600;color:#444;margin-bottom:5px;">${t.caLbl}</label>
-          <div style="position:relative;">
-            <input type="text" id="ifu-ca" class="cfg-input" placeholder="${t.caPh}" value="${st.ca}" style="font-family:'DM Mono',monospace;font-size:13px;padding-inline-end:35px;">
-            <span style="position:absolute;top:7px;${t.dir==="rtl"?"left":"right"}:10px;font-size:11px;color:#aaa;font-weight:600;">DA</span>
-          </div>
-          ${st.err?`<div style="color:#c81e1e;font-size:11px;margin-top:4px;font-weight:500;">${st.err}</div>`:""}
-        </div>
-
-        <div style="margin-bottom:1.25rem;">
-          <label style="display:block;font-size:12px;font-weight:600;color:#444;margin-bottom:5px;">${t.actLbl}</label>
-          <select id="ifu-act" class="cfg-input">
-            ${ifuActs().map(a=>`<option value="${a.v}" ${st.act===a.v?"selected":""}>${a.l}</option>`).join("")}
-          </select>
-        </div>
-
-        <button onclick="doIFU()" class="cbtn" style="width:100%;background:#1D9E75;color:#fff;padding:10px;border-radius:8px;font-size:13px;font-weight:600;">
-          <i class="ti-calculator" style="margin-inline-end:4px;"></i>${t.calcBtn}
-        </button>
-      </div>
-
-      <div>
-        ${st.res?`
-          <div style="background:#fff;border:1px solid #1D9E75;border-radius:12px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 4px 12px rgba(29,158,117,.04);">
-            <h3 style="font-size:13px;font-weight:600;color:#1D9E75;margin-bottom:1rem;border-bottom:1px dashed #e1f5ee;padding-bottom:6px;">${t.results}</h3>
-            <div class="rrow"><span>${t.lCA}</span><b style="font-family:'DM Mono',monospace;">${fmt(st.res.ca)}</b></div>
-            <div class="rrow"><span>${t.lRate} <small style="color:#777;">(${t.rateHint})</small></span><b style="color:#1D9E75;">${(st.res.rate*100).toFixed(1)}%</b></div>
-            <div class="rrow"><span>${t.lRaw}</span><b style="font-family:'DM Mono',monospace;color:#555;">${fmt(st.res.raw)}</b></div>
-            <div class="rrow"><span>${t.lMin}</span><b style="font-family:'DM Mono',monospace;color:#555;">${fmt(st.res.minAmt)}</b></div>
-            <div class="rrow" style="font-size:14px;font-weight:bold;border-top:1px solid #1D9E75;padding-top:10px;margin-top:5px;">
-              <span style="color:#111;">${t.lFinal}</span>
-              <span style="color:#1D9E75;font-family:'DM Mono',monospace;">${fmt(st.res.final)}</span>
-            </div>
-            ${st.res.minApplied?`<div style="background:#fff9f0;color:#b45309;font-size:11px;padding:8px;border-radius:6px;margin-top:10px;font-weight:500;">💡 ${st.res.isMicro?t.minMicroNote:t.minStdNote}</div>`:""}
-          </div>
-        `:`
-          <div style="background:#fafaf8;border:1px dashed #ddd;border-radius:12px;padding:2.5rem 1rem;text-align:center;color:#777;font-size:12px;margin-bottom:1rem;font-weight:500;">
-            <i class="ti-click" style="font-size:24px;color:#ccc;display:block;margin-bottom:6px;"></i>${t.emptyHint}
-          </div>
-        `}
-
-        <div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:1.25rem;">
-          <h3 style="font-size:13px;font-weight:600;color:#333;margin-bottom:1rem;display:flex;align-items:center;gap:6px;">
-            <i class="ti-map-route" style="color:#1D9E75;font-size:16px;"></i>${t.ifuRoadTitle}
-          </h3>
-          ${t.ifuRoad.map(r=>`
-            <div style="display:flex;gap:10px;margin-bottom:.9rem;">
-              <div style="background:${r.c}12;color:${r.c};width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
-                <i class="${r.icon}" style="font-size:14px;"></i>
-              </div>
-              <div>
-                <h4 style="font-size:12px;font-weight:600;color:#222;margin-bottom:1px;">${r.title}</h4>
-                <p style="font-size:11px;color:#666;line-height:1.4;">${r.desc}</p>
-              </div>
-            </div>
-          `).join("")}
-        </div>
-      </div>
+  ${cfgBlock(t.cfgBNC,"#854F0B",`
+    ${cfgField("cfg_bnc_rate",t.cfgBNCRate,c.bnc_rate,"%")}
+    ${cfgField("cfg_bnc_min", t.cfgBNCMin, c.bnc_min, "DA")}
+  `)}
+  <!-- IRG MATRIX -->
+  <div style="background:#fff;border-radius:10px;border:1px solid #e8e6e1;padding:1rem;margin-bottom:.75rem;">
+    <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;">
+      <div style="width:3px;height:18px;background:#5DCAA5;border-radius:2px;flex-shrink:0;"></div>
+      <h3 style="font-size:12px;font-weight:600;color:#222;">${t.cfgIRG}</h3>
     </div>
-    `;
-  }
+    <p style="font-size:11px;color:#888;margin-bottom:.85rem;line-height:1.5;">${t.cfgIRGDesc}</p>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:11px;">
+        <thead><tr style="background:#f8f7f4;">
+          <th style="padding:6px 10px;text-align:${t.dir==="rtl"?"right":"left"};color:#666;font-weight:600;border-bottom:1px solid #eee;width:60px;">${t.cfgBracket}</th>
+          <th style="padding:6px 10px;text-align:${t.dir==="rtl"?"right":"left"};color:#666;font-weight:600;border-bottom:1px solid #eee;">${t.cfgUpTo}</th>
+          <th style="padding:6px 10px;text-align:${t.dir==="rtl"?"right":"left"};color:#666;font-weight:600;border-bottom:1px solid #eee;width:120px;">${t.cfgRate}</th>
+        </tr></thead>
+        <tbody>
+          ${br.map((b,i)=>`<tr style="border-bottom:1px solid #f5f4f1;">
+            <td style="padding:6px 10px;">
+              <span style="background:#5DCAA518;color:#0F6E56;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;">B${i+1}</span>
+            </td>
+            <td style="padding:6px 10px;">
+              ${b.max===Infinity
+                ?`<span style="font-size:11px;color:#999;font-style:italic;">${t.cfgInfinity}</span>`
+                :`<input id="irg_max_${i}" type="number" min="0" step="10000" value="${b.max}" class="cfg-input" style="width:140px;">`}
+            </td>
+            <td style="padding:6px 10px;">
+              <div style="position:relative;display:inline-block;">
+                <input id="irg_rate_${i}" type="number" min="0" max="100" step="0.5" value="${b.rate}" class="cfg-input" style="width:80px;padding-inline-end:22px;">
+                <span style="position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);font-size:11px;color:#999;pointer-events:none;">%</span>
+              </div>
+            </td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+    <button class="cbtn" onclick="applySettings()"
+      style="flex:1;min-width:160px;padding:11px;border-radius:8px;border:none;
+             background:#1D9E75;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">
+      <i class="ti ti-device-floppy" style="font-size:13px;"></i> ${t.settingsSave}
+    </button>
+    <button class="cbtn lbtn" onclick="resetSettings()"
+      style="padding:11px 16px;border-radius:8px;border:1px solid #d0cec9;background:#fafaf8;
+             color:#555;font-size:12px;font-weight:500;font-family:inherit;">
+      <i class="ti ti-refresh" style="font-size:12px;"></i> ${t.settingsReset}
+    </button>
+  </div>
+  ${S.settingsSaved?`<div style="margin-top:8px;background:#e1f5ee;border-radius:7px;padding:8px 12px;font-size:12px;font-weight:600;color:#0F6E56;">${t.settingsSaved}</div>`:""}`;
+}
 
-  /* ────────────────────────────────────────────────────────
-     TAB: RÉGIME RÉEL
-     ──────────────────────────────────────────────────────── */
-  else if(S.tab==="reel"){
-    const st=S.reel;
-    h+=`
-    <div class="g2">
-      <div>
-        <div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:1.25rem;box-shadow:0 4px 12px rgba(0,0,0,.01);margin-bottom:1rem;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:.5rem;">
-            <span class="tag" style="background:#edf4fc;color:#1e40af;">${t.reelBadge}</span>
-            <span style="font-size:11px;color:#888;font-weight:500;">${t.reelSub}</span>
-          </div>
-          <h2 style="font-size:15px;font-weight:600;color:#111;margin-bottom:.4rem;">${t.reelTitle}</h2>
-          <p style="font-size:11px;color:#666;margin-bottom:1.25rem;line-height:1.4;">${t.reelDesc}</p>
+function panelIFU(){
+  const t=d(),st=S.ifu,c=cfg();
+  const acts=ifuActs(),act=acts.find(a=>a.v===st.act);
+  const minAmt=act.micro?c.ifu_min_micro:c.ifu_min_std;
+  const isOver=st.overThreshold;
 
-          <div class="g2h" style="margin-bottom:1rem;">
-            <div>
-              <label style="display:block;font-size:12px;font-weight:600;color:#444;margin-bottom:5px;">${t.sectorLbl}</label>
-              <select id="reel-sector" class="cfg-input" onchange="S.reel.sector=this.value; S.reel.res=null; render();">
-                ${t.sectors.map(s=>`<option value="${s.v}" ${st.sector===s.v?"selected":""}>${s.l}</option>`).join("")}
-              </select>
-            </div>
-            <div>
-              <label style="display:block;font-size:12px;font-weight:600;color:#444;margin-bottom:5px;">${t.entityLbl}</label>
-              <select id="reel-entity" class="cfg-input" ${st.sector==="export"?"disabled":""} onchange="S.reel.entity=this.value; S.reel.res=null; render();">
-                ${t.entities.map(e=>`<option value="${e.v}" ${st.entity===e.v?"selected":""}>${e.l}</option>`).join("")}
-              </select>
-            </div>
-          </div>
-
-          ${st.sector==="import"?`
-            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px;margin-bottom:1rem;">
-              <div style="font-size:11px;font-weight:600;color:#1e3a8a;margin-bottom:5px;">${t.importAlertTitle}</div>
-              <p style="font-size:10px;color:#334155;line-height:1.3;margin-bottom:8px;">${t.importAlertMsg}</p>
-              <label style="display:block;font-size:11px;font-weight:600;color:#444;margin-bottom:4px;">${t.acompteTypeLbl}</label>
-              <select id="reel-acompte-type" class="cfg-input" onchange="S.reel.acompteType=this.value; S.reel.res=null; render();">
-                <option value="goods" ${st.acompteType==="goods"?"selected":""}>${t.acompteGoods} (${c.acompte_goods}%)</option>
-                <option value="services" ${st.acompteType==="services"?"selected":""}>${t.acompteServices} (${c.acompte_services}%)</option>
-              </select>
-            </div>
-          `:""}
-
-          ${st.sector!=="export"&&st.entity==="company"?`
-            <div style="margin-bottom:1rem;">
-              <label style="display:block;font-size:12px;font-weight:600;color:#444;margin-bottom:5px;">${t.ibsLbl}</label>
-              <select id="reel-ibsact" class="cfg-input">
-                ${ibsActs().map(a=>`<option value="${a.v}" ${st.ibsAct===a.v?"selected":""}>${a.l}</option>`).join("")}
-              </select>
-            </div>
-          `:""}
-
-          <div class="g2h" style="margin-bottom:1rem;">
-            <div>
-              <label style="display:block;font-size:12px;font-weight:600;color:#444;margin-bottom:5px;">${t.grossLbl}</label>
-              <input type="text" id="reel-gross" class="cfg-input" placeholder="${t.grossPh}" value="${st.gross}" style="font-family:'DM Mono',monospace;">
-              ${st.err?`<div style="color:#c81e1e;font-size:11px;margin-top:4px;">${st.err}</div>`:""}
-            </div>
-            <div>
-              <label style="display:block;font-size:12px;font-weight:600;color:#444;margin-bottom:5px;">${t.expLbl}</label>
-              <input type="text" id="reel-exp" class="cfg-input" placeholder="${t.expPh}" value="${st.exp}" style="font-family:'DM Mono',monospace;">
-            </div>
-          </div>
-
-          ${st.sector!=="export"?`
-            <div style="display:flex;align-items:center;justify-content:space-between;background:#fafaf8;padding:8px 10px;border-radius:8px;margin-bottom:1.25rem;border:1px solid #eee;">
-              <label style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:#333;cursor:pointer;">
-                <input type="checkbox" id="reel-tva-toggle" ${st.tva?"checked":""} onchange="S.reel.tva=this.checked; S.reel.res=null; render();" style="cursor:pointer;accent-color:#1D9E75;">
-                <span>${t.tvaToggle}</span>
-              </label>
-              ${st.tva?`
-                <select id="reel-tva-rate" class="cfg-input" style="width:110px;padding:3px 6px;" onchange="S.reel.tvaRate=this.value; S.reel.res=null; render();">
-                  <option value="normal" ${st.tvaRate==="normal"?"selected":""}>${c.tva_normal}% (${t.dir==="rtl"?"عادي":"Normal"})</option>
-                  <option value="reduced" ${st.tvaRate==="reduced"?"selected":""}>${c.tva_reduced}% (${t.dir==="rtl"?"مخفض":"Réduit"})</option>
-                </select>
-              `:""}
-            </div>
-          `:""}
-
-          <button onclick="doReel()" class="cbtn" style="width:100%;background:#1e40af;color:#fff;padding:10px;border-radius:8px;font-size:13px;font-weight:600;">
-            <i class="ti-calculator" style="margin-inline-end:4px;"></i>${t.calcReelBtn}
+  /* ── IFU OVER-THRESHOLD BANNER ── */
+  const overBanner=isOver?`
+    <div style="background:#FCEBEB;border-radius:10px;border:1.5px solid #E24B4A;padding:1rem 1.1rem;margin-bottom:1rem;">
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <i class="ti ti-alert-octagon" style="font-size:22px;color:#A32D2D;flex-shrink:0;margin-top:2px;"></i>
+        <div>
+          <p style="font-size:13px;font-weight:700;color:#A32D2D;margin-bottom:5px;">${t.ifuOverThresholdTitle}</p>
+          <p style="font-size:12px;color:#791F1F;line-height:1.65;">${t.ifuOverThresholdMsg}</p>
+          <button class="cbtn" onclick="setTab('reel')"
+            style="margin-top:10px;padding:7px 16px;border-radius:7px;border:none;
+                   background:#A32D2D;color:#fff;font-size:12px;font-weight:600;font-family:inherit;">
+            ${t.ifuOverThresholdCTA}
           </button>
         </div>
-
-        <div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:1.25rem;">
-          <h3 style="font-size:13px;font-weight:600;color:#333;margin-bottom:2px;">${t.expCheckTitle}</h3>
-          <p style="font-size:11px;color:#666;line-height:1.4;margin-bottom:10px;">${t.expCheckDesc}</p>
-          <div id="exp-checklist-container"></div>
-          <div style="font-size:10px;color:#777;background:#fdfbe7;border:1px solid #fef3c7;padding:7px;border-radius:6px;margin-top:10px;line-height:1.3;">${t.expCheckTip}</div>
-        </div>
       </div>
+    </div>`:"";
 
+  const left=`
+    <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.params}</div>
+    <div style="margin-bottom:.85rem;">${pLabel(t.caLbl)}${pInput("ifu-ca",st.ca,t.caPh,st.err)}</div>
+    <div style="margin-bottom:.85rem;${isOver?"opacity:.45;pointer-events:none;":""}">
+      ${pLabel(t.actLbl)}
+      <select id="ifu-act" ${isOver?"disabled":""} style="width:100%;padding:9px 11px;border-radius:7px;border:1px solid #ddd;font-size:12px;background:#fafaf8;color:#111;font-family:inherit;">
+        ${acts.map(a=>`<option value="${a.v}" ${st.act===a.v?"selected":""}>${a.l}</option>`).join("")}
+      </select>
+    </div>
+    ${!isOver?`
+    <div style="background:#e1f5ee;border-radius:7px;padding:8px 12px;margin-bottom:.5rem;display:flex;align-items:center;gap:9px;">
+      <span style="font-size:18px;font-weight:700;color:#0F6E56;font-family:'DM Mono',monospace;">${(act.r*100).toFixed(2).replace(/\.?0+$/,"")}%</span>
+      <span style="font-size:11px;color:#0F6E56;">${t.rateHint}</span>
+    </div>
+    <div style="background:#f0f8ff;border-radius:7px;padding:7px 11px;margin-bottom:.9rem;border-inline-start:3px solid ${act.micro?"#BA7517":"#A32D2D"};">
+      <p style="font-size:11px;color:${act.micro?"#633806":"#791F1F"};font-weight:500;">Min: ${fmt(minAmt)}</p>
+    </div>
+    <button class="cbtn" onclick="doIFU()" style="width:100%;padding:10px;border-radius:8px;border:none;background:#1D9E75;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">${t.calcBtn}</button>
+    `:`<button class="cbtn" onclick="doIFU()" style="width:100%;padding:10px;border-radius:8px;border:none;background:#1D9E75;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">${t.calcBtn}</button>`}`;
+
+  const right=(!isOver&&st.res)?`
+    <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.results}</div>
+    ${rrow(t.lCA,fmt(st.res.ca))}
+    ${rrow(t.lRate,(st.res.rate*100).toFixed(2)+"%")}
+    ${rrow(t.lRaw,fmt(st.res.raw))}
+    ${rrow(t.lMin,fmt(minAmt))}
+    ${finalBox(t.lFinal,fmt(st.res.final))}
+    ${st.res.minApplied?warnBox(st.res.isMicro?t.minMicroNote:t.minStdNote):""}
+    <button class="cbtn" onclick="openReport()"
+      style="width:100%;margin-top:.9rem;padding:9px;border-radius:8px;border:none;
+             background:#334155;color:#fff;font-size:12px;font-weight:600;font-family:inherit;
+             display:flex;align-items:center;justify-content:center;gap:6px;">
+      <i class="ti ti-file-download" style="font-size:14px;"></i> ${t.reportBtnLabel}
+    </button>
+  `:null;
+
+  return`
+    ${secHead(t.ifuBadge,"#1D9E75",t.ifuSub,t.ifuTitle,t.ifuDesc)}
+    ${overBanner}
+    <div class="g2" style="margin-bottom:.5rem;">
+      <div style="background:#fff;border-radius:12px;border:1px solid #e8e6e1;padding:1.1rem;">${left}</div>
+      ${right?`<div style="background:#fff;border-radius:12px;border:1.5px solid #1D9E75;padding:1.1rem;">${right}</div>`:emptyState("ti-calculator",isOver?"":t.emptyHint)}
+    </div>
+    ${!isOver?roadmap(t.ifuRoadTitle,t.ifuRoad):""}`;
+}
+
+function panelReel(){
+  const t=d(),st=S.reel,c=cfg();
+  const acts=ibsActs();
+
+  const importBlock=st.sector==="import"?`
+    <div style="background:#FCEBEB;border-radius:8px;padding:10px 12px;border:1px solid #F7C1C1;margin-bottom:.85rem;">
+      <p style="font-size:11px;font-weight:700;color:#A32D2D;margin-bottom:3px;">${t.importAlertTitle}</p>
+      <p style="font-size:11px;color:#791F1F;line-height:1.55;">${t.importAlertMsg}</p>
+    </div>
+    <div style="margin-bottom:.85rem;">
+      ${pLabel(t.acompteTypeLbl)}
+      ${segGroup([{v:"goods",l:`${t.acompteGoods} (${c.acompte_goods}%)`},{v:"services",l:`${t.acompteServices} (${c.acompte_services}%)`}],st.acompteType,"setAcompteType","#A32D2D")}
+    </div>
+    <div style="background:#FAEEDA;border-radius:8px;padding:9px 12px;border:1px solid #FAC775;margin-bottom:.85rem;">
+      <p style="font-size:11px;font-weight:600;color:#633806;margin-bottom:2px;">${t.importTipTitle}</p>
+      <p style="font-size:11px;color:#633806;line-height:1.5;">${t.importTipMsg}</p>
+    </div>`:"";
+
+  const entityBlock=st.sector!=="export"?`
+    <div style="margin-bottom:.85rem;">${pLabel(t.entityLbl)}${segGroup(t.entities,st.entity,"setEntity","#378ADD")}</div>
+    ${st.entity==="company"?`<div style="margin-bottom:.85rem;">${pLabel(t.ibsLbl)}
+      <select id="reel-ibsact" style="width:100%;padding:9px 11px;border-radius:7px;border:1px solid #ddd;font-size:12px;background:#fafaf8;color:#111;font-family:inherit;">
+        ${acts.map(a=>`<option value="${a.v}" ${st.ibsAct===a.v?"selected":""}>${a.l}</option>`).join("")}
+      </select></div>`:""}
+    <div style="margin-bottom:.85rem;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+        <span style="font-size:12px;font-weight:500;color:#444;">${t.tvaLbl}</span>
+        <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555;cursor:pointer;">
+          <input type="checkbox" ${st.tva?"checked":""} onchange="toggleTVA(this.checked)" style="width:13px;height:13px;">
+          ${t.tvaToggle}
+        </label>
+      </div>
+      ${st.tva?segGroup([{v:"normal",l:`${t.dir==="rtl"?"عادي":"Normal"} ${c.tva_normal}%`},{v:"reduced",l:`${t.dir==="rtl"?"مخفض":"Réduit"} ${c.tva_reduced}%`}],st.tvaRate,"setTvaRate","#378ADD"):""}
+    </div>`:"";
+
+  const expWidget=`
+    <div style="background:#fff;border-radius:12px;border:1.5px solid #1D9E75;padding:1.1rem;margin-top:.85rem;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:.6rem;">
+        <i class="ti ti-checklist" style="font-size:16px;color:#1D9E75;"></i>
+        <h3 style="font-size:13px;font-weight:600;color:#0F6E56;">${t.expCheckTitle}</h3>
+      </div>
+      <p style="font-size:11px;color:#666;line-height:1.55;margin-bottom:.75rem;">${t.expCheckDesc}</p>
+      <div style="background:#FAEEDA;border-radius:7px;padding:7px 10px;margin-bottom:.75rem;">
+        <p style="font-size:11px;color:#633806;">${t.expCheckTip}</p>
+      </div>
+      <div id="exp-checklist-container"></div>
+    </div>`;
+
+  const left=`
+    <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.params}</div>
+    <div style="margin-bottom:.85rem;">${pLabel(t.grossLbl)}${pInput("reel-gross",st.gross,t.grossPh,st.err)}</div>
+    <div style="margin-bottom:.85rem;">${pLabel(t.expLbl)}${pInput("reel-exp",st.exp,t.expPh,"")}</div>
+    <div style="margin-bottom:.85rem;">${pLabel(t.sectorLbl)}${segGroup(t.sectors,st.sector,"setSector","#378ADD")}</div>
+    ${importBlock}${entityBlock}
+    <button class="cbtn" onclick="doReel()" style="width:100%;padding:10px;border-radius:8px;border:none;background:#378ADD;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">${t.calcReelBtn}</button>`;
+
+  let right=null,resBorder="1.5px solid #378ADD";
+  if(st.res){
+    const r=st.res;
+    if(r.mode==="export"){
+      resBorder="1.5px solid #1D9E75";
+      right=`
+        <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.results}</div>
+        ${rrow(t.lRevenue,fmt(r.gr))}${rrow(t.lExp,fmt(r.expenses))}${rrow(t.lProfit,fmt(r.profit))}
+        <div style="margin-top:.8rem;background:#e1f5ee;border-radius:9px;padding:12px 14px;border:1.5px solid #1D9E75;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+            <i class="ti ti-circle-check" style="font-size:18px;color:#0F6E56;"></i>
+            <span style="font-size:12px;font-weight:700;color:#0F6E56;">${t.exportZero}</span>
+          </div>
+          <p style="font-size:11px;color:#0F6E56;line-height:1.6;">${t.exportMsg}</p>
+        </div>`;
+    } else if(r.mode==="loss"){
+      resBorder="1.5px solid #E24B4A";
+      right=`
+        <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.results}</div>
+        <div style="background:#FCEBEB;border-radius:8px;padding:12px 13px;border:1px solid #F7C1C1;">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;">
+            <i class="ti ti-trending-down" style="font-size:17px;color:#A32D2D;"></i>
+            <span style="font-size:12px;font-weight:600;color:#A32D2D;">${t.lossTitle}</span>
+          </div>
+          <p style="font-size:11px;color:#791F1F;line-height:1.55;">${t.lossMsg}</p>
+          ${rrow(t.lRevenue,fmt(r.gr))}${rrow(t.lExp,fmt(r.expenses))}
+          <div class="rrow" style="border:none;">
+            <span style="font-size:12px;font-weight:600;color:#A32D2D;">${t.lProfit}</span>
+            <span style="font-size:12px;font-weight:700;font-family:'DM Mono',monospace;color:#A32D2D;">${fmt(r.profit)}</span>
+          </div>
+        </div>
+        ${r.acompteAmt!=null?rrow(`<span style="color:#A32D2D;">${t.lAcompte}</span>`,fmt(r.acompteAmt),"#A32D2D"):""}`;
+    } else {
+      right=`
+        <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.results}</div>
+        ${rrow(t.lRevenue,fmt(r.gr))}${rrow(t.lExp,fmt(r.expenses))}${rrow(t.lProfit,fmt(r.profit))}
+        ${rrow(t.lTaxRate,r.entity==="company"?(r.ibsRate*100).toFixed(0)+"%":"IRG progressif")}
+        ${rrow(t.lTaxRaw,fmt(r.taxRaw))}
+        ${r.tvaAmt!=null?rrow(`<span style="color:#378ADD;">${t.lTvaEst}</span>`,fmt(r.tvaAmt),"#378ADD"):""}
+        ${r.acompteAmt!=null?rrow(`<span style="color:#A32D2D;">${t.lAcompte}</span>`,fmt(r.acompteAmt),"#A32D2D"):""}
+        ${finalBox(t.lFinalTax,fmt(r.final))}
+        ${r.minApplied?warnBox(t.minStdNote):""}
+        ${r.irgDetails?`
+          <div style="margin-top:.85rem;">
+            <div style="font-size:10px;font-weight:600;color:#888;margin-bottom:6px;letter-spacing:.6px;text-transform:uppercase;">${t.irgBreakTitle}</div>
+            ${r.irgDetails.filter(x=>x.slice>0).map(x=>`
+            <div style="display:flex;justify-content:space-between;padding:4px 8px;border-radius:5px;background:#f8f7f4;margin-bottom:2px;">
+              <span style="font-size:10px;color:#666;">${x.label}</span>
+              <span style="font-size:10px;font-family:'DM Mono',monospace;color:${x.rate===0?"#1D9E75":"#333"};">${x.rate===0?t.exonere:fmt(x.tax)}</span>
+            </div>`).join("")}
+          </div>`:""}`;
+    }
+    if(right){
+      right+=`
+        <button class="cbtn" onclick="openReport()"
+          style="width:100%;margin-top:.9rem;padding:9px;border-radius:8px;border:none;
+                 background:#334155;color:#fff;font-size:12px;font-weight:600;font-family:inherit;
+                 display:flex;align-items:center;justify-content:center;gap:6px;">
+          <i class="ti ti-file-download" style="font-size:14px;"></i> ${t.reportBtnLabel}
+        </button>`;
+    }
+  }
+
+  return`
+    ${secHead(t.reelBadge,"#378ADD",t.reelSub,t.reelTitle,t.reelDesc)}
+    <div class="g2" style="margin-bottom:.5rem;">
       <div>
-        ${st.res?`
-          <div style="background:#fff;border:1px solid #1e40af;border-radius:12px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 4px 12px rgba(30,64,175,.04);">
-            <h3 style="font-size:13px;font-weight:600;color:#1e40af;margin-bottom:1rem;border-bottom:1px dashed #dbeafe;padding-bottom:6px;">${t.results}</h3>
-            
-            <div class="rrow"><span>${t.lRevenue}</span><b style="font-family:'DM Mono',monospace;">${fmt(st.res.gr)}</b></div>
-            <div class="rrow"><span>${t.lExp}</span><b style="font-family:'DM Mono',monospace;color:#a32d2d;">${fmt(st.res.expenses)}</b></div>
-            <div class="rrow"><span>${t.lProfit}</span><b style="font-family:'DM Mono',monospace;color:${st.res.profit>=0?"#1d9e75":"#a32d2d"};">${fmt(st.res.profit)}</b></div>
-
-            ${st.res.mode==="export"?`
-              <div style="background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;padding:10px;border-radius:8px;margin-top:10px;text-align:center;">
-                <div style="font-size:12px;font-weight:bold;margin-bottom:2px;">${t.exportTitle}</div>
-                <div style="font-size:11px;">${t.exportMsg}</div>
-                <div style="font-family:'DM Mono',monospace;font-weight:bold;font-size:14px;margin-top:5px;">${t.exportZero}</div>
-              </div>
-            `:""}
-
-            ${st.res.mode==="loss"?`
-              <div style="background:#fdf2f2;border:1px solid #fbd5d5;color:#9b1c1c;padding:10px;border-radius:8px;margin-top:10px;">
-                <div style="font-size:12px;font-weight:bold;margin-bottom:2px;">⚠️ ${t.lossTitle}</div>
-                <div style="font-size:11px;line-height:1.4;">${t.lossMsg}</div>
-              </div>
-            `:""}
-
-            ${st.res.mode==="normal"?`
-              <div class="rrow"><span>${t.lTaxRate}</span><b style="color:#1e40af;">${st.res.ibsRate?(st.res.ibsRate*100).toFixed(0)+"%":"IRG progressive"}</b></div>
-              <div class="rrow"><span>${t.lTaxRaw}</span><b style="font-family:'DM Mono',monospace;color:#555;">${fmt(st.res.taxRaw)}</b></div>
-              ${st.res.tvaAmt!=null?`<div class="rrow"><span>${t.lTvaEst}</span><b style="font-family:'DM Mono',monospace;color:#6d28d9;">${fmt(st.res.tvaAmt)}</b></div>`:""}
-              ${st.res.acompteAmt!=null?`<div class="rrow"><span>${t.lAcompte}</span><b style="font-family:'DM Mono',monospace;color:#b45309;">${fmt(st.res.acompteAmt)}</b></div>`:""}
-              
-              <div class="rrow" style="font-size:14px;font-weight:bold;border-top:1px solid #1e40af;padding-top:10px;margin-top:5px;">
-                <span style="color:#111;">${t.lFinalTax}</span>
-                <span style="color:#1e40af;font-family:'DM Mono',monospace;">${fmt(st.res.final)}</span>
-              </div>
-              ${st.res.minApplied?`<div style="background:#fff9f0;color:#b45309;font-size:11px;padding:8px;border-radius:6px;margin-top:10px;font-weight:500;">💡 ${t.minStdNote}</div>`:""}
-
-              ${st.res.irgDetails?`
-                <div style="margin-top:12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;">
-                  <div style="font-size:11px;font-weight:600;color:#334155;margin-bottom:6px;">${t.irgBreakTitle}</div>
-                  ${st.res.irgDetails.map((b,idx)=>`
-                    <div style="display:flex;justify-content:space-between;font-size:10px;color:#64748b;padding:2px 0;">
-                      <span>${t.cfgBracket} ${idx+1} (→ ${b.label}) :</span>
-                      <span style="font-family:'DM Mono',monospace;">${b.rate}% = ${fmt(b.tax).replace(" DA","")}</span>
-                    </div>
-                  `).join("")}
-                </div>
-              `:""}
-            `:""}
-
-            ${st.sector==="import"?`
-              <div style="font-size:10px;color:#1e53a9;background:#eff6ff;border:1px solid #bfdbfe;padding:8px;border-radius:6px;margin-top:10px;line-height:1.3;">
-                <strong>${t.importTipTitle} :</strong> ${t.importTipMsg}
-              </div>
-            `:""}
-          </div>
-        `:`
-          <div style="background:#fafaf8;border:1px dashed #ddd;border-radius:12px;padding:2.5rem 1rem;text-align:center;color:#777;font-size:12px;margin-bottom:1rem;font-weight:500;">
-            <i class="ti-click" style="font-size:24px;color:#ccc;display:block;margin-bottom:6px;"></i>${t.emptyHint}
-          </div>
-        `}
-
-        <div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:1.25rem;">
-          <h3 style="font-size:13px;font-weight:600;color:#333;margin-bottom:1rem;display:flex;align-items:center;gap:6px;">
-            <i class="ti-timeline" style="color:#1e40af;font-size:16px;"></i>${t.reelRoadTitle}
-          </h3>
-          ${t.reelRoad.map(r=>`
-            <div style="display:flex;gap:10px;margin-bottom:.9rem;">
-              <div style="background:${r.c}12;color:${r.c};width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
-                <i class="${r.icon}" style="font-size:14px;"></i>
-              </div>
-              <div>
-                <h4 style="font-size:12px;font-weight:600;color:#222;margin-bottom:1px;">${r.title}</h4>
-                <p style="font-size:11px;color:#666;line-height:1.4;">${r.desc}</p>
-              </div>
-            </div>
-          `).join("")}
-        </div>
+        <div style="background:#fff;border-radius:12px;border:1px solid #e8e6e1;padding:1.1rem;">${left}</div>
+        ${expWidget}
       </div>
+      ${right?`<div style="background:#fff;border-radius:12px;border:${resBorder};padding:1.1rem;overflow-y:auto;">${right}</div>`:emptyState("ti-report-analytics",t.emptyHint)}
     </div>
-    `;
-  }
+    ${roadmap(t.reelRoadTitle,t.reelRoad)}`;
+}
 
-  /* ────────────────────────────────────────────────────────
-     TAB: SIMPLIFIED RÉGIME BNC
-     ──────────────────────────────────────────────────────── */
-  else if(S.tab==="simp"){
-    const st=S.simp;
-    h+=`
-    <div class="g2">
-      <div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:1.25rem;box-shadow:0 4px 12px rgba(0,0,0,.01);">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:.5rem;">
-          <span class="tag" style="background:#f3e8ff;color:#6b21a8;">${t.simpBadge}</span>
-          <span style="font-size:11px;color:#888;font-weight:500;">${t.simpSub}</span>
-        </div>
-        <h2 style="font-size:15px;font-weight:600;color:#111;margin-bottom:.4rem;">${t.simpTitle}</h2>
-        <p style="font-size:11px;color:#666;margin-bottom:1.25rem;line-height:1.4;">${t.simpDesc}</p>
+function panelSimp(){
+  const t=d(),st=S.simp,c=cfg();
 
-        <div style="margin-bottom:1rem;">
-          <label style="display:block;font-size:12px;font-weight:600;color:#444;margin-bottom:5px;">${t.recLbl}</label>
-          <input type="text" id="simp-rec" class="cfg-input" placeholder="${t.recPh}" value="${st.rec}" style="font-family:'DM Mono',monospace;">
-          ${st.err?`<div style="color:#c81e1e;font-size:11px;margin-top:4px;">${st.err}</div>`:""}
-        </div>
-
-        <div style="margin-bottom:1.25rem;">
-          <label style="display:block;font-size:12px;font-weight:600;color:#444;margin-bottom:5px;">${t.simpExpLbl}</label>
-          <input type="text" id="simp-exp" class="cfg-input" placeholder="${t.simpExpPh}" value="${st.exp}" style="font-family:'DM Mono',monospace;">
-        </div>
-
-        <button onclick="doSimp()" class="cbtn" style="width:100%;background:#6b21a8;color:#fff;padding:10px;border-radius:8px;font-size:13px;font-weight:600;">
-          <i class="ti-calculator" style="margin-inline-end:4px;"></i>${t.simpCalcBtn}
-        </button>
-
-        <div style="background:#fbfbfe;border:1px solid #e0e7ff;border-radius:10px;padding:12px;margin-top:1.25rem;">
-          <div style="font-size:12px;font-weight:600;color:#4338ca;margin-bottom:4px;">${t.focusTitle}</div>
-          <p style="font-size:11px;color:#4f46e5;margin-bottom:8px;">${t.focusDesc}</p>
-          <div style="font-size:11px;font-weight:600;color:#444;margin-bottom:3px;">${t.focusProfsLbl} :</div>
-          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;">
-            ${t.focusProfs.map(p=>`<span style="background:#e0e7ff;color:#3730a3;font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500;">${p}</span>`).join("")}
-          </div>
-          ${t.focusSteps.map(s=>`
-            <div style="display:flex;gap:6px;margin-bottom:6px;align-items:flex-start;">
-              <i class="${s.icon}" style="color:#4f46e5;font-size:13px;margin-top:2px;"></i>
-              <div style="font-size:10px;color:#555;line-height:1.3;"><strong>${s.title} :</strong> ${s.desc}</div>
-            </div>
-          `).join("")}
-        </div>
-      </div>
-
-      <div>
-        ${st.res?`
-          <div style="background:#fff;border:1px solid #6b21a8;border-radius:12px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 4px 12px rgba(107,33,168,.04);">
-            <h3 style="font-size:13px;font-weight:600;color:#6b21a8;margin-bottom:1rem;border-bottom:1px dashed #f3e8ff;padding-bottom:6px;">${t.results}</h3>
-            <div class="rrow"><span>${t.lRec}</span><b style="font-family:'DM Mono',monospace;">${fmt(st.res.rec)}</b></div>
-            <div class="rrow"><span>${t.lSimpExp}</span><b style="font-family:'DM Mono',monospace;color:#a32d2d;">${fmt(st.res.expenses)}</b></div>
-            <div class="rrow"><span>${t.lNet}</span><b style="font-family:'DM Mono',monospace;color:#1d9e75;">${fmt(st.res.net)}</b></div>
-            <div class="rrow"><span>${t.lSimpRate}</span><b style="color:#6b21a8;">${(st.res.rate*100).toFixed(0)}%</b></div>
-            <div class="rrow"><span>${t.lTaxRaw}</span><b style="font-family:'DM Mono',monospace;color:#555;">${fmt(st.res.taxRaw)}</b></div>
-            <div class="rrow" style="font-size:14px;font-weight:bold;border-top:1px solid #6b21a8;padding-top:10px;margin-top:5px;">
-              <span style="color:#111;">${t.lSimpFinal}</span>
-              <span style="color:#6b21a8;font-family:'DM Mono',monospace;">${fmt(st.res.final)}</span>
-            </div>
-            ${st.res.minApplied?`<div style="background:#fff9f0;color:#b45309;font-size:11px;padding:8px;border-radius:6px;margin-top:10px;font-weight:500;">💡 ${t.simpMinNote}</div>`:""}
-          </div>
-        `:`
-          <div style="background:#fafaf8;border:1px dashed #ddd;border-radius:12px;padding:2.5rem 1rem;text-align:center;color:#777;font-size:12px;margin-bottom:1rem;font-weight:500;">
-            <i class="ti-click" style="font-size:24px;color:#ccc;display:block;margin-bottom:6px;"></i>${t.emptyHint}
-          </div>
-        `}
-
-        <div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:1.25rem;">
-          <h3 style="font-size:13px;font-weight:600;color:#333;margin-bottom:1rem;display:flex;align-items:center;gap:6px;">
-            <i class="ti-route" style="color:#6b21a8;font-size:16px;"></i>${t.simpRoadTitle}
-          </h3>
-          ${t.simpRoad.map(r=>`
-            <div style="display:flex;gap:10px;margin-bottom:.9rem;">
-              <div style="background:${r.c}12;color:${r.c};width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
-                <i class="${r.icon}" style="font-size:14px;"></i>
-              </div>
-              <div>
-                <h4 style="font-size:12px;font-weight:600;color:#222;margin-bottom:1px;">${r.title}</h4>
-                <p style="font-size:11px;color:#666;line-height:1.4;">${r.desc}</p>
-              </div>
-            </div>
-          `).join("")}
-        </div>
-      </div>
+  const left=`
+    <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.params}</div>
+    <div style="margin-bottom:.85rem;">${pLabel(t.recLbl)}${pInput("simp-rec",st.rec,t.recPh,st.err)}</div>
+    <div style="margin-bottom:.85rem;">${pLabel(t.simpExpLbl)}${pInput("simp-exp",st.exp,t.simpExpPh,"")}</div>
+    <div style="background:#f0e9d2;border-radius:7px;padding:9px 12px;margin-bottom:.9rem;display:flex;align-items:center;gap:9px;">
+      <span style="font-size:18px;font-weight:700;color:#633806;font-family:'DM Mono',monospace;">${c.bnc_rate}%</span>
+      <span style="font-size:11px;color:#854F0B;">${t.lSimpRate} · Min: ${fmt(c.bnc_min)}</span>
     </div>
-    `;
-  }
+    <button class="cbtn" onclick="doSimp()" style="width:100%;padding:10px;border-radius:8px;border:none;background:#854F0B;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">${t.simpCalcBtn}</button>`;
 
-  /* ────────────────────────────────────────────────────────
-     TAB: DYNAMIC SETTINGS CONFIGURATION
-     ──────────────────────────────────────────────────────── */
-  else if(S.tab==="settings"){
-    const ed=S.edit;
-    h+=`
-    <form onsubmit="applySettings(e)" style="background:#fff;border:1px solid #eee;border-radius:12px;padding:1.25rem;box-shadow:0 4px 12px rgba(0,0,0,.01);">
-      <h2 style="font-size:15px;font-weight:600;color:#111;margin-bottom:2px;">${t.settingsTitle}</h2>
-      <p style="font-size:11px;color:#666;margin-bottom:1rem;line-height:1.4;">${t.settingsSubtitle}</p>
+  const right=st.res?`
+    <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.results}</div>
+    ${rrow(t.lRec,fmt(st.res.rec))}${rrow(t.lSimpExp,fmt(st.res.expenses))}
+    ${rrow(t.lNet,fmt(st.res.profit))}${rrow(t.lSimpRate,c.bnc_rate+"%")}
+    ${finalBox(t.lSimpFinal,fmt(st.res.final),"#633806","#FAC775")}
+    ${st.res.minApplied?warnBox(t.simpMinNote):""}
+    <button class="cbtn" onclick="openReport()"
+      style="width:100%;margin-top:.9rem;padding:9px;border-radius:8px;border:none;
+             background:#334155;color:#fff;font-size:12px;font-weight:600;font-family:inherit;
+             display:flex;align-items:center;justify-content:center;gap:6px;">
+      <i class="ti ti-file-download" style="font-size:14px;"></i> ${t.reportBtnLabel}
+    </button>`:null;
 
-      ${S.settingsSaved?`<div style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;padding:10px;border-radius:8px;font-size:12px;font-weight:600;margin-bottom:1rem;">${t.settingsSaved}</div>`:""}
-      <div style="background:#fffbeb;border:1px solid #fef3c7;color:#92400e;padding:8px 10px;border-radius:8px;font-size:11px;margin-bottom:1.25rem;line-height:1.4;">${t.cfgWarning}</div>
+  const focus=`
+    <div style="background:#fff;border-radius:12px;border:1.5px solid #5DCAA5;padding:1.25rem;margin-top:1rem;">
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin-bottom:.85rem;">
+        <span class="tag" style="background:#1D9E75;color:#fff;">FOCUS</span>
+        <h2 style="font-size:14px;font-weight:600;color:#0F6E56;">${t.focusTitle}</h2>
+        <span style="font-size:10px;color:#aaa;">${t.focusSub}</span>
+      </div>
+      <p style="font-size:12px;color:#555;line-height:1.6;margin-bottom:.9rem;">${t.focusDesc}</p>
+      <div style="margin-bottom:.9rem;">
+        <div style="font-size:10px;font-weight:600;color:#888;letter-spacing:.7px;text-transform:uppercase;margin-bottom:6px;">${t.focusProfsLbl}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;">
+          ${t.focusProfs.map(p=>`<span style="background:#e1f5ee;color:#0F6E56;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:500;">${p}</span>`).join("")}
+        </div>
+      </div>
+      <div class="g2h">
+        ${t.focusSteps.map((s,i)=>`
+        <div style="${i===4?"grid-column:1/-1;":""}display:flex;gap:10px;padding:11px;background:#fafaf8;border-radius:9px;border:1px solid #eee;">
+          <div style="width:32px;height:32px;border-radius:8px;background:${s.c}18;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="ti ${s.icon}" style="font-size:15px;color:${s.c};"></i>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:600;color:#222;margin-bottom:2px;">
+              <span style="font-size:9px;font-weight:700;color:${s.c};margin-inline-end:4px;">0${i+1}</span>${s.title}
+            </div>
+            <p style="font-size:11px;color:#666;line-height:1.55;">${s.desc}</p>
+          </div>
+        </div>`).join("")}
+      </div>
+    </div>`;
 
-      <div class="g2">
+  return`
+    ${secHead(t.simpBadge,"#854F0B",t.simpSub,t.simpTitle,t.simpDesc)}
+    <div class="g2" style="margin-bottom:.5rem;">
+      <div style="background:#fff;border-radius:12px;border:1px solid #e8e6e1;padding:1.1rem;">${left}</div>
+      ${right?`<div style="background:#fff;border-radius:12px;border:1.5px solid #854F0B;padding:1.1rem;">${right}</div>`:emptyState("ti-chart-line",t.emptyHint)}
+    </div>
+    ${roadmap(t.simpRoadTitle,t.simpRoad)}
+    ${focus}`;
+}
+
+/* ════════════════════════════
+   MAIN RENDER
+════════════════════════════ */
+function render(){
+  const t=d(),app=document.getElementById("app");
+  app.dir=t.dir; app.style.fontFamily=t.ff;
+  app.style.minHeight="100vh"; app.style.background="#f8f7f4";
+  const cfgChanged=JSON.stringify(S.cfg)!==JSON.stringify(DEFAULT_CFG);
+
+  app.innerHTML=`
+  <header style="background:#fff;border-bottom:1px solid #e8e6e1;position:sticky;top:0;z-index:50;">
+    <div style="max-width:980px;margin:0 auto;padding:0 1rem;display:flex;align-items:center;justify-content:space-between;height:54px;gap:10px;">
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+        <div style="width:29px;height:29px;background:#1D9E75;border-radius:7px;display:flex;align-items:center;justify-content:center;">
+          <span style="color:#fff;font-size:12px;font-weight:700;">✦</span>
+        </div>
         <div>
-          <h3 style="font-size:12px;font-weight:bold;color:#1D9E75;margin-bottom:.65rem;border-bottom:1px solid #eee;padding-bottom:4px;">${t.cfgIFU}</h3>
-          <div style="margin-bottom:.75rem;">
-            <label style="display:block;font-size:11px;color:#555;margin-bottom:3px;">${t.cfgIFUMin30}</label>
-            <input type="number" class="cfg-input" value="${ed.ifu_min_std}" oninput="changeCfgInput('ifu_min_std',this.value)">
-          </div>
-          <div style="margin-bottom:.75rem;">
-            <label style="display:block;font-size:11px;color:#555;margin-bottom:3px;">${t.cfgIFUMin10}</label>
-            <input type="number" class="cfg-input" value="${ed.ifu_min_micro}" oninput="changeCfgInput('ifu_min_micro',this.value)">
-          </div>
-          <div style="margin-bottom:.75rem;">
-            <label style="display:block;font-size:11px;color:#555;margin-bottom:3px;">${t.cfgIFURateProd}</label>
-            <input type="number" step="0.1" class="cfg-input" value="${ed.ifu_rate_prod}" oninput="changeCfgInput('ifu_rate_prod',this.value)">
-          </div>
-          <div style="margin-bottom:.75rem;">
-            <label style="display:block;font-size:11px;color:#555;margin-bottom:3px;">${t.cfgIFURateServ}</label>
-            <input type="number" step="0.1" class="cfg-input" value="${ed.ifu_rate_serv}" oninput="changeCfgInput('ifu_rate_serv',this.value)">
-          </div>
-          <div style="margin-bottom:.75rem;">
-            <label style="display:block;font-size:11px;color:#555;margin-bottom:3px;">${t.cfgIFURateMicro}</label>
-            <input type="number" step="0.1" class="cfg-input" value="${ed.ifu_rate_micro}" oninput="changeCfgInput('ifu_rate_micro',this.value)">
-          </div>
-
-          <h3 style="font-size:12px;font-weight:bold;color:#6b21a8;margin-bottom:.65rem;border-bottom:1px solid #eee;padding-bottom:4px;margin-top:1.25rem;">${t.cfgBNC}</h3>
-          <div style="margin-bottom:.75rem;">
-            <label style="display:block;font-size:11px;color:#555;margin-bottom:3px;">${t.cfgBNCRate}</label>
-            <input type="number" class="cfg-input" value="${ed.bnc_rate}" oninput="changeCfgInput('bnc_rate',this.value)">
-          </div>
-          <div style="margin-bottom:.75rem;">
-            <label style="display:block;font-size:11px;color:#555;margin-bottom:3px;">${t.cfgBNCMin}</label>
-            <input type="number" class="cfg-input" value="${ed.bnc_min}" oninput="changeCfgInput('bnc_min',this.value)">
-          </div>
-        </div>
-
-        <div>
-          <h3 style="font-size:12px;font-weight:bold;color:#1e40af;margin-bottom:.65rem;border-bottom:1px solid #eee;padding-bottom:4px;">${t.cfgIBS}</h3>
-          <div style="margin-bottom:.75rem;">
-            <label style="display:block;font-size:11px;color:#555;margin-bottom:3px;">${t.cfgIBSProd}</label>
-            <input type="number" class="cfg-input" value="${ed.ibs_rate_prod}" oninput="changeCfgInput('ibs_rate_prod',this.value)">
-          </div>
-          <div style="margin-bottom:.75rem;">
-            <label style="display:block;font-size:11px;color:#555;margin-bottom:3px;">${t.cfgIBSBtp}</label>
-            <input type="number" class="cfg-input" value="${ed.ibs_rate_btp}" oninput="changeCfgInput('ibs_rate_btp',this.value)">
-          </div>
-          <div style="margin-bottom:.75rem;">
-            <label style="display:block;font-size:11px;color:#555;margin-bottom:3px;">${t.cfgIBSTrade}</label>
-            <input type="number" class="cfg-input" value="${ed.ibs_rate_trade}" oninput="changeCfgInput('ibs_rate_trade',this.value)">
-          </div>
-
-          <h3 style="font-size:12px;font-weight:bold;color:#6d28d9;margin-bottom:.65rem;border-bottom:1px solid #eee;padding-bottom:4px;margin-top:1rem;">${t.cfgTVA}</h3>
-          <div class="g2h" style="margin-bottom:.75rem;">
-            <div>
-              <label style="display:block;font-size:11px;color:#555;margin-bottom:3px;">${t.cfgTVANormal}</label>
-              <input type="number" class="cfg-input" value="${ed.tva_normal}" oninput="changeCfgInput('tva_normal',this.value)">
-            </div>
-            <div>
-              <label style="display:block;font-size:11px;color:#555;margin-bottom:3px;">${t.cfgTVAReduced}</label>
-              <input type="number" class="cfg-input" value="${ed.tva_reduced}" oninput="changeCfgInput('tva_reduced',this.value)">
-            </div>
-          </div>
-
-          <h3 style="font-size:12px;font-weight:bold;color:#b45309;margin-bottom:.65rem;border-bottom:1px solid #eee;padding-bottom:4px;margin-top:1rem;">${t.cfgAcompte}</h3>
-          <div class="g2h" style="margin-bottom:.75rem;">
-            <div>
-              <label style="display:block;font-size:11px;color:#555;margin-bottom:3px;">${t.acompteGoods}</label>
-              <input type="number" class="cfg-input" value="${ed.acompte_goods}" oninput="changeCfgInput('acompte_goods',this.value)">
-            </div>
-            <div>
-              <label style="display:block;font-size:11px;color:#555;margin-bottom:3px;">${t.acompteServices}</label>
-              <input type="number" class="cfg-input" value="${ed.acompte_services}" oninput="changeCfgInput('acompte_services',this.value)">
-            </div>
-          </div>
+          <div style="font-weight:600;font-size:13px;letter-spacing:-.2px;color:#111;">${t.appName}</div>
+          <div style="font-size:9px;color:#aaa;">${t.appTagline}</div>
         </div>
       </div>
-
-      <div style="margin-top:1.25rem;background:#fafaf8;padding:12px;border-radius:10px;border:1px solid #eee;">
-        <h3 style="font-size:12px;font-weight:bold;color:#111;margin-bottom:3px;">${t.cfgIRG}</h3>
-        <p style="font-size:10px;color:#666;margin-bottom:10px;">${t.cfgIRGDesc}</p>
-        <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:.5rem;margin-bottom:5px;font-size:11px;font-weight:600;color:#666;padding:0 4px;">
-          <span>${t.cfgBracket}</span><span>${t.cfgUpTo}</span><span>${t.cfgRate}</span>
-        </div>
-        ${ed.irg.map((bracket,i)=>`
-          <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:.5rem;margin-bottom:6px;align-items:center;">
-            <span style="font-size:11px;font-weight:600;color:#444;padding:0 4px;"># ${i+1}</span>
-            <input type="text" class="cfg-input" style="font-family:'DM Mono',monospace;"
-              value="${bracket.max===Infinity?t.cfgInfinity:bracket.max}" 
-              ${bracket.max===Infinity?"disabled":""}
-              oninput="changeCfgInput('irg_max_${i}', this.value)">
-            <input type="number" class="cfg-input" style="font-family:'DM Mono',monospace;" value="${bracket.rate}" oninput="changeCfgInput('irg_rate', this.value, ${i})">
-          </div>
-        `).join("")}
-      </div>
-
-      <div style="margin-top:1.5rem;display:flex;gap:.75rem;flex-wrap:wrap;">
-        <button type="button" onclick="applySettings(event)" class="cbtn" style="flex:2;min-width:180px;background:#1D9E75;color:#fff;padding:11px;border-radius:8px;font-size:13px;font-weight:600;">
-          ✕ ${t.settingsSave}
-        </button>
-        <button type="button" onclick="resetSettings()" class="cbtn" style="flex:1;min-width:140px;background:#fff;border:1px solid #ddd;color:#666;padding:11px;border-radius:8px;font-size:12px;">
-          ${t.settingsReset}
-        </button>
-      </div>
-      <div style="font-size:10px;color:#777;text-align:center;margin-top:10px;">${t.lsNote}</div>
-    </form>
-    `;
-  }
-
-  /* Footer layout component */
-  h+=`
-  </div>
-  <footer style="background:#fafaf8;border-top:1px solid #eee;padding:1.5rem 1rem;margin-top:3rem;text-align:center;">
-    <div style="max-width:1100px;margin:0 auto;">
-      <p style="font-size:11px;color:#777;line-height:1.5;margin-bottom:4px;">${t.footer}</p>
-      <p style="font-size:10px;color:#aaa;font-weight:500;">&copy; 2026 FiscAlgérie — v7.0.0. All rights reserved.</p>
+      <nav style="display:flex;gap:2px;flex-wrap:wrap;">
+        ${t.tabs.map(tab=>`
+        <button class="ntab" onclick="setTab('${tab.id}')"
+          style="padding:5px 11px;border-radius:7px;font-size:11px;font-weight:500;position:relative;
+                 color:${S.tab===tab.id?(tab.id==="settings"?"#334155":"#0F6E56"):"#555"};
+                 background:${S.tab===tab.id?(tab.id==="settings"?"#f1f5f9":"#e1f5ee"):"none"};
+                 font-family:${t.ff};">
+          ${tab.label}
+          ${tab.id==="settings"&&cfgChanged?`<span style="position:absolute;top:3px;${t.dir==="rtl"?"left":"right"}:3px;width:6px;height:6px;background:#BA7517;border-radius:50%;"></span>`:""}
+        </button>`).join("")}
+      </nav>
+      <button class="lbtn cbtn" onclick="toggleLang()"
+        style="padding:5px 13px;border-radius:7px;border:1px solid #d0cec9;background:#fafaf8;
+               font-size:11px;font-weight:500;color:#333;flex-shrink:0;font-family:${t.ff};">
+        ${t.langToggle}
+      </button>
     </div>
-  </footer>
-  `;
+  </header>
+  <main style="max-width:980px;margin:0 auto;padding:1.4rem 1rem 2.5rem;">
+    ${S.tab==="ifu"?panelIFU():S.tab==="reel"?panelReel():S.tab==="simp"?panelSimp():panelSettings()}
+  </main>
+  <footer style="text-align:center;padding:1rem;font-size:11px;color:#bbb;border-top:1px solid #ece9e3;">
+    ⚠ ${t.footer}
+  </footer>`;
 
-  $("app").innerHTML=h;
-
-  /* Re-attach input event handlers dynamically after rendering innerHTML components */
+  /* bind inputs */
   on("ifu-ca","input",e=>{
-    S.ifu.ca=e.target.value; S.ifu.err=""; S.ifu.res=null;
-    const v=pf(S.ifu.ca);
+    S.ifu.ca=e.target.value;
+    S.ifu.err=""; S.ifu.res=null;
+    /* live threshold check — re-render only if state changes */
+    const v=pf(e.target.value);
     const wasOver=S.ifu.overThreshold;
     S.ifu.overThreshold=(!isNaN(v)&&v>IFU_MAX_CA);
     if(S.ifu.overThreshold!==wasOver) render();
@@ -1301,7 +1285,16 @@ function toggleLang(){
   S.ifu.overThreshold=false; reportCache=[];
   render();
 }
+function setEntity(v)      {S.reel.entity=v;        S.reel.res=null; render();}
+function setSector(v)      {S.reel.sector=v;         S.reel.res=null; render();}
+function setAcompteType(v) {S.reel.acompteType=v;    S.reel.res=null; render();}
+function toggleTVA(v)      {S.reel.tva=v;            S.reel.res=null; render();}
+function setTvaRate(r)     {S.reel.tvaRate=r;         S.reel.res=null; render();}
 
-/* Initial dynamic application draw execution bootstrapper */
+/* modal backdrop close */
+document.getElementById("report-modal").addEventListener("click",function(e){
+  if(e.target===this) closeReport();
+});
+
 render();
 </script>
