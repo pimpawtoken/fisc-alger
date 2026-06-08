@@ -1,1300 +1,2102 @@
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@500&family=Noto+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
-<div id="app"></div>
-<div id="report-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:300;align-items:center;justify-content:center;">
-  <div id="report-box" style="background:#fff;border-radius:14px;width:min(680px,94vw);max-height:88vh;overflow-y:auto;padding:2rem;position:relative;">
-    <button onclick="closeReport()" style="position:absolute;top:12px;right:14px;background:none;border:none;cursor:pointer;font-size:20px;color:#aaa;line-height:1;" aria-label="Close">✕</button>
-    <div id="report-content"></div>
-    <div style="display:flex;gap:.65rem;margin-top:1.25rem;flex-wrap:wrap;">
-      <button onclick="downloadCSV()" class="cbtn"
-        style="flex:1;min-width:150px;padding:10px;border-radius:8px;border:none;background:#1D9E75;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">
-        ⬇ CSV
-      </button>
-      <button onclick="downloadTXT()" class="cbtn"
-        style="flex:1;min-width:150px;padding:10px;border-radius:8px;border:none;background:#378ADD;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">
-        ⬇ TXT
-      </button>
-      <button onclick="closeReport()" class="cbtn"
-        style="padding:10px 16px;border-radius:8px;border:1px solid #ddd;background:#fafaf8;color:#555;font-size:12px;font-weight:500;font-family:inherit;">
-        ✕
-      </button>
-    </div>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>الحاسبة الجبائية الجزائرية | Calculateur Fiscal Algérien</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-.ntab,.seg,.cbtn,.lbtn{cursor:pointer;font-family:inherit;border:none;transition:all .14s;}
-.cbtn:hover{filter:brightness(.91);}
-.cbtn:active{transform:scale(.98);}
-.lbtn:hover{background:#e1f5ee!important;}
-input[type=text]:focus,input[type=number]:focus,select:focus{outline:2px solid #1D9E75;outline-offset:1px;border-color:#1D9E75!important;}
-.rrow{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f0eeeb;}
-.rrow:last-child{border-bottom:none;}
-.scard{display:flex;gap:11px;padding:11px;background:#fafaf8;border-radius:9px;border:1px solid #eee;}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-.g2h{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem;}
-.cfg-input{width:100%;padding:7px 10px;border-radius:6px;border:1px solid #ddd;font-size:12px;font-weight:500;background:#fafaf8;color:#111;font-family:inherit;}
-.cfg-input:focus{outline:2px solid #1D9E75;outline-offset:1px;border-color:#1D9E75!important;}
-.tag{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:600;}
-.exp-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid #eee;margin-bottom:5px;background:#fff;transition:background .12s;}
-.exp-row:hover{background:#f8fffe;}
-.exp-row input[type=checkbox]{width:15px;height:15px;cursor:pointer;accent-color:#1D9E75;}
-.exp-amt{width:110px;padding:5px 8px;border-radius:6px;border:1px solid #ddd;font-size:12px;font-family:'DM Mono',monospace;background:#fafaf8;color:#111;text-align:end;}
-.exp-amt:focus{outline:2px solid #1D9E75;outline-offset:1px;border-color:#1D9E75!important;}
-@media(max-width:640px){.g2,.g2h,.g3{grid-template-columns:1fr!important;}}
+  /* =============================================
+     ROOT VARIABLES & THEMING
+  ============================================= */
+  :root {
+    --green-50: #f0fdf4;
+    --green-100: #dcfce7;
+    --green-500: #22c55e;
+    --green-600: #16a34a;
+    --green-700: #15803d;
+    --green-900: #14532d;
+    --emerald-500: #10b981;
+    --emerald-600: #059669;
+    --teal-500: #14b8a6;
+    --teal-600: #0d9488;
+    --gold-400: #facc15;
+    --gold-500: #eab308;
+    --gold-600: #ca8a04;
+    --red-500: #ef4444;
+    --red-600: #dc2626;
+    --red-50: #fef2f2;
+    --amber-50: #fffbeb;
+    --amber-100: #fef3c7;
+    --amber-500: #f59e0b;
+    --amber-600: #d97706;
+    --blue-50: #eff6ff;
+    --blue-500: #3b82f6;
+    --blue-600: #2563eb;
+    --slate-50: #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    --slate-900: #0f172a;
+    --font-ar: 'Cairo', sans-serif;
+    --font-fr: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  /* =============================================
+     BASE RESET & BODY
+  ============================================= */
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    margin: 0; padding: 0;
+    background: #0a1628;
+    min-height: 100vh;
+    font-family: var(--font-fr);
+    font-size: 14px;
+    color: #e2e8f0;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body.ar { font-family: var(--font-ar); direction: rtl; }
+  body.fr { font-family: var(--font-fr); direction: ltr; }
+
+  /* =============================================
+     APP CONTAINER
+  ============================================= */
+  #app {
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: linear-gradient(160deg, #0d1f3c 0%, #0a1628 40%, #061020 100%);
+  }
+
+  /* =============================================
+     TOP HEADER
+  ============================================= */
+  #top-header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,22,40,0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .header-brand {
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .brand-icon {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, #059669, #0d9488);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; color: white;
+    flex-shrink: 0;
+  }
+
+  .brand-title {
+    font-size: 13px; font-weight: 600;
+    color: #f1f5f9;
+    line-height: 1.2;
+  }
+
+  .brand-sub {
+    font-size: 10px; color: #64748b;
+    font-weight: 400;
+  }
+
+  /* Language Toggle */
+  .lang-toggle {
+    display: flex;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 2px;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  .lang-btn {
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: 11px; font-weight: 600;
+    border: none; cursor: pointer;
+    transition: all 0.2s;
+    color: #94a3b8;
+    background: transparent;
+  }
+
+  .lang-btn.active {
+    background: linear-gradient(135deg, #059669, #0d9488);
+    color: white;
+    box-shadow: 0 2px 8px rgba(5,150,105,0.4);
+  }
+
+  /* =============================================
+     BOTTOM NAV
+  ============================================= */
+  #bottom-nav {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 430px;
+    background: rgba(10,22,40,0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 8px 4px;
+    cursor: pointer; border: none; background: transparent;
+    color: #4b5563;
+    transition: all 0.2s;
+    gap: 3px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .nav-item.active { color: #10b981; }
+
+  .nav-item svg {
+    width: 22px; height: 22px;
+    transition: transform 0.2s;
+  }
+
+  .nav-item.active svg { transform: scale(1.1); }
+
+  .nav-label {
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .nav-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #10b981;
+    opacity: 0;
+    transition: opacity 0.2s;
+    position: absolute;
+    top: 4px;
+  }
+
+  .nav-item.active .nav-dot { opacity: 1; }
+
+  /* =============================================
+     MAIN CONTENT AREA
+  ============================================= */
+  #main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 12px 90px;
+    scroll-behavior: smooth;
+  }
+
+  /* =============================================
+     PANELS (views)
+  ============================================= */
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* =============================================
+     CARDS
+  ============================================= */
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .card-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .card-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+
+  .card-title { font-size: 14px; font-weight: 600; color: #f1f5f9; line-height: 1.3; }
+  .card-sub { font-size: 11px; color: #64748b; font-weight: 400; margin-top: 1px; }
+
+  /* =============================================
+     FORM ELEMENTS
+  ============================================= */
+  .input-group { margin-bottom: 12px; }
+
+  .input-label {
+    display: block;
+    font-size: 11px; font-weight: 600;
+    color: #94a3b8;
+    margin-bottom: 6px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+
+  .input-field {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 14px;
+    color: #f1f5f9;
+    font-family: inherit;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .input-field:focus {
+    border-color: rgba(16,185,129,0.5);
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+  }
+
+  .input-field::placeholder { color: #4b5563; }
+
+  select.input-field {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+
+  body.ar select.input-field {
+    background-position: left 12px center;
+    padding-right: 14px;
+    padding-left: 36px;
+  }
+
+  select.input-field option { background: #1e293b; color: #f1f5f9; }
+
+  /* =============================================
+     BUTTONS
+  ============================================= */
+  .btn-primary {
+    width: 100%;
+    padding: 13px 20px;
+    background: linear-gradient(135deg, #059669, #0d9488);
+    border: none; border-radius: 12px;
+    color: white; font-size: 14px; font-weight: 600;
+    font-family: inherit; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    transition: all 0.2s;
+    touch-action: manipulation;
+    box-shadow: 0 4px 15px rgba(5,150,105,0.3);
+  }
+
+  .btn-primary:active { transform: scale(0.98); opacity: 0.9; }
+
+  .btn-secondary {
+    width: 100%;
+    padding: 11px 18px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    color: #94a3b8; font-size: 13px; font-weight: 500;
+    font-family: inherit; cursor: pointer;
+    transition: all 0.2s;
+    touch-action: manipulation;
+  }
+
+  .btn-secondary:active { transform: scale(0.98); }
+
+  /* =============================================
+     RESULT BLOCKS
+  ============================================= */
+  .result-block {
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 14px;
+    padding: 14px;
+    margin-top: 14px;
+  }
+
+  .result-label {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: #34d399; margin-bottom: 4px;
+  }
+
+  .result-amount {
+    font-size: 24px; font-weight: 700;
+    color: #ecfdf5;
+    font-family: var(--font-mono);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+  }
+
+  .result-currency {
+    font-size: 13px; font-weight: 400; color: #6ee7b7;
+    margin-top: 2px;
+  }
+
+  .result-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .result-row:last-child { border-bottom: none; }
+
+  .result-row-label { font-size: 12px; color: #94a3b8; }
+  .result-row-value {
+    font-size: 13px; font-weight: 600; color: #f1f5f9;
+    font-family: var(--font-mono);
+  }
+
+  /* =============================================
+     ALERT CARDS
+  ============================================= */
+  .alert-card {
+    border-radius: 12px; padding: 12px 14px;
+    margin-top: 12px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+
+  .alert-danger {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.25);
+  }
+
+  .alert-warning {
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.25);
+  }
+
+  .alert-info {
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.2);
+  }
+
+  .alert-success {
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.2);
+  }
+
+  .alert-icon { font-size: 20px; flex-shrink: 0; }
+  .alert-title { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+  .alert-text { font-size: 11px; line-height: 1.6; color: #94a3b8; }
+
+  .alert-danger .alert-title { color: #fca5a5; }
+  .alert-warning .alert-title { color: #fcd34d; }
+  .alert-info .alert-title { color: #93c5fd; }
+  .alert-success .alert-title { color: #6ee7b7; }
+
+  /* =============================================
+     SUCCESS BADGE (Export)
+  ============================================= */
+  .export-badge {
+    background: linear-gradient(135deg, rgba(5,150,105,0.2), rgba(13,148,136,0.2));
+    border: 1px solid rgba(16,185,129,0.3);
+    border-radius: 16px; padding: 20px;
+    text-align: center; margin-top: 12px;
+  }
+
+  .export-badge-icon { font-size: 40px; margin-bottom: 8px; }
+  .export-badge-title { font-size: 18px; font-weight: 700; color: #34d399; margin-bottom: 4px; }
+  .export-badge-sub { font-size: 12px; color: #6ee7b7; line-height: 1.5; }
+
+  /* =============================================
+     TOGGLE SWITCH
+  ============================================= */
+  .toggle-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .toggle-label { font-size: 13px; color: #94a3b8; }
+
+  .toggle-switch {
+    position: relative; width: 44px; height: 24px; flex-shrink: 0;
+  }
+
+  .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+
+  .toggle-slider {
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px; cursor: pointer;
+    transition: all 0.25s;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .toggle-slider:before {
+    content: ''; position: absolute;
+    left: 2px; top: 2px;
+    width: 18px; height: 18px;
+    background: #94a3b8; border-radius: 50%;
+    transition: all 0.25s;
+  }
+
+  .toggle-switch input:checked + .toggle-slider {
+    background: rgba(16,185,129,0.3);
+    border-color: rgba(16,185,129,0.5);
+  }
+
+  .toggle-switch input:checked + .toggle-slider:before {
+    transform: translateX(20px);
+    background: #10b981;
+  }
+
+  /* =============================================
+     SETTINGS INPUTS
+  ============================================= */
+  .settings-section {
+    margin-bottom: 16px;
+  }
+
+  .settings-section-title {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: #10b981; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .settings-section-title::after {
+    content: ''; flex: 1;
+    height: 1px; background: rgba(16,185,129,0.2);
+  }
+
+  body.ar .settings-section-title::after { display: none; }
+  body.ar .settings-section-title::before {
+    content: ''; flex: 1;
+    height: 1px; background: rgba(16,185,129,0.2);
+  }
+
+  .settings-row {
+    display: flex; gap: 8px; margin-bottom: 8px;
+    align-items: center;
+  }
+
+  .settings-row-label {
+    font-size: 12px; color: #94a3b8;
+    flex: 1; min-width: 0;
+  }
+
+  .settings-input {
+    width: 90px; flex-shrink: 0;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; padding: 7px 10px;
+    font-size: 13px; color: #f1f5f9;
+    font-family: var(--font-mono);
+    outline: none; transition: border-color 0.2s;
+    text-align: right;
+  }
+
+  body.ar .settings-input { text-align: left; }
+
+  .settings-input:focus {
+    border-color: rgba(16,185,129,0.4);
+    box-shadow: 0 0 0 2px rgba(16,185,129,0.1);
+  }
+
+  /* =============================================
+     BRACKET TABLE
+  ============================================= */
+  .bracket-row {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px; padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+
+  .bracket-range {
+    font-size: 11px; color: #64748b; margin-bottom: 6px;
+  }
+
+  .bracket-rate-row {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .bracket-rate-label { font-size: 12px; color: #94a3b8; }
+
+  /* =============================================
+     CHECKLIST (BNC Roadmap)
+  ============================================= */
+  .checklist-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .checklist-item:last-child { border-bottom: none; }
+
+  .checklist-box {
+    width: 20px; height: 20px; border-radius: 6px;
+    border: 2px solid rgba(255,255,255,0.15);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; margin-top: 1px;
+  }
+
+  .checklist-item.checked .checklist-box {
+    background: #10b981; border-color: #10b981;
+  }
+
+  .checklist-check { display: none; color: white; font-size: 12px; font-weight: 700; }
+  .checklist-item.checked .checklist-check { display: block; }
+
+  .checklist-text { font-size: 12px; color: #94a3b8; line-height: 1.6; flex: 1; }
+  .checklist-text strong { color: #e2e8f0; font-weight: 600; }
+
+  /* =============================================
+     PAGE TITLE
+  ============================================= */
+  .page-title {
+    font-size: 20px; font-weight: 700; color: #f1f5f9;
+    margin-bottom: 4px; line-height: 1.2;
+  }
+
+  .page-sub {
+    font-size: 12px; color: #64748b;
+    margin-bottom: 16px; line-height: 1.5;
+  }
+
+  /* =============================================
+     DIVIDER
+  ============================================= */
+  .divider {
+    height: 1px; background: rgba(255,255,255,0.06);
+    margin: 14px 0;
+  }
+
+  /* =============================================
+     TVA SELECTOR
+  ============================================= */
+  .tva-selector {
+    display: flex; gap: 6px; margin-top: 8px;
+  }
+
+  .tva-option {
+    flex: 1; padding: 8px;
+    border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+    color: #64748b; font-size: 12px; font-weight: 600;
+    text-align: center; cursor: pointer; transition: all 0.2s;
+  }
+
+  .tva-option.selected {
+    background: rgba(16,185,129,0.15);
+    border-color: rgba(16,185,129,0.4);
+    color: #34d399;
+  }
+
+  /* =============================================
+     COMPLIANCE CHIP
+  ============================================= */
+  .compliance-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(59,130,246,0.12);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 20px; padding: 4px 10px;
+    font-size: 11px; color: #93c5fd; font-weight: 500;
+    margin: 4px 4px 0 0;
+  }
+
+  /* =============================================
+     SCROLLBAR
+  ============================================= */
+  #main-content::-webkit-scrollbar { width: 3px; }
+  #main-content::-webkit-scrollbar-track { background: transparent; }
+  #main-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+  /* =============================================
+     STAT PILLS
+  ============================================= */
+  .stat-pill {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px; padding: 10px 12px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .stat-pill-label { font-size: 11px; color: #64748b; }
+  .stat-pill-value { font-size: 13px; font-weight: 600; color: #f1f5f9; font-family: var(--font-mono); }
+
+  /* =============================================
+     SECTION BADGE
+  ============================================= */
+  .section-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 3px 8px; border-radius: 5px;
+    margin-bottom: 8px;
+  }
+
+  .badge-green { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.25); }
+  .badge-amber { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.25); }
+  .badge-blue  { background: rgba(59,130,246,0.15);  color: #93c5fd; border: 1px solid rgba(59,130,246,0.2); }
+  .badge-red   { background: rgba(239,68,68,0.15);   color: #fca5a5; border: 1px solid rgba(239,68,68,0.25); }
+
+  /* =============================================
+     MONO VALUE
+  ============================================= */
+  .mono { font-family: var(--font-mono); }
+
+  /* =============================================
+     HIDDEN
+  ============================================= */
+  .hidden { display: none !important; }
+
+  /* =============================================
+     RTL ADJUSTMENTS
+  ============================================= */
+  body.ar .card-header { gap: 10px; }
+  body.ar select.input-field { background-position: left 12px center; }
+  body.ar .result-row { flex-direction: row-reverse; }
+  body.ar .stat-pill { flex-direction: row-reverse; }
+  body.ar .toggle-row { flex-direction: row-reverse; }
+  body.ar .alert-card { flex-direction: row-reverse; }
+  body.ar .settings-row { flex-direction: row-reverse; }
+  body.ar .bracket-rate-row { flex-direction: row-reverse; }
+  body.ar .input-field { text-align: right; }
+
+  /* =============================================
+     ANIMATIONS
+  ============================================= */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  .animate-slide-up { animation: slideUp 0.4s ease forwards; }
+
+  /* Home hero */
+  .hero-block {
+    background: linear-gradient(135deg, rgba(5,150,105,0.15), rgba(13,148,136,0.1));
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 20px; padding: 20px 16px;
+    text-align: center; margin-bottom: 16px;
+  }
+
+  .hero-flag { font-size: 36px; margin-bottom: 8px; }
+  .hero-title { font-size: 18px; font-weight: 700; color: #f1f5f9; margin-bottom: 4px; }
+  .hero-year { font-size: 12px; color: #34d399; font-weight: 600; }
+  .hero-desc { font-size: 11px; color: #64748b; line-height: 1.6; margin-top: 8px; }
+
+  .quick-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; padding: 14px 12px;
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 8px; cursor: pointer;
+    transition: all 0.2s; touch-action: manipulation;
+  }
+
+  .quick-card:active { transform: scale(0.98); background: rgba(255,255,255,0.06); }
+
+  .quick-card-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+
+  .quick-card-title { font-size: 13px; font-weight: 600; color: #f1f5f9; }
+  .quick-card-sub { font-size: 11px; color: #64748b; margin-top: 1px; }
+
+  .quick-card-arrow {
+    margin-left: auto; color: #4b5563; font-size: 16px; flex-shrink: 0;
+  }
+
+  body.ar .quick-card-arrow { margin-left: unset; margin-right: auto; transform: scaleX(-1); }
 </style>
 
 <script>
-/* ═══════════════════════════════════════════════════════
-   FISCALGÉRIE v7 — Production Build
-   Fixes: IFU 8M threshold guard · No print · CSV/TXT only
-═══════════════════════════════════════════════════════ */
+// ================================================
+// CENTRAL STATE — All tax parameters for 2026
+// ================================================
+const STATE = {
+  lang: 'fr',
 
-const LS_KEY = "fiscalgerie_cfg_v7";
-const IFU_MAX_CA = 8000000;   // ← Legal IFU ceiling
+  ifu: {
+    minStandard: 30000,
+    minAutoEntrepreneur: 10000,
+    rateProduction: 5,
+    rateServices: 12,
+    rateMicroImport: 0.5
+  },
 
-/* ── DEFAULT CONFIG ── */
-const DEFAULT_CFG = {
-  ifu_min_std:30000, ifu_min_micro:10000,
-  ifu_rate_prod:5, ifu_rate_serv:12, ifu_rate_micro:0.5,
-  ibs_rate_prod:19, ibs_rate_btp:23, ibs_rate_trade:26,
-  tva_normal:19, tva_reduced:9,
-  acompte_goods:2, acompte_services:4,
-  bnc_rate:19, bnc_min:10000,
-  irg:[
-    {max:240000,rate:0},{max:480000,rate:23},{max:960000,rate:27},
-    {max:1920000,rate:30},{max:3840000,rate:33},{max:Infinity,rate:35},
-  ],
-};
-function cloneCfg(c){return{...c,irg:c.irg.map(b=>({...b}))};}
+  ibs: {
+    rateProduction: 19,
+    rateBTPH: 23,
+    rateCommerceServices: 26
+  },
 
-function loadCfg(){
-  try{
-    const raw=localStorage.getItem(LS_KEY);
-    if(!raw) return cloneCfg(DEFAULT_CFG);
-    const saved=JSON.parse(raw);
-    const merged=cloneCfg(DEFAULT_CFG);
-    Object.keys(merged).forEach(k=>{
-      if(k==="irg"){
-        if(Array.isArray(saved.irg)&&saved.irg.length===merged.irg.length)
-          merged.irg=saved.irg.map(b=>({...b,max:b.max==="Infinity"?Infinity:Number(b.max)}));
-      } else if(saved[k]!==undefined) merged[k]=saved[k];
-    });
-    return merged;
-  }catch(e){return cloneCfg(DEFAULT_CFG);}
-}
-function saveCfg(c){
-  try{
-    const ser={...cloneCfg(c),irg:c.irg.map(b=>({...b,max:b.max===Infinity?"Infinity":b.max}))};
-    localStorage.setItem(LS_KEY,JSON.stringify(ser));
-  }catch(e){}
-}
+  tva: {
+    normal: 19,
+    reduced: 9
+  },
 
-/* ── EXPENSE CATEGORIES ── */
-const EXP_FR=[
-  {id:"rent",      label:"Loyer & charges locatives",                    icon:"ti-building"},
-  {id:"salaries",  label:"Salaires & charges sociales (CNAS)",           icon:"ti-users"},
-  {id:"supplies",  label:"Achats matières premières & fournitures",      icon:"ti-package"},
-  {id:"amort",     label:"Amortissements (matériel, véhicules)",         icon:"ti-refresh"},
-  {id:"tax_pro",   label:"Taxes professionnelles & patente",             icon:"ti-receipt"},
-  {id:"insurance", label:"Assurances professionnelles",                  icon:"ti-shield"},
-  {id:"telecom",   label:"Télécommunications & internet",                icon:"ti-wifi"},
-  {id:"transport", label:"Transport & frais de déplacement",             icon:"ti-car"},
-  {id:"energy",    label:"Énergie (eau, électricité, gaz)",              icon:"ti-bolt"},
-  {id:"finance",   label:"Intérêts bancaires & frais financiers",        icon:"ti-credit-card"},
-  {id:"legal",     label:"Frais juridiques & honoraires notaire",        icon:"ti-gavel"},
-  {id:"marketing", label:"Publicité & frais marketing",                  icon:"ti-speakerphone"},
-  {id:"training",  label:"Formation professionnelle du personnel",       icon:"ti-school"},
-  {id:"it",        label:"Logiciels, licences & matériel informatique",  icon:"ti-device-laptop"},
-  {id:"other",     label:"Autres charges déductibles justifiées",        icon:"ti-dots"},
-];
-const EXP_AR=[
-  {id:"rent",      label:"الإيجار والأعباء المرتبطة به",            icon:"ti-building"},
-  {id:"salaries",  label:"الأجور والاشتراكات الاجتماعية (CNAS)",    icon:"ti-users"},
-  {id:"supplies",  label:"مشتريات المواد الأولية واللوازم",          icon:"ti-package"},
-  {id:"amort",     label:"الاهتلاكات (المعدات والسيارات)",           icon:"ti-refresh"},
-  {id:"tax_pro",   label:"الرسوم المهنية وحق الاستغلال",             icon:"ti-receipt"},
-  {id:"insurance", label:"التأمينات المهنية",                        icon:"ti-shield"},
-  {id:"telecom",   label:"الاتصالات والإنترنت",                      icon:"ti-wifi"},
-  {id:"transport", label:"النقل ومصاريف التنقل",                     icon:"ti-car"},
-  {id:"energy",    label:"الطاقة (الماء والكهرباء والغاز)",          icon:"ti-bolt"},
-  {id:"finance",   label:"الفوائد البنكية والمصاريف المالية",        icon:"ti-credit-card"},
-  {id:"legal",     label:"المصاريف القانونية وأتعاب الموثق",        icon:"ti-gavel"},
-  {id:"marketing", label:"الإشهار ومصاريف التسويق",                  icon:"ti-speakerphone"},
-  {id:"training",  label:"التكوين المهني للعمال",                    icon:"ti-school"},
-  {id:"it",        label:"البرمجيات والتراخيص والمعدات الإعلامية",  icon:"ti-device-laptop"},
-  {id:"other",     label:"أعباء أخرى قابلة للخصم ومبررة",           icon:"ti-dots"},
-];
+  acompte: {
+    goods: 2,
+    services: 4
+  },
 
-/* ════════════════════════
-   TRANSLATIONS
-════════════════════════ */
-const T={
-/* ── FRANÇAIS ── */
-fr:{
-  dir:"ltr", ff:"'DM Sans','Segoe UI',sans-serif",
-  langToggle:"العربية", appName:"FiscAlgérie", appTagline:"Outil de gestion fiscale",
-  footer:"Outil indicatif — Consultez votre conseiller fiscal pour une analyse personnalisée.",
-  tabs:[
-    {id:"ifu",      label:"IFU"},
-    {id:"reel",     label:"Régime Réel"},
-    {id:"simp",     label:"Réel Simplifié"},
-    {id:"settings", label:"⚙ Paramètres"},
-  ],
-  errPos:"Veuillez saisir un montant positif valide.",
-  emptyHint:"Saisissez vos données et calculez",
-  params:"Paramètres", results:"Résultats",
-  /* IFU 8M threshold warning */
-  ifuOverThresholdTitle:"⛔ Seuil IFU Dépassé — Régime Réel Obligatoire",
-  ifuOverThresholdMsg:"Le chiffre d'affaires dépasse le seuil de l'IFU (8 000 000 DA). Vous devez obligatoirement passer au Régime Réel d'imposition conformément à la législation fiscale algérienne.",
-  ifuOverThresholdCTA:"→ Aller au Régime Réel",
-  /* Settings */
-  settingsTitle:"Configuration Fiscale Dynamique",
-  settingsSubtitle:"Modifiez tous les taux, seuils et barèmes. Les calculs se mettent à jour instantanément.",
-  settingsSaved:"✓ Configuration enregistrée dans votre navigateur",
-  settingsReset:"Réinitialiser aux valeurs légales",
-  settingsSave:"Appliquer & Sauvegarder",
-  lsNote:"Les paramètres sont sauvegardés automatiquement dans votre navigateur (localStorage).",
-  cfgIFU:"Module IFU — Impôt Forfaitaire Unique",
-  cfgIFUMin30:"Minimum général (Production / Services / Commerce) — DA",
-  cfgIFUMin10:"Minimum Micro-Import Auto-Entrepreneur — DA",
-  cfgIFURateProd:"Taux Production de biens — %",
-  cfgIFURateServ:"Taux Services, Commerce & Professions libérales — %",
-  cfgIFURateMicro:"Taux Micro-Import Auto-Entrepreneur — %",
-  cfgIBS:"IBS — Impôt sur les Bénéfices des Sociétés",
-  cfgIBSProd:"Production de biens — %",
-  cfgIBSBtp:"BTP, Travaux Publics & Tourisme — %",
-  cfgIBSTrade:"Commerce & Services — %",
-  cfgTVA:"TVA — Taxe sur la Valeur Ajoutée",
-  cfgTVANormal:"Taux Normal — %",
-  cfgTVAReduced:"Taux Réduit — %",
-  cfgAcompte:"Acompte Douanier à l'Importation",
-  cfgAcompteGoods:"Marchandises (Biens) — %",
-  cfgAcompteServices:"Services Importés — %",
-  cfgBNC:"Régime Réel Simplifié BNC",
-  cfgBNCRate:"Taux IRG Forfaitaire — %",
-  cfgBNCMin:"Minimum IRG — DA",
-  cfgIRG:"Barème IRG Progressif — Personnes Physiques",
-  cfgIRGDesc:"Modifiez les tranches et taux du barème progressif de l'IRG (Bénéfices Professionnels).",
-  cfgBracket:"Tranche", cfgUpTo:"Plafond (DA)", cfgRate:"Taux (%)",
-  cfgInfinity:"Illimité (dernière tranche)",
-  cfgWarning:"⚠ Ces paramètres remplacent les valeurs légales. Consultez les textes officiels avant déclaration.",
-  /* IFU */
-  ifuBadge:"IFU", ifuSub:"النظام الجزافي الوحيد",
-  ifuTitle:"Impôt Forfaitaire Unique (IFU)",
-  ifuDesc:"Calculez votre IFU annuel. Réservé aux contribuables dont le C.A. annuel ne dépasse pas 8 000 000 DA.",
-  caLbl:"Chiffre d'affaires annuel (DA)", caPh:"Ex : 5 000 000",
-  actLbl:"Type d'activité",
-  calcBtn:"Calculer", rateHint:"taux sur C.A.",
-  lCA:"Chiffre d'affaires", lRate:"Taux applicable",
-  lRaw:"IFU calculé (brut)", lMin:"Minimum légal", lFinal:"IFU à payer",
-  minStdNote:"Minimum légal général de 30 000 DA appliqué (Production / Services / Commerce).",
-  minMicroNote:"Minimum légal Micro-Import de 10 000 DA appliqué.",
-  ifuRoadTitle:"Comment et quand payer votre IFU ?",
-  ifuRoad:[
-    {icon:"ti-file-text",    title:"Déclaration G50 Ter",   desc:"G50 Ter auprès du CDI ou en ligne. Obligatoire même si C.A. nul.", c:"#1D9E75"},
-    {icon:"ti-device-laptop",title:"Plateforme Moussamaha", desc:"Télédéclaration et télépaiement sur www.moussamaha.dz.", c:"#378ADD"},
-    {icon:"ti-calendar-due", title:"Délais légaux",         desc:"Avant le 20 janvier de l'année N+1 (ex : 20/01/2026 pour 2025).", c:"#BA7517"},
-    {icon:"ti-coins",        title:"Acomptes trimestriels", desc:"Si IFU > 50 000 DA : 25% avant le 20/03, 20/06, 20/09 et solde en janvier.", c:"#A32D2D"},
-  ],
-  /* Réel */
-  reelBadge:"IBS / IRG", reelSub:"النظام الحقيقي",
-  reelTitle:"Régime Réel d'Imposition",
-  reelDesc:"Pour les entreprises dont le C.A. dépasse 8 000 000 DA — comptabilité complète obligatoire.",
-  grossLbl:"Chiffre d'affaires brut (DA)", grossPh:"Ex : 15 000 000",
-  expLbl:"Charges déductibles (DA)", expPh:"Ex : 9 000 000",
-  sectorLbl:"Secteur d'activité",
-  sectors:[{v:"std",l:"Activité Standard"},{v:"import",l:"Import (الاستيراد)"},{v:"export",l:"Export (التصدير)"}],
-  entityLbl:"Type d'entité",
-  entities:[{v:"company",l:"Personne Morale — Société (IBS)"},{v:"individual",l:"Personne Physique — IRG"}],
-  ibsLbl:"Activité IBS", tvaLbl:"TVA estimée", tvaToggle:"Inclure TVA",
-  calcReelBtn:"Calculer l'impôt",
-  lRevenue:"Chiffre d'affaires", lExp:"Charges déductibles",
-  lProfit:"Bénéfice comptable", lTaxRate:"Taux applicable",
-  lTaxRaw:"Impôt brut", lFinalTax:"Impôt à payer",
-  lTvaEst:"TVA estimée", lAcompte:"Acompte douanier",
-  lossTitle:"Résultat Déficitaire — Déficit Fiscal",
-  lossMsg:"Résultat négatif. Ce déficit est reportable sur les 4 exercices suivants (ترحيل العجز الجبائي). Aucun impôt sur les bénéfices n'est dû.",
-  irgBreakTitle:"Détail barème IRG progressif",
-  importAlertTitle:"⚠ Import pour revente — Régime Réel Obligatoire",
-  importAlertMsg:"L'importation pour revente en l'état est STRICTEMENT INTERDITE sous IFU. Régime Réel impératif.",
-  acompteTypeLbl:"Type de marchandise — Acompte douanier",
-  acompteGoods:"Marchandises (biens)", acompteServices:"Services importés",
-  importTipTitle:"💡 Produits stratégiques exonérés d'acompte",
-  importTipMsg:"Viandes, lait, café, céréales, huiles brutes — exonérés selon les dispositions en vigueur. Vérifiez la liste DGI.",
-  exportTitle:"✅ Exportation — Exonération Fiscale 100%",
-  exportMsg:"Opérations d'exportation générant des devises : exonération totale IBS/IRG et TVA pour encourager la production nationale — sous réserve rapatriement bancaire.",
-  exportZero:"IBS / IRG / TVA = 0 %",
-  reelRoadTitle:"Obligations & Délais — Régime Réel",
-  reelRoad:[
-    {icon:"ti-file-invoice",   title:"G50 Mensuel",              desc:"TVA et retenues avant le 20 de chaque mois via Jibayatic (www.jibayatic.dz).", c:"#1D9E75"},
-    {icon:"ti-calendar-stats", title:"Déclaration Annuelle",     desc:"Bilan annuel avant le 30 avril (IBS : avant le 20 mai).", c:"#378ADD"},
-    {icon:"ti-credit-card",    title:"Jibayatic — Télépaiement", desc:"Tous les règlements (IBS, IRG, TVA) en ligne sur Jibayatic — obligatoire.", c:"#0F6E56"},
-    {icon:"ti-alert-triangle", title:"Pénalités de retard",      desc:"Retard : majoration +10% + intérêts de 3% par mois.", c:"#A32D2D"},
-  ],
-  /* Expense checklist */
-  expCheckTitle:"Assistant Charges Déductibles",
-  expCheckDesc:"Cochez les charges applicables et saisissez les montants pour calculer votre total déductible.",
-  expCheckTotal:"Total charges déductibles",
-  expCheckApply:"Appliquer au calcul",
-  expCheckReset:"Réinitialiser",
-  expCheckTip:"💡 Seules les charges réellement payées, justifiées par pièces comptables et liées à l'activité sont déductibles.",
-  /* BNC */
-  simpBadge:"BNC", simpSub:"النظام الحقيقي المبسط",
-  simpTitle:"Régime Réel Simplifié — Professions Libérales (BNC)",
-  simpDesc:"Médecins, avocats, consultants, architectes — C.A. ≤ 8 000 000 DA.",
-  recLbl:"Total des recettes (DA)", recPh:"Ex : 4 500 000",
-  simpExpLbl:"Dépenses justifiées (DA)", simpExpPh:"Ex : 1 800 000",
-  simpCalcBtn:"Calculer l'IRG",
-  lRec:"Total recettes", lSimpExp:"Dépenses justifiées",
-  lNet:"Bénéfice net", lSimpRate:"Taux IRG (forfaitaire)", lSimpFinal:"IRG à payer",
-  simpMinNote:"Plancher légal BNC appliqué.",
-  simpRoadTitle:"Obligations — Régime Simplifié BNC",
-  simpRoad:[
-    {icon:"ti-file-text",     title:"G50 A — Déclaration annuelle", desc:"Avant le 30 avril de l'année N+1 (CDI ou Jibayatic).", c:"#1D9E75"},
-    {icon:"ti-credit-card",   title:"Jibayatic / جبايتك",           desc:"Paiement sécurisé sur www.jibayatic.dz.", c:"#378ADD"},
-    {icon:"ti-alert-triangle",title:"Pénalités",                    desc:"Retard : +10% + intérêts de 3% par mois.", c:"#A32D2D"},
-  ],
-  focusTitle:"Focus : Régime Réel Simplifié BNC",
-  focusSub:"المهن الحرة — BNC",
-  focusDesc:"Guide complet pour les professions libérales soumises au régime simplifié BNC en Algérie.",
-  focusProfsLbl:"Professions concernées",
-  focusProfs:["Médecin / طبيب","Avocat / محامي","Architecte / مهندس","Consultant / مستشار","Expert-comptable / خبير","Notaire / موثق"],
-  focusSteps:[
-    {icon:"ti-book",           title:"Registre simplifié des recettes & dépenses", desc:"Tenez un livre simplifié (دفتر المداخيل والمصاريف المبسط) — uniquement sommes encaissées et dépenses justifiées.", c:"#1D9E75"},
-    {icon:"ti-receipt-2",      title:"IRG forfaitaire + plancher légal",            desc:"Taux forfaitaire (configurable) sur bénéfice net. Plancher légal appliqué si impôt calculé inférieur.", c:"#378ADD"},
-    {icon:"ti-device-laptop",  title:"Déclaration & paiement via Jibayatic",       desc:"Espace professionnel sur www.jibayatic.dz — paiement avant le 30 avril.", c:"#0F6E56"},
-    {icon:"ti-calendar-check", title:"Une seule échéance annuelle",                desc:"G50 A avant le 30 avril — aucune déclaration mensuelle requise.", c:"#854F0B"},
-    {icon:"ti-shield-check",   title:"Avantages du régime BNC",                    desc:"Comptabilité allégée · 1 échéance · Exonération partielle CNAS possible.", c:"#5DCAA5"},
-  ],
-  exonere:"exonéré",
-  /* Report */
-  reportBtnLabel:"⬇ Télécharger le Rapport de Synthèse",
-  reportTitle:"RAPPORT DE SYNTHÈSE FISCALE — FiscAlgérie",
-  reportGenerated:"Date de génération",
-  reportFooter:"Rapport indicatif — FiscAlgérie · Non contractuel · Consultez un expert-comptable agréé.",
-  reportNoData:"Aucun calcul disponible. Effectuez d'abord un calcul dans l'un des modules.",
-  reportModule:"MODULE", reportInput:"Entrées", reportResult:"Résultat fiscal",
-},
+  bnc: {
+    flatRate: 19,
+    minFloor: 10000
+  },
 
-/* ── عربي ── */
-ar:{
-  dir:"rtl", ff:"'Noto Sans Arabic','Geeza Pro',sans-serif",
-  langToggle:"Français", appName:"فيسك الجزائر", appTagline:"أداة إدارة جبائية",
-  footer:"أداة إرشادية — استشر مستشارك الجبائي للحصول على تحليل مخصص.",
-  tabs:[
-    {id:"ifu",      label:"النظام الجزافي"},
-    {id:"reel",     label:"النظام الحقيقي"},
-    {id:"simp",     label:"الحقيقي المبسط"},
-    {id:"settings", label:"⚙ الإعدادات"},
-  ],
-  errPos:"يرجى إدخال مبلغ موجب صحيح.",
-  emptyHint:"أدخل البيانات واضغط احسب",
-  params:"المعطيات", results:"النتائج",
-  /* IFU 8M threshold warning */
-  ifuOverThresholdTitle:"⛔ تجاوز العتبة — الانتقال إلى النظام الحقيقي إلزامي",
-  ifuOverThresholdMsg:"في النظام الجزافي لا يمكن تجاوز عتبة 8 ملايين دج ويجب الانتقال إجبارياً إلى النظام الحقيقي وفقاً للتشريع الجبائي الجزائري.",
-  ifuOverThresholdCTA:"← الانتقال إلى النظام الحقيقي",
-  settingsTitle:"ضبط الإعدادات الجبائية الشاملة",
-  settingsSubtitle:"عدّل جميع المعدلات والحدود والجداول. تتحدث المحركات فورياً.",
-  settingsSaved:"✓ تم حفظ الإعدادات في المتصفح",
-  settingsReset:"إعادة تعيين القيم القانونية الافتراضية",
-  settingsSave:"تطبيق وحفظ",
-  lsNote:"يتم حفظ الإعدادات تلقائياً في متصفحك (localStorage).",
-  cfgIFU:"وحدة IFU — الضريبة الجزافية الوحيدة",
-  cfgIFUMin30:"الحد الأدنى العام (الإنتاج / الخدمات / التجارة) — دج",
-  cfgIFUMin10:"الحد الأدنى للاستيراد المصغر (المقاول الذاتي) — دج",
-  cfgIFURateProd:"معدل إنتاج السلع — %",
-  cfgIFURateServ:"معدل الخدمات والتجارة والمهن الحرة — %",
-  cfgIFURateMicro:"معدل الاستيراد المصغر — %",
-  cfgIBS:"IBS — الضريبة على أرباح الشركات",
-  cfgIBSProd:"إنتاج السلع — %",
-  cfgIBSBtp:"البناء والأشغال العمومية والسياحة — %",
-  cfgIBSTrade:"التجارة والخدمات — %",
-  cfgTVA:"الرسم على القيمة المضافة (TVA)",
-  cfgTVANormal:"المعدل العادي — %",
-  cfgTVAReduced:"المعدل المخفض — %",
-  cfgAcompte:"الاقتطاع الجمركي المسبق عند الاستيراد",
-  cfgAcompteGoods:"البضائع (السلع) — %",
-  cfgAcompteServices:"الخدمات المستوردة — %",
-  cfgBNC:"النظام المبسط BNC",
-  cfgBNCRate:"معدل IRG الجزافي — %",
-  cfgBNCMin:"الحد الأدنى لـIRG — دج",
-  cfgIRG:"جدول IRG التصاعدي — الأشخاص الطبيعيون",
-  cfgIRGDesc:"عدّل شرائح ومعدلات جدول IRG التصاعدي للأرباح المهنية.",
-  cfgBracket:"الشريحة", cfgUpTo:"السقف (دج)", cfgRate:"المعدل (%)",
-  cfgInfinity:"غير محدود (آخر شريحة)",
-  cfgWarning:"⚠ هذه التعديلات تحل محل القيم القانونية. راجع النصوص الرسمية قبل أي تصريح.",
-  ifuBadge:"IFU", ifuSub:"النظام الجزافي الوحيد",
-  ifuTitle:"الضريبة الجزافية الوحيدة (IFU)",
-  ifuDesc:"احسب ضريبتك الجزافية السنوية. مخصص للمكلفين الذين لا يتجاوز رقم أعمالهم السنوي 8 000 000 دج.",
-  caLbl:"رقم الأعمال السنوي (دج)", caPh:"مثال: 5 000 000",
-  actLbl:"نوع النشاط",
-  calcBtn:"احسب", rateHint:"المعدل على رقم الأعمال",
-  lCA:"رقم الأعمال", lRate:"المعدل المطبق",
-  lRaw:"الضريبة الخام", lMin:"الحد الأدنى القانوني", lFinal:"الضريبة الواجبة",
-  minStdNote:"تم تطبيق الحد الأدنى العام 30 000 دج (الإنتاج / الخدمات / التجارة).",
-  minMicroNote:"تم تطبيق الحد الأدنى الخاص بالاستيراد المصغر 10 000 دج.",
-  ifuRoadTitle:"كيف ومتى تدفع الضريبة الجزافية الوحيدة؟",
-  ifuRoad:[
-    {icon:"ti-file-text",    title:"التصريح G50 Ter",    desc:"قدّم G50 Ter لدى مركز الضرائب أو إلكترونياً. إلزامي حتى لو كان رقم الأعمال صفراً.", c:"#1D9E75"},
-    {icon:"ti-device-laptop",title:"منصة المسامحة",      desc:"التصريح والدفع عبر www.moussamaha.dz دون التنقل.", c:"#378ADD"},
-    {icon:"ti-calendar-due", title:"الآجال القانونية",   desc:"قبل 20 يناير من السنة الموالية (مثال: 20/01/2026 لسنة 2025).", c:"#BA7517"},
-    {icon:"ti-coins",        title:"الدفعات الفصلية",    desc:"إذا تجاوزت الضريبة 50 000 دج: 25% قبل 20/03، 20/06، 20/09 والرصيد في يناير.", c:"#A32D2D"},
-  ],
-  reelBadge:"IBS / IRG", reelSub:"النظام الحقيقي",
-  reelTitle:"النظام الحقيقي للضرائب",
-  reelDesc:"للمؤسسات التي يتجاوز رقم أعمالها 8 000 000 دج — المحاسبة الكاملة إلزامية.",
-  grossLbl:"رقم الأعمال الإجمالي (دج)", grossPh:"مثال: 15 000 000",
-  expLbl:"المصاريف القابلة للخصم (دج)", expPh:"مثال: 9 000 000",
-  sectorLbl:"قطاع النشاط",
-  sectors:[{v:"std",l:"نشاط عادي"},{v:"import",l:"استيراد (Import)"},{v:"export",l:"تصدير (Export)"}],
-  entityLbl:"نوع الكيان",
-  entities:[{v:"company",l:"شخص معنوي — شركة (IBS)"},{v:"individual",l:"شخص طبيعي — مؤسسة فردية (IRG)"}],
-  ibsLbl:"النشاط (IBS)", tvaLbl:"الرسم على القيمة المضافة", tvaToggle:"تضمين TVA",
-  calcReelBtn:"احسب الضريبة",
-  lRevenue:"رقم الأعمال", lExp:"المصاريف القابلة للخصم",
-  lProfit:"الربح المحاسبي", lTaxRate:"المعدل المطبق",
-  lTaxRaw:"الضريبة الخام", lFinalTax:"الضريبة الواجبة السداد",
-  lTvaEst:"TVA التقديرية", lAcompte:"الاقتطاع الجمركي المسبق",
-  lossTitle:"نتيجة سلبية — عجز جبائي",
-  lossMsg:"نتيجتك سلبية. يمكن ترحيل العجز على السنوات الأربع الموالية. لا ضريبة على الأرباح مستحقة.",
-  irgBreakTitle:"تفصيل الجدول التصاعدي للضريبة على الدخل (IRG)",
-  importAlertTitle:"⚠ الاستيراد للبيع — النظام الحقيقي إلزامي",
-  importAlertMsg:"الاستيراد للبيع بالحالة محظور قطعياً تحت نظام IFU — النظام الحقيقي إلزامي.",
-  acompteTypeLbl:"نوع البضاعة — الاقتطاع الجمركي المسبق",
-  acompteGoods:"بضائع (سلع)", acompteServices:"خدمات مستوردة",
-  importTipTitle:"💡 منتجات استراتيجية معفاة من الاقتطاع",
-  importTipMsg:"اللحوم، الحليب، القهوة، الحبوب، الزيوت الخام — معفاة حسب النصوص التنظيمية. راجع قائمة DGI.",
-  exportTitle:"✅ التصدير — إعفاء ضريبي 100%",
-  exportMsg:"العمليات التصديرية المدرّة للعملة تستفيد من إعفاء كامل IBS/IRG وTVA — مع إعادة تحويل العملة عبر البنوك المعتمدة.",
-  exportZero:"IBS / IRG / TVA = 0 %",
-  reelRoadTitle:"الالتزامات والآجال — النظام الحقيقي",
-  reelRoad:[
-    {icon:"ti-file-invoice",   title:"G50 الشهري",                   desc:"TVA والاقتطاعات قبل الـ20 من كل شهر عبر Jibayatic (www.jibayatic.dz).", c:"#1D9E75"},
-    {icon:"ti-calendar-stats", title:"التصريح السنوي",               desc:"الميزانية والتصريح السنوي قبل 30 أبريل (20 ماي لـIBS).", c:"#378ADD"},
-    {icon:"ti-credit-card",    title:"Jibayatic — الدفع الإلكتروني", desc:"جميع التسويات (IBS، IRG، TVA) عبر Jibayatic — إلزامي.", c:"#0F6E56"},
-    {icon:"ti-alert-triangle", title:"غرامات التأخير",               desc:"التأخير: زيادة 10% + فوائد تأخير 3% عن كل شهر.", c:"#A32D2D"},
-  ],
-  expCheckTitle:"مساعد الأعباء القابلة للخصم",
-  expCheckDesc:"ضع علامة على الأعباء المنطبقة وأدخل المبالغ لحساب إجمالي الخصومات تلقائياً.",
-  expCheckTotal:"إجمالي الأعباء القابلة للخصم",
-  expCheckApply:"تطبيق على الحساب",
-  expCheckReset:"إعادة تعيين",
-  expCheckTip:"💡 تُقبل فقط الأعباء المدفوعة فعلياً والمبررة بوثائق محاسبية والمرتبطة بالنشاط المهني.",
-  simpBadge:"BNC", simpSub:"النظام الحقيقي المبسط",
-  simpTitle:"النظام الحقيقي المبسط — المهن الحرة (BNC)",
-  simpDesc:"أطباء، محامون، مستشارون، مهندسون — رقم الأعمال ≤ 8 000 000 دج.",
-  recLbl:"إجمالي المقبوضات (دج)", recPh:"مثال: 4 500 000",
-  simpExpLbl:"النفقات المبررة (دج)", simpExpPh:"مثال: 1 800 000",
-  simpCalcBtn:"احسب IRG",
-  lRec:"إجمالي المقبوضات", lSimpExp:"النفقات المبررة",
-  lNet:"صافي الربح", lSimpRate:"معدل IRG (جزافي)", lSimpFinal:"IRG الواجب السداد",
-  simpMinNote:"تم تطبيق الحد الأدنى القانوني BNC.",
-  simpRoadTitle:"الالتزامات — النظام المبسط BNC",
-  simpRoad:[
-    {icon:"ti-file-text",     title:"G50 A — التصريح السنوي", desc:"قبل 30 أبريل من السنة الموالية (مركز الضرائب أو Jibayatic).", c:"#1D9E75"},
-    {icon:"ti-credit-card",   title:"Jibayatic / جبايتك",     desc:"الدفع الإلكتروني الآمن عبر www.jibayatic.dz.", c:"#378ADD"},
-    {icon:"ti-alert-triangle",title:"الغرامات",               desc:"التأخر: زيادة 10% + فوائد تأخير 3% عن كل شهر.", c:"#A32D2D"},
-  ],
-  focusTitle:"بؤرة تركيز: النظام الحقيقي المبسط",
-  focusSub:"Focus: Régime Simplifié — المهن الحرة",
-  focusDesc:"دليل شامل لأصحاب المهن الحرة الخاضعين للنظام المبسط BNC في الجزائر.",
-  focusProfsLbl:"المهن المعنية",
-  focusProfs:["Médecin / طبيب","Avocat / محامي","Architecte / مهندس","Consultant / مستشار","Expert-comptable / خبير","Notaire / موثق"],
-  focusSteps:[
-    {icon:"ti-book",           title:"دفتر المداخيل والمصاريف المبسط",        desc:"إلزامي: تسجيل المقبوضات الفعلية والنفقات المبررة فقط.", c:"#1D9E75"},
-    {icon:"ti-receipt-2",      title:"IRG جزافي + الحد الأدنى القانوني BNC",  desc:"المعدل الجزافي المضبوط في الإعدادات على صافي الربح. الحد الأدنى يُطبَّق تلقائياً.", c:"#378ADD"},
-    {icon:"ti-device-laptop",  title:"التصريح والدفع عبر Jibayatic",          desc:"فضاء مهني على www.jibayatic.dz — السداد قبل 30 أبريل.", c:"#0F6E56"},
-    {icon:"ti-calendar-check", title:"موعد وحيد سنوي",                        desc:"G50 A فقط قبل 30 أبريل — لا تصريح شهري مطلوب.", c:"#854F0B"},
-    {icon:"ti-shield-check",   title:"مزايا نظام BNC",                        desc:"محاسبة مخففة · موعد وحيد · إعفاء جزئي محتمل من CNAS.", c:"#5DCAA5"},
-  ],
-  exonere:"معفى",
-  reportBtnLabel:"⬇ تحميل تقرير الحسابات",
-  reportTitle:"تقرير الملخص الجبائي — FiscAlgérie",
-  reportGenerated:"تاريخ الإنشاء",
-  reportFooter:"تقرير إرشادي — FiscAlgérie · غير ملزم · استشر خبيراً محاسباً معتمداً.",
-  reportNoData:"لا توجد حسابات متاحة. أجرِ حساباً في أحد الوحدات أولاً.",
-  reportModule:"الوحدة", reportInput:"المعطيات", reportResult:"النتيجة الجبائية",
-},
-}; // end T
-
-/* ═══════════════════════════════
-   STATE
-═══════════════════════════════ */
-const initCfg=loadCfg();
-let S={
-  lang:"fr", tab:"ifu",
-  cfg:initCfg, edit:cloneCfg(initCfg), settingsSaved:false,
-  ifu:{ca:"", act:"prod", res:null, err:"", overThreshold:false},
-  reel:{gross:"", exp:"", entity:"company", ibsAct:"prod19",
-        sector:"std", acompteType:"goods", tva:false, tvaRate:"normal", res:null, err:""},
-  simp:{rec:"", exp:"", res:null, err:""},
-  expChecked:{}, expAmounts:{},
+  irg: [
+    { max: 240000,   rate: 0 },
+    { max: 480000,   rate: 23 },
+    { max: 960000,   rate: 27 },
+    { max: 1920000,  rate: 30 },
+    { max: 3840000,  rate: 33 },
+    { max: Infinity, rate: 35 }
+  ]
 };
 
-/* ── report data cache (populated by calculators) ── */
-let reportCache=[];
+// ================================================
+// TRANSLATIONS
+// ================================================
+const T = {
+  fr: {
+    appTitle: 'Fiscal Algérie',
+    appSub: 'Calculateur Fiscal',
+    year: 'Loi de Finances',
+    heroTitle: 'Système Fiscal Algérien',
+    heroDesc: 'Calculez vos impôts avec précision selon les lois fiscales algériennes en vigueur.',
+    navHome: 'Accueil',
+    navIFU: 'IFU',
+    navReel: 'Réel',
+    navBNC: 'BNC',
+    navSettings: 'Réglages',
 
-/* ═══════════════════════════════
-   HELPERS
-═══════════════════════════════ */
-const d=()=>T[S.lang];
-const cfg=()=>S.cfg;
-const fmt=v=>isNaN(v)||v===null?"—":new Intl.NumberFormat("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2}).format(v)+" DA";
-const pf=s=>parseFloat(String(s).replace(/\s/g,"").replace(/,/g,"."));
-const $=id=>document.getElementById(id);
-const on=(id,ev,fn)=>{const el=$(id);if(el)el.addEventListener(ev,fn);};
+    // Home
+    homeTitle: 'Bienvenue',
+    homeSub: 'Choisissez un module de calcul ou accédez aux réglages fiscaux.',
+    quickIFU: 'IFU — Forfait Unique',
+    quickIFUSub: 'Petites entreprises & auto-entrepreneurs',
+    quickReel: 'Régime Réel',
+    quickReelSub: 'Entreprises & particuliers (IBS/IRG)',
+    quickBNC: 'Régime Réel Simplifié',
+    quickBNCSub: 'Professions libérales & BNC ≤ 8M DA',
+    quickSettings: 'Paramètres Fiscaux',
+    quickSettingsSub: 'Taux, barèmes et seuils en vigueur',
 
-const ifuActs=()=>[
-  {v:"prod", l:`${d().dir==="rtl"?"إنتاج السلع":"Production de biens"} — ${cfg().ifu_rate_prod}%`, r:cfg().ifu_rate_prod/100, micro:false},
-  {v:"serv", l:`${d().dir==="rtl"?"الخدمات والتجارة":"Services & Commerce"} — ${cfg().ifu_rate_serv}%`, r:cfg().ifu_rate_serv/100, micro:false},
-  {v:"micro",l:`${d().dir==="rtl"?"الاستيراد المصغر":"Micro-Import"} — ${cfg().ifu_rate_micro}%`, r:cfg().ifu_rate_micro/100, micro:true},
-];
-const ibsActs=()=>[
-  {v:"prod19", l:`${d().dir==="rtl"?"إنتاج السلع":"Production"} — ${cfg().ibs_rate_prod}%`,   r:cfg().ibs_rate_prod/100},
-  {v:"btp23",  l:`${d().dir==="rtl"?"البناء والسياحة":"BTP & Tourisme"} — ${cfg().ibs_rate_btp}%`, r:cfg().ibs_rate_btp/100},
-  {v:"trade26",l:`${d().dir==="rtl"?"التجارة والخدمات":"Commerce"} — ${cfg().ibs_rate_trade}%`, r:cfg().ibs_rate_trade/100},
-];
+    // IFU
+    ifuTitle: 'Calcul IFU',
+    ifuSub: 'Impôt Forfaitaire Unique — Régime Jzafi',
+    ifuCA: "Chiffre d'affaires annuel (DA)",
+    ifuCAPlaceholder: 'Ex : 5 000 000',
+    ifuActivity: 'Type d\'activité',
+    ifuProduction: 'Production',
+    ifuServices: 'Services / Commerce',
+    ifuMicroImport: 'Micro-Import',
+    ifuCalc: 'Calculer l\'IFU',
+    ifuThresholdNoteTitle: 'Passage au Régime Réel',
+    ifuThresholdNote: 'Si le chiffre d\'affaires dépasse 8 000 000 DA deux années consécutives, l\'entreprise sera automatiquement transférée au régime réel.',
+    ifuResultTitle: 'Résultat IFU',
+    ifuTaxBase: 'Base imposable',
+    ifuRate: 'Taux appliqué',
+    ifuComputed: 'Impôt calculé',
+    ifuMinimum: 'Minimum légal',
+    ifuDue: 'IFU À PAYER',
+    ifuMinApplied: '⚠️ Minimum légal appliqué',
+    ifuCompliance: 'Déclaration G50 Ter via la plateforme Moussamaha avant le 20 du mois suivant chaque trimestre.',
 
-/* ── Expense total ── */
-function expTotal(){
-  let t=0;
-  const cats=d().dir==="rtl"?EXP_AR:EXP_FR;
-  cats.forEach(c=>{if(S.expChecked[c.id]){const v=parseFloat(S.expAmounts[c.id]||0);if(!isNaN(v)&&v>0)t+=v;}});
-  return t;
+    // Régime Réel
+    reelTitle: 'Régime Réel',
+    reelSub: 'Calcul IBS / IRG avec intégration Import-Export',
+    reelRevenue: 'Chiffre d\'affaires brut (DA)',
+    reelExpenses: 'Charges déductibles (DA)',
+    reelRevPlaceholder: 'Ex : 50 000 000',
+    reelExpPlaceholder: 'Ex : 30 000 000',
+    reelEntityType: 'Type d\'entité',
+    reelCompany: 'Société (IBS)',
+    reelIndividual: 'Personne physique (IRG)',
+    reelSectorType: 'Secteur d\'activité',
+    reelStandard: 'Standard',
+    reelImport: 'Import',
+    reelExport: 'Export',
+    reelIBSSector: 'Secteur (IBS)',
+    reelIBSProduction: 'Production',
+    reelIBSBTPH: 'BTPH / Tourisme',
+    reelIBSCommerce: 'Commerce / Services',
+    reelTVAToggle: 'Calculer la TVA estimée',
+    reelTVARate: 'Taux TVA',
+    reelCalc: 'Calculer l\'impôt',
+    reelResultTitle: 'Résultat — Régime Réel',
+    reelNetProfit: 'Bénéfice net',
+    reelTaxRate: 'Taux d\'imposition',
+    reelTaxDue: 'IMPÔT DÛ (IBS/IRG)',
+    reelTVADue: 'TVA ESTIMÉE',
+    reelTVABase: 'Base TVA (HT)',
+    reelFilingDeadline: 'Déclaration G50 mensuelle avant le 20 du mois suivant via Jibayatic.',
+    reelIRGDetails: 'Détail tranches IRG',
+    reelImportAlert: '⚠️ Restriction IFU — Secteur Import',
+    reelImportAlertText: 'Les importateurs sont obligatoirement soumis au régime IFU. L\'accès au régime réel est restreint pour ce secteur.',
+    reelAcompteTitle: 'Acompte Impôt (Importation)',
+    reelAcompteGoods: 'Acompte marchandises (2%)',
+    reelAcompteServices: 'Acompte services (4%)',
+    reelFoodExemption: '🌾 Exemption alimentaire : Les importations de produits alimentaires de base (farine, semoule, lait, huile) bénéficient d\'exonérations spéciales.',
+    reelExportTitle: '🏆 Exonération Totale — Export',
+    reelExportText: 'Le secteur export bénéficie d\'une exonération totale de 100% : IBS/IRG = 0%, TVA = 0%. Soutien à la production nationale.',
+
+    // BNC
+    bncTitle: 'Régime Réel Simplifié (BNC)',
+    bncSub: 'Professions libérales & non-commerciales ≤ 8 000 000 DA',
+    bncReceipts: 'Total des recettes brutes (DA)',
+    bncExpenses: 'Total des dépenses (DA)',
+    bncRecPlaceholder: 'Ex : 3 000 000',
+    bncExpPlaceholder: 'Ex : 1 200 000',
+    bncCalc: 'Calculer l\'IRG BNC',
+    bncResultTitle: 'Résultat BNC — IRG',
+    bncNetProfit: 'Bénéfice net',
+    bncFlatRate: 'Taux IRG forfaitaire',
+    bncComputed: 'IRG calculé',
+    bncMinimum: 'Plancher légal',
+    bncDue: 'IRG BNC À PAYER',
+    bncRoadmapTitle: 'Feuille de route conformité BNC',
+    bncCheck1: 'Tenue d\'un registre simplifié des recettes et dépenses',
+    bncCheck2: 'Dépôt de la déclaration G50 mensuelle via Jibayatic',
+    bncCheck3: 'Conservation des justificatifs de paiement (5 ans)',
+    bncCheck4: 'Déclaration annuelle du résultat fiscal avant le 30 avril',
+    bncCheck5: 'Inscription au registre des personnes physiques (NIF)',
+    bncCheck6: 'Utilisation du compte bancaire professionnel dédié',
+
+    // Settings
+    settingsTitle: 'Paramètres Fiscaux',
+    settingsSub: 'Modifiez les taux et seuils — les calculs se mettent à jour instantanément.',
+    settingsIFU: 'IFU — Impôt Forfaitaire Unique',
+    settingsMinStandard: 'Minimum standard (DA)',
+    settingsRateProd: 'Taux Production (%)',
+    settingsRateServ: 'Taux Services/Commerce (%)',
+    settingsRateMicro: 'Taux Micro-Import (%)',
+    settingsIBS: 'IBS — Impôt sur les Bénéfices des Sociétés',
+    settingsIBSProd: 'Production (%)',
+    settingsIBSBTPH: 'BTPH/Tourisme (%)',
+    settingsIBSComm: 'Commerce/Services (%)',
+    settingsTVA: 'TVA — Taxe sur la Valeur Ajoutée',
+    settingsTVANormal: 'Taux normal (%)',
+    settingsTVAReduced: 'Taux réduit (%)',
+    settingsAcompte: 'Acompte Douanier (Import)',
+    settingsAcomptGoods: 'Marchandises (%)',
+    settingsAcompteServ: 'Services (%)',
+    settingsBNC: 'BNC — Régime Réel Simplifié',
+    settingsBNCRate: 'Taux IRG forfaitaire (%)',
+    settingsBNCMin: 'Plancher légal (DA)',
+    settingsIRG: 'IRG — Barème Progressif Individuel',
+    settingsBracket: 'Tranche',
+    settingsRate: 'Taux (%)',
+    settingsReset: 'Réinitialiser les valeurs par défaut',
+    settingsSaved: '✅ Paramètres sauvegardés et recalculés',
+
+    // Generic
+    da: 'DA',
+    pct: '%',
+    bracket1Range: 'Jusqu\'à 240 000 DA',
+    bracket2Range: '240 001 – 480 000 DA',
+    bracket3Range: '480 001 – 960 000 DA',
+    bracket4Range: '960 001 – 1 920 000 DA',
+    bracket5Range: '1 920 001 – 3 840 000 DA',
+    bracket6Range: 'Au-delà de 3 840 000 DA',
+  },
+
+  ar: {
+    appTitle: 'الجباية الجزائرية',
+    appSub: 'الحاسبة الجبائية',
+    year: 'قانون المالية',
+    heroTitle: 'النظام الجبائي الجزائري',
+    heroDesc: 'احسب ضرائبك بدقة وفق أحكام قانون المالية الجزائري .',
+    navHome: 'الرئيسية',
+    navIFU: 'الجزافي',
+    navReel: 'الحقيقي',
+    navBNC: 'المبسط',
+    navSettings: 'الإعدادات',
+
+    homeTitle: 'أهلاً بك',
+    homeSub: 'اختر وحدة الحساب أو ادخل إلى الإعدادات الجبائية.',
+    quickIFU: 'النظام الجزافي الوحيد (IFU)',
+    quickIFUSub: 'المؤسسات الصغيرة والمقاولون الذاتيون',
+    quickReel: 'النظام الحقيقي',
+    quickReelSub: 'الشركات والأفراد (IBS/IRG)',
+    quickBNC: 'النظام الحقيقي المبسط',
+    quickBNCSub: 'المهن الحرة والغير تجارية ≤ 8 مليون دج',
+    quickSettings: 'المعاملات الجبائية',
+    quickSettingsSub: 'النسب والجداول والحدود المعمول بها',
+
+    ifuTitle: 'حساب الضريبة الجزافية',
+    ifuSub: 'الضريبة الجزافية الوحيدة — النظام الجزافي',
+    ifuCA: 'رقم الأعمال السنوي (دج)',
+    ifuCAPlaceholder: 'مثال: 5,000,000',
+    ifuActivity: 'نوع النشاط',
+    ifuProduction: 'إنتاج',
+    ifuServices: 'خدمات / تجارة',
+    ifuMicroImport: 'استيراد مصغر',
+    ifuCalc: 'احسب الضريبة الجزافية',
+    ifuThresholdNoteTitle: 'الانتقال إلى النظام الحقيقي',
+    ifuThresholdNote: 'إذا تجاوز رقم الأعمال 8,000,000 دج لعامين متتاليين، يُحوَّل المكلف تلقائياً إلى النظام الحقيقي.',
+    ifuResultTitle: 'نتيجة الضريبة الجزافية',
+    ifuTaxBase: 'الوعاء الضريبي',
+    ifuRate: 'النسبة المطبقة',
+    ifuComputed: 'الضريبة المحتسبة',
+    ifuMinimum: 'الحد الأدنى القانوني',
+    ifuDue: 'الضريبة الجزافية المستحقة',
+    ifuMinApplied: '⚠️ تم تطبيق الحد الأدنى القانوني',
+    ifuCompliance: 'إيداع التصريح G50 ثلاثي عبر منصة مصالحة قبل العشرين من الشهر الموالي لكل ثلاثي.',
+
+    reelTitle: 'النظام الحقيقي',
+    reelSub: 'حساب IBS / IRG مع تكامل الاستيراد والتصدير',
+    reelRevenue: 'رقم الأعمال الإجمالي (دج)',
+    reelExpenses: 'الأعباء القابلة للخصم (دج)',
+    reelRevPlaceholder: 'مثال: 50,000,000',
+    reelExpPlaceholder: 'مثال: 30,000,000',
+    reelEntityType: 'نوع الكيان',
+    reelCompany: 'شركة (IBS)',
+    reelIndividual: 'شخص طبيعي (IRG)',
+    reelSectorType: 'قطاع النشاط',
+    reelStandard: 'عادي',
+    reelImport: 'استيراد',
+    reelExport: 'تصدير',
+    reelIBSSector: 'القطاع (IBS)',
+    reelIBSProduction: 'إنتاج',
+    reelIBSBTPH: 'بناء / سياحة',
+    reelIBSCommerce: 'تجارة / خدمات',
+    reelTVAToggle: 'احتساب TVA التقديري',
+    reelTVARate: 'نسبة TVA',
+    reelCalc: 'احسب الضريبة',
+    reelResultTitle: 'النتيجة — النظام الحقيقي',
+    reelNetProfit: 'الربح الصافي',
+    reelTaxRate: 'نسبة الضريبة',
+    reelTaxDue: 'الضريبة المستحقة (IBS/IRG)',
+    reelTVADue: 'TVA التقديرية',
+    reelTVABase: 'الأساس الخاضع لـ TVA',
+    reelFilingDeadline: 'إيداع التصريح G50 الشهري قبل العشرين عبر منصة جبايتيك.',
+    reelIRGDetails: 'تفاصيل شرائح IRG',
+    reelImportAlert: '⚠️ قيد الضريبة الجزافية — قطاع الاستيراد',
+    reelImportAlertText: 'المستوردون خاضعون وجوباً للنظام الجزافي الوحيد. الوصول إلى النظام الحقيقي مقيد لهذا القطاع.',
+    reelAcompteTitle: 'الدفع الجزئي المسبق (الاستيراد)',
+    reelAcompteGoods: 'مسبق البضائع (2%)',
+    reelAcompteServices: 'مسبق الخدمات (4%)',
+    reelFoodExemption: '🌾 إعفاء غذائي: واردات المواد الغذائية الأساسية (دقيق، سميد، حليب، زيت) تستفيد من إعفاءات خاصة.',
+    reelExportTitle: '🏆 إعفاء كلي — التصدير',
+    reelExportText: 'قطاع التصدير يستفيد من إعفاء تام 100%: IBS/IRG = 0%، TVA = 0%. دعماً للإنتاج الوطني.',
+
+    bncTitle: 'النظام الحقيقي المبسط (BNC)',
+    bncSub: 'المهن الحرة والغير تجارية ≤ 8,000,000 دج',
+    bncReceipts: 'إجمالي المقبوضات الخامة (دج)',
+    bncExpenses: 'إجمالي النفقات (دج)',
+    bncRecPlaceholder: 'مثال: 3,000,000',
+    bncExpPlaceholder: 'مثال: 1,200,000',
+    bncCalc: 'احسب IRG المبسط',
+    bncResultTitle: 'نتيجة BNC — IRG',
+    bncNetProfit: 'الربح الصافي',
+    bncFlatRate: 'نسبة IRG الجزافية',
+    bncComputed: 'IRG المحتسب',
+    bncMinimum: 'الحد الأدنى القانوني',
+    bncDue: 'IRG BNC المستحق',
+    bncRoadmapTitle: 'خارطة طريق الامتثال الجبائي BNC',
+    bncCheck1: 'مسك سجل بسيط للمقبوضات والمدفوعات',
+    bncCheck2: 'إيداع التصريح الشهري G50 عبر جبايتيك',
+    bncCheck3: 'الاحتفاظ بوثائق الدفع (5 سنوات)',
+    bncCheck4: 'التصريح السنوي بالنتيجة الجبائية قبل 30 أبريل',
+    bncCheck5: 'التسجيل في سجل الأشخاص الطبيعيين (NIF)',
+    bncCheck6: 'استخدام حساب بنكي مهني مخصص',
+
+    settingsTitle: 'الإعدادات الجبائية',
+    settingsSub: 'عدّل النسب والحدود — تُحدَّث الحسابات فوراً.',
+    settingsIFU: 'الضريبة الجزافية الوحيدة (IFU)',
+    settingsMinStandard: 'الحد الأدنى العادي (دج)',
+    settingsRateProd: 'نسبة الإنتاج (%)',
+    settingsRateServ: 'نسبة الخدمات/التجارة (%)',
+    settingsRateMicro: 'نسبة الاستيراد المصغر (%)',
+    settingsIBS: 'الضريبة على أرباح الشركات (IBS)',
+    settingsIBSProd: 'الإنتاج (%)',
+    settingsIBSBTPH: 'بناء/سياحة (%)',
+    settingsIBSComm: 'تجارة/خدمات (%)',
+    settingsTVA: 'الرسم على القيمة المضافة (TVA)',
+    settingsTVANormal: 'النسبة العادية (%)',
+    settingsTVAReduced: 'النسبة المخفضة (%)',
+    settingsAcompte: 'الدفع الجزئي الجمركي (استيراد)',
+    settingsAcomptGoods: 'البضائع (%)',
+    settingsAcompteServ: 'الخدمات (%)',
+    settingsBNC: 'BNC — النظام الحقيقي المبسط',
+    settingsBNCRate: 'نسبة IRG الجزافية (%)',
+    settingsBNCMin: 'الحد الأدنى القانوني (دج)',
+    settingsIRG: 'IRG — السلم التصاعدي للأشخاص الطبيعيين',
+    settingsBracket: 'الشريحة',
+    settingsRate: 'النسبة (%)',
+    settingsReset: 'إعادة ضبط القيم الافتراضية',
+    settingsSaved: '✅ تم حفظ الإعدادات وإعادة الحساب',
+
+    da: 'دج',
+    pct: '%',
+    bracket1Range: 'حتى 240,000 دج',
+    bracket2Range: '240,001 – 480,000 دج',
+    bracket3Range: '480,001 – 960,000 دج',
+    bracket4Range: '960,001 – 1,920,000 دج',
+    bracket5Range: '1,920,001 – 3,840,000 دج',
+    bracket6Range: 'أكثر من 3,840,000 دج',
+  }
+};
+
+// ================================================
+// HELPERS
+// ================================================
+function t(key) {
+  return T[STATE.lang][key] || key;
 }
 
-/* ── IRG progressive ── */
-function calcIRG(profit){
-  const brackets=cfg().irg;
-  let tax=0,prev=0,details=[];
-  for(const b of brackets){
-    if(profit<=prev) break;
-    const safeMax=b.max===Infinity?profit*100:b.max;
-    const slice=Math.min(profit,safeMax)-prev;
-    const piece=slice*(b.rate/100);
-    details.push({label:b.max===Infinity?"∞":fmt(b.max).replace(" DA",""),slice,rate:b.rate,tax:piece});
-    tax+=piece; prev=safeMax;
-    if(b.max===Infinity) break;
-  }
-  return{tax,details};
+function fmt(value) {
+  if (value === null || value === undefined || isNaN(value)) return '0.00';
+  return new Intl.NumberFormat('fr-DZ', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(value);
 }
 
-/* ═══════════════════════════════
-   CALCULATORS
-═══════════════════════════════ */
-function doIFU(){
-  const st=S.ifu,c=cfg(),t=d();
-  const v=pf(st.ca);
-  st.overThreshold=false;
-  if(isNaN(v)||v<0){st.err=t.errPos;st.res=null;return render();}
-  /* ── IFU 8M THRESHOLD GUARD ── */
-  if(v>IFU_MAX_CA){
-    st.overThreshold=true; st.res=null; st.err="";
-    return render();
-  }
-  st.err=""; st.overThreshold=false;
-  const act=ifuActs().find(a=>a.v===st.act);
-  const MIN=act.micro?c.ifu_min_micro:c.ifu_min_std;
-  const raw=v*act.r,final=Math.max(raw,MIN);
-  st.res={ca:v,rate:act.r,raw,final,minApplied:raw<MIN,isMicro:act.micro,minAmt:MIN};
-  /* cache for report */
-  reportCache=reportCache.filter(r=>r.module!=="IFU");
-  reportCache.push({module:"IFU",label:t.ifuTitle,rows:[
-    [t.lCA, fmt(v)],[t.lRate,(act.r*100).toFixed(2)+"%"],
-    [t.lRaw,fmt(raw)],[t.lMin,fmt(MIN)],[t.lFinal,fmt(final)],
-  ],note:raw<MIN?(act.micro?t.minMicroNote:t.minStdNote):""});
-  render();
+function fmtDA(value) {
+  return fmt(value) + ' ' + t('da');
 }
 
-function doReel(){
-  const st=S.reel,c=cfg(),t=d();
-  const gr=pf(st.gross),ex=pf(st.exp);
-  if(isNaN(gr)||gr<0){st.err=t.errPos;st.res=null;return render();}
-  const expenses=isNaN(ex)?0:ex;
-  st.err="";
-  reportCache=reportCache.filter(r=>r.module!=="REEL");
-  if(st.sector==="export"){
-    st.res={mode:"export",gr,expenses,profit:gr-expenses};
-    reportCache.push({module:"REEL",label:t.reelTitle,rows:[
-      [t.lRevenue,fmt(gr)],[t.lExp,fmt(expenses)],[t.lProfit,fmt(gr-expenses)],[t.exportZero,"0 DA"],
-    ],note:""});
-    return render();
+function calcIRG(profit) {
+  const brackets = STATE.irg;
+  let tax = 0;
+  let prev = 0;
+  for (let i = 0; i < brackets.length; i++) {
+    const b = brackets[i];
+    const upper = isFinite(b.max) ? b.max : profit;
+    if (profit <= prev) break;
+    const taxable = Math.min(profit, upper) - prev;
+    if (taxable <= 0) { prev = isFinite(b.max) ? b.max : profit; continue; }
+    tax += taxable * (b.rate / 100);
+    prev = isFinite(b.max) ? b.max : profit;
+    if (profit <= (isFinite(b.max) ? b.max : profit)) break;
   }
-  let acompteAmt=null;
-  if(st.sector==="import"){
-    acompteAmt=gr*(st.acompteType==="goods"?c.acompte_goods/100:c.acompte_services/100);
+  return tax;
+}
+
+function getIRGBreakdown(profit) {
+  const brackets = STATE.irg;
+  const rows = [];
+  const ranges = [
+    t('bracket1Range'), t('bracket2Range'), t('bracket3Range'),
+    t('bracket4Range'), t('bracket5Range'), t('bracket6Range')
+  ];
+  let prev = 0;
+  for (let i = 0; i < brackets.length; i++) {
+    const b = brackets[i];
+    if (profit <= prev) break;
+    const upper = isFinite(b.max) ? b.max : profit;
+    const taxable = Math.min(profit, upper) - prev;
+    const taxAmt = taxable * (b.rate / 100);
+    if (taxable > 0 && b.rate > 0) {
+      rows.push({ range: ranges[i], rate: b.rate, taxable, taxAmt });
+    }
+    prev = isFinite(b.max) ? b.max : profit;
+    if (profit <= (isFinite(b.max) ? b.max : profit)) break;
   }
-  const profit=gr-expenses;
-  if(profit<0){
-    st.res={mode:"loss",profit,gr,expenses,acompteAmt};
-    reportCache.push({module:"REEL",label:t.reelTitle,rows:[
-      [t.lRevenue,fmt(gr)],[t.lExp,fmt(expenses)],[t.lProfit,fmt(profit)],
-      ...(acompteAmt!=null?[[t.lAcompte,fmt(acompteAmt)]]:[]),
-    ],note:t.lossTitle});
-    return render();
-  }
-  let taxRaw=0,ibsRate=0,irgDetails=null;
-  if(st.entity==="company"){
-    const act=ibsActs().find(a=>a.v===st.ibsAct);
-    ibsRate=act.r; taxRaw=profit*ibsRate;
+  return rows;
+}
+
+// ================================================
+// NAVIGATION
+// ================================================
+let currentPanel = 'home';
+
+function navigate(panelId) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const panel = document.getElementById('panel-' + panelId);
+  if (panel) panel.classList.add('active');
+  const navItem = document.querySelector('[data-nav="' + panelId + '"]');
+  if (navItem) navItem.classList.add('active');
+  currentPanel = panelId;
+  document.getElementById('main-content').scrollTop = 0;
+}
+
+// ================================================
+// LANGUAGE SWITCH
+// ================================================
+function setLang(lang) {
+  STATE.lang = lang;
+  const body = document.body;
+  if (lang === 'ar') {
+    body.classList.add('ar'); body.classList.remove('fr');
+    document.documentElement.setAttribute('lang', 'ar');
+    document.documentElement.setAttribute('dir', 'rtl');
   } else {
-    const{tax,details}=calcIRG(profit);
-    taxRaw=tax; irgDetails=details;
+    body.classList.add('fr'); body.classList.remove('ar');
+    document.documentElement.setAttribute('lang', 'fr');
+    document.documentElement.setAttribute('dir', 'ltr');
   }
-  const final=Math.max(taxRaw,c.ifu_min_std);
-  let tvaAmt=null;
-  if(st.tva){tvaAmt=gr*(st.tvaRate==="normal"?c.tva_normal/100:c.tva_reduced/100);}
-  st.res={mode:"normal",gr,expenses,profit,ibsRate,taxRaw,final,
-          minApplied:taxRaw<c.ifu_min_std,irgDetails,tvaAmt,acompteAmt,entity:st.entity};
-  const rows=[[t.lRevenue,fmt(gr)],[t.lExp,fmt(expenses)],[t.lProfit,fmt(profit)],
-    [t.lTaxRate,st.entity==="company"?(ibsRate*100).toFixed(0)+"%":"IRG progressif"],
-    [t.lTaxRaw,fmt(taxRaw)]];
-  if(tvaAmt!=null) rows.push([t.lTvaEst,fmt(tvaAmt)]);
-  if(acompteAmt!=null) rows.push([t.lAcompte,fmt(acompteAmt)]);
-  rows.push([t.lFinalTax,fmt(final)]);
-  reportCache.push({module:"REEL",label:t.reelTitle,rows,
-    note:taxRaw<c.ifu_min_std?t.minStdNote:""});
-  render();
-}
-
-function doSimp(){
-  const st=S.simp,c=cfg(),t=d();
-  const rec=pf(st.rec),ex=pf(st.exp);
-  if(isNaN(rec)||rec<0){st.err=t.errPos;st.res=null;return render();}
-  const expenses=isNaN(ex)?0:ex;
-  st.err="";
-  const profit=Math.max(rec-expenses,0);
-  const raw=profit*(c.bnc_rate/100),final=Math.max(raw,c.bnc_min);
-  st.res={rec,expenses,profit,raw,final,minApplied:raw<c.bnc_min};
-  reportCache=reportCache.filter(r=>r.module!=="SIMP");
-  reportCache.push({module:"SIMP",label:t.simpTitle,rows:[
-    [t.lRec,fmt(rec)],[t.lSimpExp,fmt(expenses)],[t.lNet,fmt(profit)],
-    [t.lSimpRate,c.bnc_rate+"%"],[t.lSimpFinal,fmt(final)],
-  ],note:raw<c.bnc_min?t.simpMinNote:""});
-  render();
-}
-
-/* ═══════════════════════════════
-   SETTINGS
-═══════════════════════════════ */
-function applySettings(){
-  const keys=["ifu_min_std","ifu_min_micro","ifu_rate_prod","ifu_rate_serv","ifu_rate_micro",
-              "ibs_rate_prod","ibs_rate_btp","ibs_rate_trade","tva_normal","tva_reduced",
-              "acompte_goods","acompte_services","bnc_rate","bnc_min"];
-  for(const k of keys){
-    const el=$("cfg_"+k);if(!el)continue;
-    const v=parseFloat(el.value);if(!isNaN(v)&&v>=0)S.edit[k]=v;
-  }
-  S.edit.irg.forEach((_,i)=>{
-    const maxEl=$("irg_max_"+i),rateEl=$("irg_rate_"+i);
-    if(rateEl){const rv=parseFloat(rateEl.value);if(!isNaN(rv)&&rv>=0)S.edit.irg[i].rate=rv;}
-    if(maxEl&&i<S.edit.irg.length-1){const mv=parseFloat(maxEl.value);if(!isNaN(mv)&&mv>0)S.edit.irg[i].max=mv;}
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
   });
-  S.cfg=cloneCfg(S.edit); saveCfg(S.cfg);
-  [S.ifu,S.reel,S.simp].forEach(m=>{m.res=null;});
-  reportCache=[];
-  S.settingsSaved=true; render();
-  setTimeout(()=>{S.settingsSaved=false;render();},3000);
-}
-function resetSettings(){
-  S.cfg=cloneCfg(DEFAULT_CFG); S.edit=cloneCfg(DEFAULT_CFG); saveCfg(S.cfg);
-  [S.ifu,S.reel,S.simp].forEach(m=>{m.res=null;m.err="";});
-  S.ifu.overThreshold=false; S.expChecked={}; S.expAmounts={}; reportCache=[]; render();
+  renderAll();
 }
 
-/* ═══════════════════════════════
-   EXPENSE CHECKLIST
-═══════════════════════════════ */
-function toggleExp(id){S.expChecked[id]=!S.expChecked[id];renderExpChecklist();}
-function setExpAmt(id,val){S.expAmounts[id]=parseFloat(val)||0;renderExpChecklist();}
-function applyExpToReel(){
-  const total=expTotal(); S.reel.exp=String(total); S.reel.res=null;
-  const el=$("reel-exp");if(el)el.value=String(total);
-  renderExpChecklist();
+// ================================================
+// RENDER ALL TEXT (i18n update)
+// ================================================
+function renderAll() {
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.dataset.t;
+    el.textContent = t(key);
+  });
+  document.querySelectorAll('[data-ph]').forEach(el => {
+    el.placeholder = t(el.dataset.ph);
+  });
+  renderBracketRanges();
 }
-function resetExp(){S.expChecked={};S.expAmounts={};renderExpChecklist();}
 
-function renderExpChecklist(){
-  const container=$("exp-checklist-container");if(!container)return;
-  const t=d(),cats=t.dir==="rtl"?EXP_AR:EXP_FR;
-  const total=expTotal(),checked=cats.filter(c=>S.expChecked[c.id]).length;
-  container.innerHTML=`
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem;flex-wrap:wrap;gap:5px;">
-      <span style="font-size:11px;color:#888;">${checked} ${t.dir==="rtl"?"عنصر محدد":"élément(s) coché(s)"}</span>
-      <button class="cbtn" onclick="resetExp()" style="padding:4px 10px;border-radius:6px;border:1px solid #ddd;background:#fafaf8;font-size:11px;color:#666;font-family:inherit;">
-        <i class="ti ti-refresh" style="font-size:11px;"></i> ${t.expCheckReset}
-      </button>
+function renderBracketRanges() {
+  const ranges = [
+    t('bracket1Range'), t('bracket2Range'), t('bracket3Range'),
+    t('bracket4Range'), t('bracket5Range'), t('bracket6Range')
+  ];
+  document.querySelectorAll('.bracket-range-label').forEach((el, i) => {
+    if (ranges[i]) el.textContent = ranges[i];
+  });
+}
+
+// ================================================
+// SETTINGS — BIND & SYNC
+// ================================================
+function bindSettings() {
+  // IFU
+  bindSetting('set-ifu-min-standard', v => STATE.ifu.minStandard = v);
+  bindSetting('set-ifu-rate-prod', v => STATE.ifu.rateProduction = v);
+  bindSetting('set-ifu-rate-serv', v => STATE.ifu.rateServices = v);
+  bindSetting('set-ifu-rate-micro', v => STATE.ifu.rateMicroImport = v);
+  // IBS
+  bindSetting('set-ibs-prod', v => STATE.ibs.rateProduction = v);
+  bindSetting('set-ibs-btph', v => STATE.ibs.rateBTPH = v);
+  bindSetting('set-ibs-comm', v => STATE.ibs.rateCommerceServices = v);
+  // TVA
+  bindSetting('set-tva-normal', v => STATE.tva.normal = v);
+  bindSetting('set-tva-reduced', v => STATE.tva.reduced = v);
+  // Acompte
+  bindSetting('set-acompte-goods', v => STATE.acompte.goods = v);
+  bindSetting('set-acompte-serv', v => STATE.acompte.services = v);
+  // BNC
+  bindSetting('set-bnc-rate', v => STATE.bnc.flatRate = v);
+  bindSetting('set-bnc-min', v => STATE.bnc.minFloor = v);
+  // IRG brackets
+  STATE.irg.forEach((_, i) => {
+    bindSetting('set-irg-rate-' + i, v => { STATE.irg[i].rate = v; });
+  });
+}
+
+function bindSetting(id, setter) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('input', () => {
+    const val = parseFloat(el.value);
+    if (!isNaN(val)) setter(val);
+  });
+}
+
+function loadSettingsValues() {
+  setVal('set-ifu-min-standard', STATE.ifu.minStandard);
+  setVal('set-ifu-rate-prod', STATE.ifu.rateProduction);
+  setVal('set-ifu-rate-serv', STATE.ifu.rateServices);
+  setVal('set-ifu-rate-micro', STATE.ifu.rateMicroImport);
+  setVal('set-ibs-prod', STATE.ibs.rateProduction);
+  setVal('set-ibs-btph', STATE.ibs.rateBTPH);
+  setVal('set-ibs-comm', STATE.ibs.rateCommerceServices);
+  setVal('set-tva-normal', STATE.tva.normal);
+  setVal('set-tva-reduced', STATE.tva.reduced);
+  setVal('set-acompte-goods', STATE.acompte.goods);
+  setVal('set-acompte-serv', STATE.acompte.services);
+  setVal('set-bnc-rate', STATE.bnc.flatRate);
+  setVal('set-bnc-min', STATE.bnc.minFloor);
+  STATE.irg.forEach((b, i) => setVal('set-irg-rate-' + i, b.rate));
+}
+
+function setVal(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.value = val;
+}
+
+function resetSettings() {
+  STATE.ifu = { minStandard: 30000, minAutoEntrepreneur: 10000, rateProduction: 5, rateServices: 12, rateMicroImport: 0.5 };
+  STATE.ibs = { rateProduction: 19, rateBTPH: 23, rateCommerceServices: 26 };
+  STATE.tva = { normal: 19, reduced: 9 };
+  STATE.acompte = { goods: 2, services: 4 };
+  STATE.bnc = { flatRate: 19, minFloor: 10000 };
+  STATE.irg = [
+    { max: 240000, rate: 0 }, { max: 480000, rate: 23 },
+    { max: 960000, rate: 27 }, { max: 1920000, rate: 30 },
+    { max: 3840000, rate: 33 }, { max: Infinity, rate: 35 }
+  ];
+  loadSettingsValues();
+  const msg = document.getElementById('settings-saved-msg');
+  msg.classList.remove('hidden');
+  setTimeout(() => msg.classList.add('hidden'), 2500);
+}
+
+// ================================================
+// IFU CALCULATOR
+// ================================================
+function calcIFU() {
+  const ca = parseFloat(document.getElementById('ifu-ca').value) || 0;
+  const activity = document.getElementById('ifu-activity').value;
+
+  let rate;
+  if (activity === 'production') rate = STATE.ifu.rateProduction;
+  else if (activity === 'services') rate = STATE.ifu.rateServices;
+  else rate = STATE.ifu.rateMicroImport;
+
+  const computed = ca * (rate / 100);
+  const minimum = STATE.ifu.minStandard;
+  const due = Math.max(computed, minimum);
+  const minApplied = computed < minimum;
+
+  const res = document.getElementById('ifu-result');
+  res.classList.remove('hidden');
+  res.innerHTML = `
+    <div class="result-block animate-slide-up">
+      <div class="result-label" data-t="ifuResultTitle">${t('ifuResultTitle')}</div>
+      <div class="result-amount">${fmt(due)}</div>
+      <div class="result-currency">${t('da')}</div>
     </div>
-    <div style="max-height:280px;overflow-y:auto;padding-inline-end:2px;">
-      ${cats.map(cat=>`
-      <div class="exp-row">
-        <input type="checkbox" id="exp_${cat.id}" ${S.expChecked[cat.id]?"checked":""}
-          onchange="toggleExp('${cat.id}')">
-        <i class="ti ${cat.icon}" style="font-size:14px;color:${S.expChecked[cat.id]?"#1D9E75":"#bbb"};flex-shrink:0;transition:color .15s;"></i>
-        <label for="exp_${cat.id}" style="flex:1;font-size:12px;color:${S.expChecked[cat.id]?"#222":"#666"};cursor:pointer;line-height:1.4;">${cat.label}</label>
-        ${S.expChecked[cat.id]
-          ?`<input type="number" class="exp-amt" min="0" step="1000" placeholder="0" value="${S.expAmounts[cat.id]||""}"
-              oninput="setExpAmt('${cat.id}',this.value)">`
-          :`<span style="width:110px;font-size:11px;color:#ddd;text-align:end;padding-inline-end:6px;">—</span>`}
-      </div>`).join("")}
-    </div>
-    <div style="margin-top:.85rem;border-top:1.5px solid #e8e6e1;padding-top:.85rem;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;">
-        <span style="font-size:13px;font-weight:600;color:#222;">${t.expCheckTotal}</span>
-        <span style="font-size:15px;font-weight:700;color:#1D9E75;font-family:'DM Mono',monospace;">${fmt(total)}</span>
+    <div style="margin-top:12px;">
+      <div class="result-row">
+        <span class="result-row-label">${t('ifuTaxBase')}</span>
+        <span class="result-row-value mono">${fmtDA(ca)}</span>
       </div>
-      <button class="cbtn" onclick="applyExpToReel()"
-        style="width:100%;padding:9px;border-radius:8px;border:none;background:#1D9E75;color:#fff;font-size:12px;font-weight:600;font-family:inherit;">
-        <i class="ti ti-arrow-right" style="font-size:13px;"></i> ${t.expCheckApply}
-      </button>
-    </div>`;
+      <div class="result-row">
+        <span class="result-row-label">${t('ifuRate')}</span>
+        <span class="result-row-value">${rate}%</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">${t('ifuComputed')}</span>
+        <span class="result-row-value mono">${fmtDA(computed)}</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">${t('ifuMinimum')}</span>
+        <span class="result-row-value mono">${fmtDA(minimum)}</span>
+      </div>
+      <div class="result-row" style="border-bottom:none;">
+        <span class="result-row-label" style="color:#34d399;font-weight:700;">${t('ifuDue')}</span>
+        <span class="result-row-value" style="color:#34d399;font-size:15px;">${fmtDA(due)}</span>
+      </div>
+    </div>
+    ${minApplied ? `<div class="alert-card alert-warning" style="margin-top:10px;">
+      <span class="alert-icon">⚠️</span>
+      <div><div class="alert-title">${t('ifuMinApplied')}</div></div>
+    </div>` : ''}
+    <div class="alert-card alert-info" style="margin-top:10px;">
+      <span class="alert-icon">📋</span>
+      <div>
+        <div class="alert-title">Moussamaha — مصالحة</div>
+        <div class="alert-text">${t('ifuCompliance')}</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">
+      <span class="compliance-chip">📅 G50 Ter</span>
+      <span class="compliance-chip">🖥️ Moussamaha</span>
+      <span class="compliance-chip">📆 Trimestriel</span>
+    </div>
+  `;
 }
 
-/* ═══════════════════════════════
-   REPORT — CSV & TXT (no print)
-═══════════════════════════════ */
-function buildReportData(){
-  const t=d();
-  if(!reportCache.length) return null;
-  const now=new Date().toLocaleDateString("fr-FR",{year:"numeric",month:"2-digit",day:"2-digit"});
-  return{t,now,sections:reportCache};
-}
+// ================================================
+// RÉGIME RÉEL CALCULATOR
+// ================================================
+function calcReel() {
+  const revenue = parseFloat(document.getElementById('reel-revenue').value) || 0;
+  const expenses = parseFloat(document.getElementById('reel-expenses').value) || 0;
+  const entityType = document.getElementById('reel-entity').value;
+  const sectorType = document.getElementById('reel-sector').value;
+  const ibsSector = document.getElementById('reel-ibs-sector').value;
+  const tvaOn = document.getElementById('reel-tva-toggle').checked;
+  const tvaRate = document.querySelector('.tva-option.selected')?.dataset.rate;
+  const selectedTVA = parseFloat(tvaRate) || STATE.tva.normal;
 
-function openReport(){
-  const data=buildReportData();
-  const t=d();
-  if(!data){
-    /* Show inline message in modal */
-    $("report-content").innerHTML=`<div style="text-align:center;padding:2rem;color:#999;font-size:13px;">${t.reportNoData}</div>`;
-    $("report-modal").style.display="flex";
+  const res = document.getElementById('reel-result');
+  res.classList.remove('hidden');
+
+  // EXPORT — full exemption
+  if (sectorType === 'export') {
+    res.innerHTML = `
+      <div class="export-badge animate-slide-up">
+        <div class="export-badge-icon">🏆</div>
+        <div class="export-badge-title">${t('reelExportTitle')}</div>
+        <div class="export-badge-sub">${t('reelExportText')}</div>
+      </div>
+      <div class="stat-pill" style="margin-top:10px;">
+        <span class="stat-pill-label">IBS / IRG</span>
+        <span class="stat-pill-value" style="color:#34d399;">0.00 ${t('da')}</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-pill-label">TVA</span>
+        <span class="stat-pill-value" style="color:#34d399;">0.00 ${t('da')}</span>
+      </div>
+    `;
     return;
   }
-  let html=`
-    <div style="font-family:${t.ff};direction:${t.dir};color:#111;">
-      <div style="text-align:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid #1D9E75;">
-        <div style="font-size:10px;color:#999;margin-bottom:4px;">FiscAlgérie — ${t.reportGenerated}: ${data.now}</div>
-        <h2 style="font-size:18px;font-weight:700;color:#0F6E56;">${t.reportTitle}</h2>
-      </div>`;
-  data.sections.forEach(sec=>{
-    const colorMap={IFU:"#1D9E75",REEL:"#378ADD",SIMP:"#854F0B"};
-    const color=colorMap[sec.module]||"#334155";
-    html+=`<div style="margin-bottom:1.1rem;border-radius:9px;border:1px solid #e8e6e1;overflow:hidden;">
-      <div style="background:${color};color:#fff;padding:8px 14px;font-size:12px;font-weight:600;">${sec.label}</div>
-      <table style="width:100%;border-collapse:collapse;font-size:12px;">
-        ${sec.rows.map(([l,v],i)=>`
-        <tr style="background:${i%2===0?"#fafaf8":"#fff"};">
-          <td style="padding:7px 14px;color:#555;width:58%;">${l}</td>
-          <td style="padding:7px 14px;font-weight:600;font-family:'DM Mono',monospace;text-align:end;color:#111;">${v}</td>
-        </tr>`).join("")}
-      </table>
-      ${sec.note?`<div style="padding:7px 14px;background:#FAEEDA;font-size:11px;color:#633806;">⚠ ${sec.note}</div>`:""}
-    </div>`;
-  });
-  html+=`<div style="margin-top:1rem;padding:9px 14px;background:#f8f7f4;border-radius:8px;font-size:11px;color:#999;text-align:center;">${t.reportFooter}</div></div>`;
-  $("report-content").innerHTML=html;
-  $("report-modal").style.display="flex";
-}
 
-function closeReport(){$("report-modal").style.display="none";}
+  const netProfit = revenue - expenses;
 
-function _triggerDownload(content,filename,mime){
-  const blob=new Blob([content],{type:mime});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download=filename; a.click();
-  setTimeout(()=>URL.revokeObjectURL(a.href),5000);
-}
-
-function downloadCSV(){
-  const data=buildReportData();
-  const t=d();
-  if(!data){alert(t.reportNoData);return;}
-  const BOM="\uFEFF";
-  let csv=BOM+`"${t.reportTitle}"\n"${t.reportGenerated}","${data.now}"\n\n`;
-  data.sections.forEach(sec=>{
-    csv+=`"${sec.label}"\n`;
-    csv+=`"${t.reportInput}","${t.reportResult}"\n`;
-    sec.rows.forEach(([l,v])=>{ csv+=`"${l}","${v}"\n`; });
-    if(sec.note) csv+=`"⚠","${sec.note}"\n`;
-    csv+="\n";
-  });
-  csv+=`"${t.reportFooter}"\n`;
-  _triggerDownload(csv,"FiscAlgerie_Rapport.csv","text/csv;charset=utf-8");
-}
-
-function downloadTXT(){
-  const data=buildReportData();
-  const t=d();
-  if(!data){alert(t.reportNoData);return;}
-  const sep="═".repeat(48);
-  let txt=`${sep}\n  ${t.reportTitle}\n  ${t.reportGenerated}: ${data.now}\n${sep}\n\n`;
-  data.sections.forEach(sec=>{
-    txt+=`▌ ${sec.label}\n${"─".repeat(40)}\n`;
-    sec.rows.forEach(([l,v])=>{ txt+=`  ${l.padEnd(30," ")} ${v}\n`; });
-    if(sec.note) txt+=`  ⚠ ${sec.note}\n`;
-    txt+="\n";
-  });
-  txt+=`${sep}\n${t.reportFooter}\n${sep}\n`;
-  _triggerDownload(txt,"FiscAlgerie_Rapport.txt","text/plain;charset=utf-8");
-}
-
-/* ════════════════════════════
-   UI COMPONENT HELPERS
-════════════════════════════ */
-const secHead=(badge,color,sub,title,desc)=>`
-  <div style="margin-bottom:1.2rem;">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-      <span class="tag" style="background:${color};color:#fff;">${badge}</span>
-      <span style="font-size:10px;color:#aaa;">${sub}</span>
-    </div>
-    <h1 style="font-size:18px;font-weight:600;letter-spacing:-.4px;margin-bottom:4px;color:#111;">${title}</h1>
-    <p style="font-size:12px;color:#666;line-height:1.6;">${desc}</p>
-  </div>`;
-
-const rrow=(l,v,vc="#333")=>`
-  <div class="rrow">
-    <span style="font-size:12px;color:#666;">${l}</span>
-    <span style="font-size:12px;font-weight:500;font-family:'DM Mono',monospace;color:${vc};">${v}</span>
-  </div>`;
-
-const finalBox=(label,val,bg="#0F6E56",ac="#9FE1CB")=>`
-  <div style="margin-top:.75rem;background:${bg};border-radius:8px;padding:11px 14px;">
-    <div style="font-size:10px;color:${ac};margin-bottom:2px;font-weight:500;">${label}</div>
-    <div style="font-size:19px;font-weight:700;color:#fff;font-family:'DM Mono',monospace;">${val}</div>
-  </div>`;
-
-const warnBox=msg=>`
-  <div style="margin-top:6px;background:#FAEEDA;border-radius:7px;padding:8px 11px;display:flex;gap:7px;align-items:flex-start;">
-    <i class="ti ti-alert-triangle" style="font-size:13px;color:#854F0B;margin-top:1px;flex-shrink:0;"></i>
-    <p style="font-size:11px;color:#633806;line-height:1.5;">${msg}</p>
-  </div>`;
-
-const emptyState=(icon,hint)=>`
-  <div style="background:#fafaf8;border-radius:12px;border:1px dashed #d0cec9;padding:1.1rem;
-       display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;gap:8px;">
-    <i class="ti ${icon}" style="font-size:34px;color:#ddd;"></i>
-    <p style="font-size:11px;color:#bbb;">${hint}</p>
-  </div>`;
-
-const pLabel=text=>`<label style="display:block;font-size:12px;font-weight:500;color:#444;margin-bottom:4px;">${text}</label>`;
-const pInput=(id,val,ph,err,disabled=false)=>`
-  <input id="${id}" type="text" inputmode="numeric" value="${val}" placeholder="${ph}"
-    ${disabled?"disabled":""}
-    style="width:100%;padding:9px 11px;border-radius:7px;
-           border:1px solid ${err?"#E24B4A":"#ddd"};
-           font-size:13px;font-weight:500;background:${disabled?"#f5f5f5":"#fafaf8"};
-           color:${disabled?"#aaa":"#111"};font-family:inherit;">
-  ${err?`<p style="font-size:11px;color:#A32D2D;margin-top:3px;">${err}</p>`:""}`;
-
-const segGroup=(opts,cur,fn,ac="#1D9E75")=>`
-  <div style="display:flex;gap:5px;">
-    ${opts.map(o=>`<button class="seg cbtn" onclick="${fn}('${o.v}')"
-      style="flex:1;padding:7px 5px;border-radius:7px;border:none;font-size:11px;font-weight:500;
-             font-family:inherit;background:${cur===o.v?ac:"#f0efec"};
-             color:${cur===o.v?"#fff":"#555"};">${o.l}</button>`).join("")}
-  </div>`;
-
-function roadmap(title,steps){
-  return`<div style="background:#fff;border-radius:12px;border:1px solid #e8e6e1;padding:1.1rem;margin-top:1rem;">
-    <h2 style="font-size:13px;font-weight:600;color:#111;margin-bottom:.9rem;">${title}</h2>
-    <div class="g2h">
-      ${steps.map((s,i)=>`<div class="scard">
-        <div style="width:32px;height:32px;border-radius:8px;background:${s.c}18;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-          <i class="ti ${s.icon}" style="font-size:15px;color:${s.c};"></i>
-        </div>
+  // IMPORT — restricted, show acompte
+  if (sectorType === 'import') {
+    const acompteGoods = revenue * (STATE.acompte.goods / 100);
+    const acompteServices = revenue * (STATE.acompte.services / 100);
+    res.innerHTML = `
+      <div class="alert-card alert-danger animate-slide-up">
+        <span class="alert-icon">🚫</span>
         <div>
-          <div style="font-size:11px;font-weight:600;color:#222;margin-bottom:2px;">
-            <span style="font-size:9px;font-weight:700;color:${s.c};margin-inline-end:4px;">0${i+1}</span>${s.title}
+          <div class="alert-title">${t('reelImportAlert')}</div>
+          <div class="alert-text">${t('reelImportAlertText')}</div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <div class="card-header">
+          <div class="card-icon" style="background:rgba(245,158,11,0.15);">💰</div>
+          <div>
+            <div class="card-title">${t('reelAcompteTitle')}</div>
           </div>
-          <p style="font-size:11px;color:#666;line-height:1.55;">${s.desc}</p>
         </div>
-      </div>`).join("")}
-    </div>
-  </div>`;
-}
-
-const cfgField=(id,label,val,unit="")=>`
-  <div>
-    <label style="display:block;font-size:11px;color:#666;margin-bottom:3px;line-height:1.4;">${label}</label>
-    <div style="position:relative;">
-      <input id="${id}" type="number" min="0" step="any" value="${val}" class="cfg-input"
-        style="padding-inline-end:${unit?"26px":"10px"};">
-      ${unit?`<span style="position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);font-size:11px;color:#999;pointer-events:none;">${unit}</span>`:""}
-    </div>
-  </div>`;
-
-const cfgBlock=(title,color,rows)=>`
-  <div style="background:#fff;border-radius:10px;border:1px solid #e8e6e1;padding:1rem;margin-bottom:.75rem;">
-    <div style="display:flex;align-items:center;gap:7px;margin-bottom:.85rem;">
-      <div style="width:3px;height:18px;background:${color};border-radius:2px;flex-shrink:0;"></div>
-      <h3 style="font-size:12px;font-weight:600;color:#222;">${title}</h3>
-    </div>
-    <div class="g3">${rows}</div>
-  </div>`;
-
-/* ════════════════════════════
-   PANELS
-════════════════════════════ */
-function panelSettings(){
-  const t=d(),c=S.edit,br=c.irg;
-  return`
-  <div style="margin-bottom:1.25rem;">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-      <span class="tag" style="background:#334155;color:#fff;">⚙ CONFIG</span>
-    </div>
-    <h1 style="font-size:18px;font-weight:600;margin-bottom:4px;color:#111;">${t.settingsTitle}</h1>
-    <p style="font-size:12px;color:#666;line-height:1.6;">${t.settingsSubtitle}</p>
-  </div>
-  <div style="background:#e1f5ee;border-radius:8px;padding:9px 13px;margin-bottom:.85rem;border-inline-start:3px solid #1D9E75;display:flex;align-items:center;gap:8px;">
-    <i class="ti ti-device-floppy" style="color:#0F6E56;font-size:15px;flex-shrink:0;"></i>
-    <p style="font-size:11px;color:#0F6E56;">${t.lsNote}</p>
-  </div>
-  <div style="background:#FAEEDA;border-radius:8px;padding:9px 13px;margin-bottom:.85rem;border-inline-start:3px solid #BA7517;">
-    <p style="font-size:11px;color:#633806;">${t.cfgWarning}</p>
-  </div>
-  ${cfgBlock(t.cfgIFU,"#1D9E75",`
-    ${cfgField("cfg_ifu_min_std",  t.cfgIFUMin30,   c.ifu_min_std,  "DA")}
-    ${cfgField("cfg_ifu_min_micro",t.cfgIFUMin10,   c.ifu_min_micro,"DA")}
-    ${cfgField("cfg_ifu_rate_prod",t.cfgIFURateProd, c.ifu_rate_prod, "%")}
-    ${cfgField("cfg_ifu_rate_serv",t.cfgIFURateServ, c.ifu_rate_serv, "%")}
-    ${cfgField("cfg_ifu_rate_micro",t.cfgIFURateMicro,c.ifu_rate_micro,"%")}
-  `)}
-  ${cfgBlock(t.cfgIBS,"#378ADD",`
-    ${cfgField("cfg_ibs_rate_prod", t.cfgIBSProd,  c.ibs_rate_prod,  "%")}
-    ${cfgField("cfg_ibs_rate_btp",  t.cfgIBSBtp,   c.ibs_rate_btp,   "%")}
-    ${cfgField("cfg_ibs_rate_trade",t.cfgIBSTrade, c.ibs_rate_trade, "%")}
-  `)}
-  <div class="g2" style="gap:.75rem;margin-bottom:.75rem;">
-    <div style="background:#fff;border-radius:10px;border:1px solid #e8e6e1;padding:1rem;">
-      <div style="display:flex;align-items:center;gap:7px;margin-bottom:.85rem;">
-        <div style="width:3px;height:18px;background:#854F0B;border-radius:2px;"></div>
-        <h3 style="font-size:12px;font-weight:600;color:#222;">${t.cfgTVA}</h3>
+        <div class="result-row">
+          <span class="result-row-label">${t('reelAcompteGoods')}</span>
+          <span class="result-row-value mono">${fmtDA(acompteGoods)}</span>
+        </div>
+        <div class="result-row" style="border-bottom:none;">
+          <span class="result-row-label">${t('reelAcompteServices')}</span>
+          <span class="result-row-value mono">${fmtDA(acompteServices)}</span>
+        </div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:.55rem;">
-        ${cfgField("cfg_tva_normal",  t.cfgTVANormal,  c.tva_normal,  "%")}
-        ${cfgField("cfg_tva_reduced", t.cfgTVAReduced, c.tva_reduced, "%")}
-      </div>
-    </div>
-    <div style="background:#fff;border-radius:10px;border:1px solid #e8e6e1;padding:1rem;">
-      <div style="display:flex;align-items:center;gap:7px;margin-bottom:.85rem;">
-        <div style="width:3px;height:18px;background:#A32D2D;border-radius:2px;"></div>
-        <h3 style="font-size:12px;font-weight:600;color:#222;">${t.cfgAcompte}</h3>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:.55rem;">
-        ${cfgField("cfg_acompte_goods",    t.cfgAcompteGoods,    c.acompte_goods,    "%")}
-        ${cfgField("cfg_acompte_services", t.cfgAcompteServices, c.acompte_services, "%")}
-      </div>
-    </div>
-  </div>
-  ${cfgBlock(t.cfgBNC,"#854F0B",`
-    ${cfgField("cfg_bnc_rate",t.cfgBNCRate,c.bnc_rate,"%")}
-    ${cfgField("cfg_bnc_min", t.cfgBNCMin, c.bnc_min, "DA")}
-  `)}
-  <!-- IRG MATRIX -->
-  <div style="background:#fff;border-radius:10px;border:1px solid #e8e6e1;padding:1rem;margin-bottom:.75rem;">
-    <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;">
-      <div style="width:3px;height:18px;background:#5DCAA5;border-radius:2px;flex-shrink:0;"></div>
-      <h3 style="font-size:12px;font-weight:600;color:#222;">${t.cfgIRG}</h3>
-    </div>
-    <p style="font-size:11px;color:#888;margin-bottom:.85rem;line-height:1.5;">${t.cfgIRGDesc}</p>
-    <div style="overflow-x:auto;">
-      <table style="width:100%;border-collapse:collapse;font-size:11px;">
-        <thead><tr style="background:#f8f7f4;">
-          <th style="padding:6px 10px;text-align:${t.dir==="rtl"?"right":"left"};color:#666;font-weight:600;border-bottom:1px solid #eee;width:60px;">${t.cfgBracket}</th>
-          <th style="padding:6px 10px;text-align:${t.dir==="rtl"?"right":"left"};color:#666;font-weight:600;border-bottom:1px solid #eee;">${t.cfgUpTo}</th>
-          <th style="padding:6px 10px;text-align:${t.dir==="rtl"?"right":"left"};color:#666;font-weight:600;border-bottom:1px solid #eee;width:120px;">${t.cfgRate}</th>
-        </tr></thead>
-        <tbody>
-          ${br.map((b,i)=>`<tr style="border-bottom:1px solid #f5f4f1;">
-            <td style="padding:6px 10px;">
-              <span style="background:#5DCAA518;color:#0F6E56;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;">B${i+1}</span>
-            </td>
-            <td style="padding:6px 10px;">
-              ${b.max===Infinity
-                ?`<span style="font-size:11px;color:#999;font-style:italic;">${t.cfgInfinity}</span>`
-                :`<input id="irg_max_${i}" type="number" min="0" step="10000" value="${b.max}" class="cfg-input" style="width:140px;">`}
-            </td>
-            <td style="padding:6px 10px;">
-              <div style="position:relative;display:inline-block;">
-                <input id="irg_rate_${i}" type="number" min="0" max="100" step="0.5" value="${b.rate}" class="cfg-input" style="width:80px;padding-inline-end:22px;">
-                <span style="position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);font-size:11px;color:#999;pointer-events:none;">%</span>
-              </div>
-            </td>
-          </tr>`).join("")}
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
-    <button class="cbtn" onclick="applySettings()"
-      style="flex:1;min-width:160px;padding:11px;border-radius:8px;border:none;
-             background:#1D9E75;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">
-      <i class="ti ti-device-floppy" style="font-size:13px;"></i> ${t.settingsSave}
-    </button>
-    <button class="cbtn lbtn" onclick="resetSettings()"
-      style="padding:11px 16px;border-radius:8px;border:1px solid #d0cec9;background:#fafaf8;
-             color:#555;font-size:12px;font-weight:500;font-family:inherit;">
-      <i class="ti ti-refresh" style="font-size:12px;"></i> ${t.settingsReset}
-    </button>
-  </div>
-  ${S.settingsSaved?`<div style="margin-top:8px;background:#e1f5ee;border-radius:7px;padding:8px 12px;font-size:12px;font-weight:600;color:#0F6E56;">${t.settingsSaved}</div>`:""}`;
-}
-
-function panelIFU(){
-  const t=d(),st=S.ifu,c=cfg();
-  const acts=ifuActs(),act=acts.find(a=>a.v===st.act);
-  const minAmt=act.micro?c.ifu_min_micro:c.ifu_min_std;
-  const isOver=st.overThreshold;
-
-  /* ── IFU OVER-THRESHOLD BANNER ── */
-  const overBanner=isOver?`
-    <div style="background:#FCEBEB;border-radius:10px;border:1.5px solid #E24B4A;padding:1rem 1.1rem;margin-bottom:1rem;">
-      <div style="display:flex;align-items:flex-start;gap:10px;">
-        <i class="ti ti-alert-octagon" style="font-size:22px;color:#A32D2D;flex-shrink:0;margin-top:2px;"></i>
+      <div class="alert-card alert-success" style="margin-top:8px;">
+        <span class="alert-icon">🌾</span>
         <div>
-          <p style="font-size:13px;font-weight:700;color:#A32D2D;margin-bottom:5px;">${t.ifuOverThresholdTitle}</p>
-          <p style="font-size:12px;color:#791F1F;line-height:1.65;">${t.ifuOverThresholdMsg}</p>
-          <button class="cbtn" onclick="setTab('reel')"
-            style="margin-top:10px;padding:7px 16px;border-radius:7px;border:none;
-                   background:#A32D2D;color:#fff;font-size:12px;font-weight:600;font-family:inherit;">
-            ${t.ifuOverThresholdCTA}
+          <div class="alert-title">${t('reelFoodExemption')}</div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // STANDARD — IBS or IRG
+  let taxDue = 0;
+  let taxRateDisplay = '';
+  let irgBreakdown = '';
+
+  if (entityType === 'company') {
+    let rate = STATE.ibs.rateCommerceServices;
+    if (ibsSector === 'production') rate = STATE.ibs.rateProduction;
+    else if (ibsSector === 'btph') rate = STATE.ibs.rateBTPH;
+    taxDue = Math.max(0, netProfit) * (rate / 100);
+    taxRateDisplay = rate + '%';
+  } else {
+    taxDue = calcIRG(Math.max(0, netProfit));
+    const effectiveRate = netProfit > 0 ? (taxDue / netProfit * 100) : 0;
+    taxRateDisplay = effectiveRate.toFixed(2) + '%';
+    const breakdownRows = getIRGBreakdown(Math.max(0, netProfit));
+    if (breakdownRows.length > 0) {
+      irgBreakdown = `
+        <div style="margin-top:10px;">
+          <div class="result-label">${t('reelIRGDetails')}</div>
+          ${breakdownRows.map(r => `
+            <div class="result-row">
+              <span class="result-row-label">${r.range} @ ${r.rate}%</span>
+              <span class="result-row-value mono">${fmtDA(r.taxAmt)}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+  }
+
+  const tvaAmount = tvaOn ? revenue * (selectedTVA / 100) : 0;
+
+  res.innerHTML = `
+    <div class="result-block animate-slide-up">
+      <div class="result-label">${t('reelTaxDue')}</div>
+      <div class="result-amount">${fmt(taxDue)}</div>
+      <div class="result-currency">${t('da')}</div>
+    </div>
+    <div style="margin-top:12px;">
+      <div class="result-row">
+        <span class="result-row-label">${t('reelNetProfit')}</span>
+        <span class="result-row-value mono">${fmtDA(netProfit)}</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">${t('reelTaxRate')}</span>
+        <span class="result-row-value">${taxRateDisplay}</span>
+      </div>
+      <div class="result-row" style="border-bottom:none;">
+        <span class="result-row-label" style="color:#34d399;font-weight:700;">${t('reelTaxDue')}</span>
+        <span class="result-row-value" style="color:#34d399;">${fmtDA(taxDue)}</span>
+      </div>
+    </div>
+    ${irgBreakdown}
+    ${tvaOn ? `
+      <div class="result-block" style="background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.2);margin-top:10px;">
+        <div class="result-label" style="color:#93c5fd;">${t('reelTVADue')}</div>
+        <div class="result-amount" style="color:#dbeafe;">${fmt(tvaAmount)}</div>
+        <div class="result-currency" style="color:#93c5fd;">${t('da')} — ${selectedTVA}%</div>
+      </div>
+      <div class="result-row" style="border-bottom:none;margin-top:6px;">
+        <span class="result-row-label">${t('reelTVABase')}</span>
+        <span class="result-row-value mono">${fmtDA(revenue)}</span>
+      </div>
+    ` : ''}
+    <div class="alert-card alert-info" style="margin-top:10px;">
+      <span class="alert-icon">📋</span>
+      <div>
+        <div class="alert-title">Jibayatic — جبايتيك</div>
+        <div class="alert-text">${t('reelFilingDeadline')}</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">
+      <span class="compliance-chip">📅 G50 Mensuel</span>
+      <span class="compliance-chip">🖥️ Jibayatic</span>
+      <span class="compliance-chip">📆 Avant le 20</span>
+    </div>
+  `;
+}
+
+// ================================================
+// BNC CALCULATOR
+// ================================================
+function calcBNC() {
+  const receipts = parseFloat(document.getElementById('bnc-receipts').value) || 0;
+  const expenses = parseFloat(document.getElementById('bnc-expenses').value) || 0;
+  const netProfit = Math.max(0, receipts - expenses);
+  const rate = STATE.bnc.flatRate;
+  const computed = netProfit * (rate / 100);
+  const minimum = STATE.bnc.minFloor;
+  const due = Math.max(computed, minimum);
+  const minApplied = computed < minimum;
+
+  const res = document.getElementById('bnc-result');
+  res.classList.remove('hidden');
+  res.innerHTML = `
+    <div class="result-block animate-slide-up">
+      <div class="result-label">${t('bncDue')}</div>
+      <div class="result-amount">${fmt(due)}</div>
+      <div class="result-currency">${t('da')}</div>
+    </div>
+    <div style="margin-top:12px;">
+      <div class="result-row">
+        <span class="result-row-label">${t('bncNetProfit')}</span>
+        <span class="result-row-value mono">${fmtDA(netProfit)}</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">${t('bncFlatRate')}</span>
+        <span class="result-row-value">${rate}%</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">${t('bncComputed')}</span>
+        <span class="result-row-value mono">${fmtDA(computed)}</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">${t('bncMinimum')}</span>
+        <span class="result-row-value mono">${fmtDA(minimum)}</span>
+      </div>
+      <div class="result-row" style="border-bottom:none;">
+        <span class="result-row-label" style="color:#34d399;font-weight:700;">${t('bncDue')}</span>
+        <span class="result-row-value" style="color:#34d399;font-size:15px;">${fmtDA(due)}</span>
+      </div>
+    </div>
+    ${minApplied ? `<div class="alert-card alert-warning" style="margin-top:10px;">
+      <span class="alert-icon">⚠️</span>
+      <div><div class="alert-title">${t('ifuMinApplied')}</div></div>
+    </div>` : ''}
+  `;
+}
+
+// ================================================
+// CHECKLIST TOGGLE
+// ================================================
+function initChecklist() {
+  document.querySelectorAll('.checklist-item').forEach(item => {
+    item.addEventListener('click', () => {
+      item.classList.toggle('checked');
+    });
+  });
+}
+
+// ================================================
+// TVA OPTION TOGGLE
+// ================================================
+function initTVAOptions() {
+  document.querySelectorAll('.tva-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.tva-option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+    });
+  });
+}
+
+// ================================================
+// INIT
+// ================================================
+document.addEventListener('DOMContentLoaded', () => {
+  setLang('fr');
+  navigate('home');
+  loadSettingsValues();
+  bindSettings();
+  initChecklist();
+  initTVAOptions();
+
+  // Nav click
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.addEventListener('click', () => navigate(btn.dataset.nav));
+  });
+
+  // Quick cards on home
+  document.querySelectorAll('.quick-card[data-go]').forEach(c => {
+    c.addEventListener('click', () => navigate(c.dataset.go));
+  });
+
+  // Lang buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLang(btn.dataset.lang));
+  });
+
+  // IFU Calc
+  document.getElementById('btn-calc-ifu').addEventListener('click', calcIFU);
+
+  // Régime Réel
+  document.getElementById('btn-calc-reel').addEventListener('click', calcReel);
+
+  // BNC
+  document.getElementById('btn-calc-bnc').addEventListener('click', calcBNC);
+
+  // Settings reset
+  document.getElementById('btn-reset-settings').addEventListener('click', resetSettings);
+
+  // IBS sector visibility
+  const entitySel = document.getElementById('reel-entity');
+  const ibsSectorRow = document.getElementById('ibs-sector-row');
+  entitySel.addEventListener('change', () => {
+    ibsSectorRow.classList.toggle('hidden', entitySel.value !== 'company');
+  });
+});
+</script>
+</head>
+<body class="fr">
+<div id="app">
+
+  <!-- ==============================
+       TOP HEADER
+  ============================== -->
+  <header id="top-header">
+    <div class="header-brand">
+      <div class="brand-icon">ج</div>
+      <div>
+        <div class="brand-title" data-t="appTitle">Fiscal Algérie</div>
+        <div class="brand-sub" data-t="year">Loi de Finances</div>
+      </div>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="fr">FR</button>
+      <button class="lang-btn" data-lang="ar">عر</button>
+    </div>
+  </header>
+
+  <!-- ==============================
+       MAIN CONTENT
+  ============================== -->
+  <main id="main-content">
+
+    <!-- ============================
+         HOME PANEL
+    ============================ -->
+    <section id="panel-home" class="panel active">
+      <div class="hero-block">
+        <div class="hero-flag">🇩🇿</div>
+        <div class="hero-title" data-t="heroTitle">Système Fiscal Algérien</div>
+        <div class="hero-year" data-t="year">Loi de Finances</div>
+        <div class="hero-desc" data-t="heroDesc">Calculez vos impôts avec précision selon les lois fiscales algériennes en vigueur.</div>
+      </div>
+
+      <div class="page-sub" data-t="homeSub">Choisissez un module de calcul ou accédez aux réglages fiscaux.</div>
+
+      <div class="quick-card" data-go="ifu">
+        <div class="quick-card-icon" style="background:rgba(16,185,129,0.15);">📊</div>
+        <div>
+          <div class="quick-card-title" data-t="quickIFU">IFU — Forfait Unique</div>
+          <div class="quick-card-sub" data-t="quickIFUSub">Petites entreprises & auto-entrepreneurs</div>
+        </div>
+        <div class="quick-card-arrow">›</div>
+      </div>
+
+      <div class="quick-card" data-go="reel">
+        <div class="quick-card-icon" style="background:rgba(59,130,246,0.15);">🏢</div>
+        <div>
+          <div class="quick-card-title" data-t="quickReel">Régime Réel</div>
+          <div class="quick-card-sub" data-t="quickReelSub">Entreprises & particuliers (IBS/IRG)</div>
+        </div>
+        <div class="quick-card-arrow">›</div>
+      </div>
+
+      <div class="quick-card" data-go="bnc">
+        <div class="quick-card-icon" style="background:rgba(168,85,247,0.15);">⚖️</div>
+        <div>
+          <div class="quick-card-title" data-t="quickBNC">Régime Réel Simplifié</div>
+          <div class="quick-card-sub" data-t="quickBNCSub">Professions libérales & BNC ≤ 8M DA</div>
+        </div>
+        <div class="quick-card-arrow">›</div>
+      </div>
+
+      <div class="quick-card" data-go="settings">
+        <div class="quick-card-icon" style="background:rgba(245,158,11,0.15);">⚙️</div>
+        <div>
+          <div class="quick-card-title" data-t="quickSettings">Paramètres Fiscaux</div>
+          <div class="quick-card-sub" data-t="quickSettingsSub">Taux, barèmes et seuils</div>
+        </div>
+        <div class="quick-card-arrow">›</div>
+      </div>
+
+      <!-- Rate summary -->
+      <div class="card" style="margin-top:16px;">
+        <div class="card-header">
+          <div class="card-icon" style="background:rgba(16,185,129,0.15);">📋</div>
+          <div>
+            <div class="card-title">Taux en vigueur / النسب الجبائية</div>
+          </div>
+        </div>
+        <div class="stat-pill"><span class="stat-pill-label">IFU Production</span><span class="stat-pill-value">5%</span></div>
+        <div class="stat-pill"><span class="stat-pill-label">IFU Services</span><span class="stat-pill-value">12%</span></div>
+        <div class="stat-pill"><span class="stat-pill-label">IBS Production</span><span class="stat-pill-value">19%</span></div>
+        <div class="stat-pill"><span class="stat-pill-label">IBS BTPH</span><span class="stat-pill-value">23%</span></div>
+        <div class="stat-pill"><span class="stat-pill-label">IBS Commerce</span><span class="stat-pill-value">26%</span></div>
+        <div class="stat-pill" style="border-bottom:none;"><span class="stat-pill-label">TVA Normal</span><span class="stat-pill-value">19%</span></div>
+      </div>
+    </section>
+
+    <!-- ============================
+         IFU PANEL
+    ============================ -->
+    <section id="panel-ifu" class="panel">
+      <div class="page-title" data-t="ifuTitle">Calcul IFU</div>
+      <div class="page-sub" data-t="ifuSub">Impôt Forfaitaire Unique — Régime Jzafi</div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon" style="background:rgba(16,185,129,0.15);">📊</div>
+          <div>
+            <div class="card-title" data-t="ifuTitle">Calcul IFU</div>
+            <div class="card-sub"><span class="section-badge badge-green">IFU</span></div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" data-t="ifuCA">CHIFFRE D'AFFAIRES ANNUEL (DA)</label>
+          <input type="number" id="ifu-ca" class="input-field" data-ph="ifuCAPlaceholder" placeholder="Ex : 5 000 000" min="0" inputmode="decimal">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" data-t="ifuActivity">TYPE D'ACTIVITÉ</label>
+          <select id="ifu-activity" class="input-field">
+            <option value="production" data-t-opt="ifuProduction">Production</option>
+            <option value="services" data-t-opt="ifuServices">Services / Commerce</option>
+            <option value="microimport" data-t-opt="ifuMicroImport">Micro-Import</option>
+          </select>
+        </div>
+
+        <button id="btn-calc-ifu" class="btn-primary">
+          <span data-t="ifuCalc">Calculer l'IFU</span>
+        </button>
+
+        <div class="alert-card alert-warning" style="margin-top:12px;">
+          <span class="alert-icon">⚠️</span>
+          <div>
+            <div class="alert-title" data-t="ifuThresholdNoteTitle">Passage au Régime Réel</div>
+            <div class="alert-text" data-t="ifuThresholdNote">Si le chiffre d'affaires dépasse 8 000 000 DA deux années consécutives, l'entreprise sera automatiquement transférée au régime réel.</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ifu-result" class="card hidden"></div>
+    </section>
+
+    <!-- ============================
+         RÉGIME RÉEL PANEL
+    ============================ -->
+    <section id="panel-reel" class="panel">
+      <div class="page-title" data-t="reelTitle">Régime Réel</div>
+      <div class="page-sub" data-t="reelSub">Calcul IBS / IRG avec intégration Import-Export</div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon" style="background:rgba(59,130,246,0.15);">🏢</div>
+          <div>
+            <div class="card-title" data-t="reelTitle">Régime Réel</div>
+            <div class="card-sub"><span class="section-badge badge-blue">IBS/IRG</span></div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" data-t="reelRevenue">CHIFFRE D'AFFAIRES BRUT (DA)</label>
+          <input type="number" id="reel-revenue" class="input-field" data-ph="reelRevPlaceholder" placeholder="Ex : 50 000 000" min="0" inputmode="decimal">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" data-t="reelExpenses">CHARGES DÉDUCTIBLES (DA)</label>
+          <input type="number" id="reel-expenses" class="input-field" data-ph="reelExpPlaceholder" placeholder="Ex : 30 000 000" min="0" inputmode="decimal">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" data-t="reelEntityType">TYPE D'ENTITÉ</label>
+          <select id="reel-entity" class="input-field">
+            <option value="company">Société (IBS)</option>
+            <option value="individual">Personne physique (IRG)</option>
+          </select>
+        </div>
+
+        <div class="input-group" id="ibs-sector-row">
+          <label class="input-label" data-t="reelIBSSector">SECTEUR (IBS)</label>
+          <select id="reel-ibs-sector" class="input-field">
+            <option value="production">Production</option>
+            <option value="btph">BTPH / Tourisme</option>
+            <option value="commerce">Commerce / Services</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" data-t="reelSectorType">SECTEUR D'ACTIVITÉ</label>
+          <select id="reel-sector" class="input-field">
+            <option value="standard">Standard</option>
+            <option value="import">Import</option>
+            <option value="export">Export</option>
+          </select>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="toggle-row">
+          <span class="toggle-label" data-t="reelTVAToggle">Calculer la TVA estimée</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="reel-tva-toggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div style="margin-top:8px;">
+          <div class="input-label" data-t="reelTVARate">TAUX TVA</div>
+          <div class="tva-selector">
+            <div class="tva-option selected" data-rate="19">19% — Normal</div>
+            <div class="tva-option" data-rate="9">9% — Réduit</div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <button id="btn-calc-reel" class="btn-primary">
+            <span data-t="reelCalc">Calculer l'impôt</span>
           </button>
         </div>
       </div>
-    </div>`:"";
 
-  const left=`
-    <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.params}</div>
-    <div style="margin-bottom:.85rem;">${pLabel(t.caLbl)}${pInput("ifu-ca",st.ca,t.caPh,st.err)}</div>
-    <div style="margin-bottom:.85rem;${isOver?"opacity:.45;pointer-events:none;":""}">
-      ${pLabel(t.actLbl)}
-      <select id="ifu-act" ${isOver?"disabled":""} style="width:100%;padding:9px 11px;border-radius:7px;border:1px solid #ddd;font-size:12px;background:#fafaf8;color:#111;font-family:inherit;">
-        ${acts.map(a=>`<option value="${a.v}" ${st.act===a.v?"selected":""}>${a.l}</option>`).join("")}
-      </select>
-    </div>
-    ${!isOver?`
-    <div style="background:#e1f5ee;border-radius:7px;padding:8px 12px;margin-bottom:.5rem;display:flex;align-items:center;gap:9px;">
-      <span style="font-size:18px;font-weight:700;color:#0F6E56;font-family:'DM Mono',monospace;">${(act.r*100).toFixed(2).replace(/\.?0+$/,"")}%</span>
-      <span style="font-size:11px;color:#0F6E56;">${t.rateHint}</span>
-    </div>
-    <div style="background:#f0f8ff;border-radius:7px;padding:7px 11px;margin-bottom:.9rem;border-inline-start:3px solid ${act.micro?"#BA7517":"#A32D2D"};">
-      <p style="font-size:11px;color:${act.micro?"#633806":"#791F1F"};font-weight:500;">Min: ${fmt(minAmt)}</p>
-    </div>
-    <button class="cbtn" onclick="doIFU()" style="width:100%;padding:10px;border-radius:8px;border:none;background:#1D9E75;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">${t.calcBtn}</button>
-    `:`<button class="cbtn" onclick="doIFU()" style="width:100%;padding:10px;border-radius:8px;border:none;background:#1D9E75;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">${t.calcBtn}</button>`}`;
+      <div id="reel-result" class="card hidden"></div>
+    </section>
 
-  const right=(!isOver&&st.res)?`
-    <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.results}</div>
-    ${rrow(t.lCA,fmt(st.res.ca))}
-    ${rrow(t.lRate,(st.res.rate*100).toFixed(2)+"%")}
-    ${rrow(t.lRaw,fmt(st.res.raw))}
-    ${rrow(t.lMin,fmt(minAmt))}
-    ${finalBox(t.lFinal,fmt(st.res.final))}
-    ${st.res.minApplied?warnBox(st.res.isMicro?t.minMicroNote:t.minStdNote):""}
-    <button class="cbtn" onclick="openReport()"
-      style="width:100%;margin-top:.9rem;padding:9px;border-radius:8px;border:none;
-             background:#334155;color:#fff;font-size:12px;font-weight:600;font-family:inherit;
-             display:flex;align-items:center;justify-content:center;gap:6px;">
-      <i class="ti ti-file-download" style="font-size:14px;"></i> ${t.reportBtnLabel}
-    </button>
-  `:null;
+    <!-- ============================
+         BNC PANEL
+    ============================ -->
+    <section id="panel-bnc" class="panel">
+      <div class="page-title" data-t="bncTitle">Régime Réel Simplifié (BNC)</div>
+      <div class="page-sub" data-t="bncSub">Professions libérales & non-commerciales ≤ 8 000 000 DA</div>
 
-  return`
-    ${secHead(t.ifuBadge,"#1D9E75",t.ifuSub,t.ifuTitle,t.ifuDesc)}
-    ${overBanner}
-    <div class="g2" style="margin-bottom:.5rem;">
-      <div style="background:#fff;border-radius:12px;border:1px solid #e8e6e1;padding:1.1rem;">${left}</div>
-      ${right?`<div style="background:#fff;border-radius:12px;border:1.5px solid #1D9E75;padding:1.1rem;">${right}</div>`:emptyState("ti-calculator",isOver?"":t.emptyHint)}
-    </div>
-    ${!isOver?roadmap(t.ifuRoadTitle,t.ifuRoad):""}`;
-}
-
-function panelReel(){
-  const t=d(),st=S.reel,c=cfg();
-  const acts=ibsActs();
-
-  const importBlock=st.sector==="import"?`
-    <div style="background:#FCEBEB;border-radius:8px;padding:10px 12px;border:1px solid #F7C1C1;margin-bottom:.85rem;">
-      <p style="font-size:11px;font-weight:700;color:#A32D2D;margin-bottom:3px;">${t.importAlertTitle}</p>
-      <p style="font-size:11px;color:#791F1F;line-height:1.55;">${t.importAlertMsg}</p>
-    </div>
-    <div style="margin-bottom:.85rem;">
-      ${pLabel(t.acompteTypeLbl)}
-      ${segGroup([{v:"goods",l:`${t.acompteGoods} (${c.acompte_goods}%)`},{v:"services",l:`${t.acompteServices} (${c.acompte_services}%)`}],st.acompteType,"setAcompteType","#A32D2D")}
-    </div>
-    <div style="background:#FAEEDA;border-radius:8px;padding:9px 12px;border:1px solid #FAC775;margin-bottom:.85rem;">
-      <p style="font-size:11px;font-weight:600;color:#633806;margin-bottom:2px;">${t.importTipTitle}</p>
-      <p style="font-size:11px;color:#633806;line-height:1.5;">${t.importTipMsg}</p>
-    </div>`:"";
-
-  const entityBlock=st.sector!=="export"?`
-    <div style="margin-bottom:.85rem;">${pLabel(t.entityLbl)}${segGroup(t.entities,st.entity,"setEntity","#378ADD")}</div>
-    ${st.entity==="company"?`<div style="margin-bottom:.85rem;">${pLabel(t.ibsLbl)}
-      <select id="reel-ibsact" style="width:100%;padding:9px 11px;border-radius:7px;border:1px solid #ddd;font-size:12px;background:#fafaf8;color:#111;font-family:inherit;">
-        ${acts.map(a=>`<option value="${a.v}" ${st.ibsAct===a.v?"selected":""}>${a.l}</option>`).join("")}
-      </select></div>`:""}
-    <div style="margin-bottom:.85rem;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
-        <span style="font-size:12px;font-weight:500;color:#444;">${t.tvaLbl}</span>
-        <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555;cursor:pointer;">
-          <input type="checkbox" ${st.tva?"checked":""} onchange="toggleTVA(this.checked)" style="width:13px;height:13px;">
-          ${t.tvaToggle}
-        </label>
-      </div>
-      ${st.tva?segGroup([{v:"normal",l:`${t.dir==="rtl"?"عادي":"Normal"} ${c.tva_normal}%`},{v:"reduced",l:`${t.dir==="rtl"?"مخفض":"Réduit"} ${c.tva_reduced}%`}],st.tvaRate,"setTvaRate","#378ADD"):""}
-    </div>`:"";
-
-  const expWidget=`
-    <div style="background:#fff;border-radius:12px;border:1.5px solid #1D9E75;padding:1.1rem;margin-top:.85rem;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:.6rem;">
-        <i class="ti ti-checklist" style="font-size:16px;color:#1D9E75;"></i>
-        <h3 style="font-size:13px;font-weight:600;color:#0F6E56;">${t.expCheckTitle}</h3>
-      </div>
-      <p style="font-size:11px;color:#666;line-height:1.55;margin-bottom:.75rem;">${t.expCheckDesc}</p>
-      <div style="background:#FAEEDA;border-radius:7px;padding:7px 10px;margin-bottom:.75rem;">
-        <p style="font-size:11px;color:#633806;">${t.expCheckTip}</p>
-      </div>
-      <div id="exp-checklist-container"></div>
-    </div>`;
-
-  const left=`
-    <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.params}</div>
-    <div style="margin-bottom:.85rem;">${pLabel(t.grossLbl)}${pInput("reel-gross",st.gross,t.grossPh,st.err)}</div>
-    <div style="margin-bottom:.85rem;">${pLabel(t.expLbl)}${pInput("reel-exp",st.exp,t.expPh,"")}</div>
-    <div style="margin-bottom:.85rem;">${pLabel(t.sectorLbl)}${segGroup(t.sectors,st.sector,"setSector","#378ADD")}</div>
-    ${importBlock}${entityBlock}
-    <button class="cbtn" onclick="doReel()" style="width:100%;padding:10px;border-radius:8px;border:none;background:#378ADD;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">${t.calcReelBtn}</button>`;
-
-  let right=null,resBorder="1.5px solid #378ADD";
-  if(st.res){
-    const r=st.res;
-    if(r.mode==="export"){
-      resBorder="1.5px solid #1D9E75";
-      right=`
-        <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.results}</div>
-        ${rrow(t.lRevenue,fmt(r.gr))}${rrow(t.lExp,fmt(r.expenses))}${rrow(t.lProfit,fmt(r.profit))}
-        <div style="margin-top:.8rem;background:#e1f5ee;border-radius:9px;padding:12px 14px;border:1.5px solid #1D9E75;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
-            <i class="ti ti-circle-check" style="font-size:18px;color:#0F6E56;"></i>
-            <span style="font-size:12px;font-weight:700;color:#0F6E56;">${t.exportZero}</span>
-          </div>
-          <p style="font-size:11px;color:#0F6E56;line-height:1.6;">${t.exportMsg}</p>
-        </div>`;
-    } else if(r.mode==="loss"){
-      resBorder="1.5px solid #E24B4A";
-      right=`
-        <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.results}</div>
-        <div style="background:#FCEBEB;border-radius:8px;padding:12px 13px;border:1px solid #F7C1C1;">
-          <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;">
-            <i class="ti ti-trending-down" style="font-size:17px;color:#A32D2D;"></i>
-            <span style="font-size:12px;font-weight:600;color:#A32D2D;">${t.lossTitle}</span>
-          </div>
-          <p style="font-size:11px;color:#791F1F;line-height:1.55;">${t.lossMsg}</p>
-          ${rrow(t.lRevenue,fmt(r.gr))}${rrow(t.lExp,fmt(r.expenses))}
-          <div class="rrow" style="border:none;">
-            <span style="font-size:12px;font-weight:600;color:#A32D2D;">${t.lProfit}</span>
-            <span style="font-size:12px;font-weight:700;font-family:'DM Mono',monospace;color:#A32D2D;">${fmt(r.profit)}</span>
-          </div>
-        </div>
-        ${r.acompteAmt!=null?rrow(`<span style="color:#A32D2D;">${t.lAcompte}</span>`,fmt(r.acompteAmt),"#A32D2D"):""}`;
-    } else {
-      right=`
-        <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.results}</div>
-        ${rrow(t.lRevenue,fmt(r.gr))}${rrow(t.lExp,fmt(r.expenses))}${rrow(t.lProfit,fmt(r.profit))}
-        ${rrow(t.lTaxRate,r.entity==="company"?(r.ibsRate*100).toFixed(0)+"%":"IRG progressif")}
-        ${rrow(t.lTaxRaw,fmt(r.taxRaw))}
-        ${r.tvaAmt!=null?rrow(`<span style="color:#378ADD;">${t.lTvaEst}</span>`,fmt(r.tvaAmt),"#378ADD"):""}
-        ${r.acompteAmt!=null?rrow(`<span style="color:#A32D2D;">${t.lAcompte}</span>`,fmt(r.acompteAmt),"#A32D2D"):""}
-        ${finalBox(t.lFinalTax,fmt(r.final))}
-        ${r.minApplied?warnBox(t.minStdNote):""}
-        ${r.irgDetails?`
-          <div style="margin-top:.85rem;">
-            <div style="font-size:10px;font-weight:600;color:#888;margin-bottom:6px;letter-spacing:.6px;text-transform:uppercase;">${t.irgBreakTitle}</div>
-            ${r.irgDetails.filter(x=>x.slice>0).map(x=>`
-            <div style="display:flex;justify-content:space-between;padding:4px 8px;border-radius:5px;background:#f8f7f4;margin-bottom:2px;">
-              <span style="font-size:10px;color:#666;">${x.label}</span>
-              <span style="font-size:10px;font-family:'DM Mono',monospace;color:${x.rate===0?"#1D9E75":"#333"};">${x.rate===0?t.exonere:fmt(x.tax)}</span>
-            </div>`).join("")}
-          </div>`:""}`;
-    }
-    if(right){
-      right+=`
-        <button class="cbtn" onclick="openReport()"
-          style="width:100%;margin-top:.9rem;padding:9px;border-radius:8px;border:none;
-                 background:#334155;color:#fff;font-size:12px;font-weight:600;font-family:inherit;
-                 display:flex;align-items:center;justify-content:center;gap:6px;">
-          <i class="ti ti-file-download" style="font-size:14px;"></i> ${t.reportBtnLabel}
-        </button>`;
-    }
-  }
-
-  return`
-    ${secHead(t.reelBadge,"#378ADD",t.reelSub,t.reelTitle,t.reelDesc)}
-    <div class="g2" style="margin-bottom:.5rem;">
-      <div>
-        <div style="background:#fff;border-radius:12px;border:1px solid #e8e6e1;padding:1.1rem;">${left}</div>
-        ${expWidget}
-      </div>
-      ${right?`<div style="background:#fff;border-radius:12px;border:${resBorder};padding:1.1rem;overflow-y:auto;">${right}</div>`:emptyState("ti-report-analytics",t.emptyHint)}
-    </div>
-    ${roadmap(t.reelRoadTitle,t.reelRoad)}`;
-}
-
-function panelSimp(){
-  const t=d(),st=S.simp,c=cfg();
-
-  const left=`
-    <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.params}</div>
-    <div style="margin-bottom:.85rem;">${pLabel(t.recLbl)}${pInput("simp-rec",st.rec,t.recPh,st.err)}</div>
-    <div style="margin-bottom:.85rem;">${pLabel(t.simpExpLbl)}${pInput("simp-exp",st.exp,t.simpExpPh,"")}</div>
-    <div style="background:#f0e9d2;border-radius:7px;padding:9px 12px;margin-bottom:.9rem;display:flex;align-items:center;gap:9px;">
-      <span style="font-size:18px;font-weight:700;color:#633806;font-family:'DM Mono',monospace;">${c.bnc_rate}%</span>
-      <span style="font-size:11px;color:#854F0B;">${t.lSimpRate} · Min: ${fmt(c.bnc_min)}</span>
-    </div>
-    <button class="cbtn" onclick="doSimp()" style="width:100%;padding:10px;border-radius:8px;border:none;background:#854F0B;color:#fff;font-size:13px;font-weight:600;font-family:inherit;">${t.simpCalcBtn}</button>`;
-
-  const right=st.res?`
-    <div style="font-size:10px;font-weight:600;color:#999;margin-bottom:.9rem;letter-spacing:.8px;text-transform:uppercase;">${t.results}</div>
-    ${rrow(t.lRec,fmt(st.res.rec))}${rrow(t.lSimpExp,fmt(st.res.expenses))}
-    ${rrow(t.lNet,fmt(st.res.profit))}${rrow(t.lSimpRate,c.bnc_rate+"%")}
-    ${finalBox(t.lSimpFinal,fmt(st.res.final),"#633806","#FAC775")}
-    ${st.res.minApplied?warnBox(t.simpMinNote):""}
-    <button class="cbtn" onclick="openReport()"
-      style="width:100%;margin-top:.9rem;padding:9px;border-radius:8px;border:none;
-             background:#334155;color:#fff;font-size:12px;font-weight:600;font-family:inherit;
-             display:flex;align-items:center;justify-content:center;gap:6px;">
-      <i class="ti ti-file-download" style="font-size:14px;"></i> ${t.reportBtnLabel}
-    </button>`:null;
-
-  const focus=`
-    <div style="background:#fff;border-radius:12px;border:1.5px solid #5DCAA5;padding:1.25rem;margin-top:1rem;">
-      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin-bottom:.85rem;">
-        <span class="tag" style="background:#1D9E75;color:#fff;">FOCUS</span>
-        <h2 style="font-size:14px;font-weight:600;color:#0F6E56;">${t.focusTitle}</h2>
-        <span style="font-size:10px;color:#aaa;">${t.focusSub}</span>
-      </div>
-      <p style="font-size:12px;color:#555;line-height:1.6;margin-bottom:.9rem;">${t.focusDesc}</p>
-      <div style="margin-bottom:.9rem;">
-        <div style="font-size:10px;font-weight:600;color:#888;letter-spacing:.7px;text-transform:uppercase;margin-bottom:6px;">${t.focusProfsLbl}</div>
-        <div style="display:flex;flex-wrap:wrap;gap:5px;">
-          ${t.focusProfs.map(p=>`<span style="background:#e1f5ee;color:#0F6E56;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:500;">${p}</span>`).join("")}
-        </div>
-      </div>
-      <div class="g2h">
-        ${t.focusSteps.map((s,i)=>`
-        <div style="${i===4?"grid-column:1/-1;":""}display:flex;gap:10px;padding:11px;background:#fafaf8;border-radius:9px;border:1px solid #eee;">
-          <div style="width:32px;height:32px;border-radius:8px;background:${s.c}18;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <i class="ti ${s.icon}" style="font-size:15px;color:${s.c};"></i>
-          </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon" style="background:rgba(168,85,247,0.15);">⚖️</div>
           <div>
-            <div style="font-size:11px;font-weight:600;color:#222;margin-bottom:2px;">
-              <span style="font-size:9px;font-weight:700;color:${s.c};margin-inline-end:4px;">0${i+1}</span>${s.title}
-            </div>
-            <p style="font-size:11px;color:#666;line-height:1.55;">${s.desc}</p>
+            <div class="card-title" data-t="bncTitle">Régime Réel Simplifié</div>
+            <div class="card-sub"><span class="section-badge" style="background:rgba(168,85,247,0.15);color:#c4b5fd;border:1px solid rgba(168,85,247,0.25);">BNC</span></div>
           </div>
-        </div>`).join("")}
-      </div>
-    </div>`;
-
-  return`
-    ${secHead(t.simpBadge,"#854F0B",t.simpSub,t.simpTitle,t.simpDesc)}
-    <div class="g2" style="margin-bottom:.5rem;">
-      <div style="background:#fff;border-radius:12px;border:1px solid #e8e6e1;padding:1.1rem;">${left}</div>
-      ${right?`<div style="background:#fff;border-radius:12px;border:1.5px solid #854F0B;padding:1.1rem;">${right}</div>`:emptyState("ti-chart-line",t.emptyHint)}
-    </div>
-    ${roadmap(t.simpRoadTitle,t.simpRoad)}
-    ${focus}`;
-}
-
-/* ════════════════════════════
-   MAIN RENDER
-════════════════════════════ */
-function render(){
-  const t=d(),app=document.getElementById("app");
-  app.dir=t.dir; app.style.fontFamily=t.ff;
-  app.style.minHeight="100vh"; app.style.background="#f8f7f4";
-  const cfgChanged=JSON.stringify(S.cfg)!==JSON.stringify(DEFAULT_CFG);
-
-  app.innerHTML=`
-  <header style="background:#fff;border-bottom:1px solid #e8e6e1;position:sticky;top:0;z-index:50;">
-    <div style="max-width:980px;margin:0 auto;padding:0 1rem;display:flex;align-items:center;justify-content:space-between;height:54px;gap:10px;">
-      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-        <div style="width:29px;height:29px;background:#1D9E75;border-radius:7px;display:flex;align-items:center;justify-content:center;">
-          <span style="color:#fff;font-size:12px;font-weight:700;">✦</span>
         </div>
-        <div>
-          <div style="font-weight:600;font-size:13px;letter-spacing:-.2px;color:#111;">${t.appName}</div>
-          <div style="font-size:9px;color:#aaa;">${t.appTagline}</div>
+
+        <div class="input-group">
+          <label class="input-label" data-t="bncReceipts">TOTAL DES RECETTES BRUTES (DA)</label>
+          <input type="number" id="bnc-receipts" class="input-field" data-ph="bncRecPlaceholder" placeholder="Ex : 3 000 000" min="0" inputmode="decimal">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" data-t="bncExpenses">TOTAL DES DÉPENSES (DA)</label>
+          <input type="number" id="bnc-expenses" class="input-field" data-ph="bncExpPlaceholder" placeholder="Ex : 1 200 000" min="0" inputmode="decimal">
+        </div>
+
+        <button id="btn-calc-bnc" class="btn-primary">
+          <span data-t="bncCalc">Calculer l'IRG BNC</span>
+        </button>
+      </div>
+
+      <div id="bnc-result" class="card hidden"></div>
+
+      <!-- Compliance Roadmap -->
+      <div class="card" style="margin-top:0;">
+        <div class="card-header">
+          <div class="card-icon" style="background:rgba(245,158,11,0.15);">🗺️</div>
+          <div>
+            <div class="card-title" data-t="bncRoadmapTitle">Feuille de route conformité BNC</div>
+          </div>
+        </div>
+
+        <div class="checklist-item" onclick="this.classList.toggle('checked')">
+          <div class="checklist-box"><span class="checklist-check">✓</span></div>
+          <div class="checklist-text" data-t="bncCheck1"><strong>Registre simplifié</strong> des recettes et dépenses</div>
+        </div>
+        <div class="checklist-item" onclick="this.classList.toggle('checked')">
+          <div class="checklist-box"><span class="checklist-check">✓</span></div>
+          <div class="checklist-text" data-t="bncCheck2">Dépôt <strong>G50 mensuel</strong> via Jibayatic</div>
+        </div>
+        <div class="checklist-item" onclick="this.classList.toggle('checked')">
+          <div class="checklist-box"><span class="checklist-check">✓</span></div>
+          <div class="checklist-text" data-t="bncCheck3">Conservation des <strong>justificatifs</strong> (5 ans)</div>
+        </div>
+        <div class="checklist-item" onclick="this.classList.toggle('checked')">
+          <div class="checklist-box"><span class="checklist-check">✓</span></div>
+          <div class="checklist-text" data-t="bncCheck4"><strong>Déclaration annuelle</strong> avant le 30 avril</div>
+        </div>
+        <div class="checklist-item" onclick="this.classList.toggle('checked')">
+          <div class="checklist-box"><span class="checklist-check">✓</span></div>
+          <div class="checklist-text" data-t="bncCheck5">Inscription au registre <strong>NIF</strong></div>
+        </div>
+        <div class="checklist-item" onclick="this.classList.toggle('checked')">
+          <div class="checklist-box"><span class="checklist-check">✓</span></div>
+          <div class="checklist-text" data-t="bncCheck6">Compte bancaire <strong>professionnel</strong> dédié</div>
+        </div>
+
+        <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="compliance-chip">📅 G50</span>
+          <span class="compliance-chip">🖥️ Jibayatic</span>
+          <span class="compliance-chip">📆 Avant le 20</span>
+          <span class="compliance-chip">📁 5 ans</span>
         </div>
       </div>
-      <nav style="display:flex;gap:2px;flex-wrap:wrap;">
-        ${t.tabs.map(tab=>`
-        <button class="ntab" onclick="setTab('${tab.id}')"
-          style="padding:5px 11px;border-radius:7px;font-size:11px;font-weight:500;position:relative;
-                 color:${S.tab===tab.id?(tab.id==="settings"?"#334155":"#0F6E56"):"#555"};
-                 background:${S.tab===tab.id?(tab.id==="settings"?"#f1f5f9":"#e1f5ee"):"none"};
-                 font-family:${t.ff};">
-          ${tab.label}
-          ${tab.id==="settings"&&cfgChanged?`<span style="position:absolute;top:3px;${t.dir==="rtl"?"left":"right"}:3px;width:6px;height:6px;background:#BA7517;border-radius:50%;"></span>`:""}
-        </button>`).join("")}
-      </nav>
-      <button class="lbtn cbtn" onclick="toggleLang()"
-        style="padding:5px 13px;border-radius:7px;border:1px solid #d0cec9;background:#fafaf8;
-               font-size:11px;font-weight:500;color:#333;flex-shrink:0;font-family:${t.ff};">
-        ${t.langToggle}
+    </section>
+
+    <!-- ============================
+         SETTINGS PANEL
+    ============================ -->
+    <section id="panel-settings" class="panel">
+      <div class="page-title" data-t="settingsTitle">Paramètres Fiscaux</div>
+      <div class="page-sub" data-t="settingsSub">Modifiez les taux et seuils — les calculs se mettent à jour instantanément.</div>
+
+      <!-- IFU Settings -->
+      <div class="card">
+        <div class="settings-section-title" data-t="settingsIFU">IFU — Impôt Forfaitaire Unique</div>
+
+        <div class="settings-row">
+          <span class="settings-row-label" data-t="settingsMinStandard">Minimum standard (DA)</span>
+          <input type="number" id="set-ifu-min-standard" class="settings-input" value="30000" min="0">
+        </div>
+        <div class="settings-row">
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label" data-t="settingsRateProd">Taux Production (%)</span>
+          <input type="number" id="set-ifu-rate-prod" class="settings-input" value="5" min="0" max="100" step="0.1">
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label" data-t="settingsRateServ">Taux Services/Commerce (%)</span>
+          <input type="number" id="set-ifu-rate-serv" class="settings-input" value="12" min="0" max="100" step="0.1">
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label" data-t="settingsRateMicro">Taux Micro-Import (%)</span>
+          <input type="number" id="set-ifu-rate-micro" class="settings-input" value="0.5" min="0" max="100" step="0.1">
+        </div>
+      </div>
+
+      <!-- IBS Settings -->
+      <div class="card">
+        <div class="settings-section-title" data-t="settingsIBS">IBS — Impôt sur les Bénéfices</div>
+        <div class="settings-row">
+          <span class="settings-row-label" data-t="settingsIBSProd">Production (%)</span>
+          <input type="number" id="set-ibs-prod" class="settings-input" value="19" min="0" max="100" step="0.1">
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label" data-t="settingsIBSBTPH">BTPH/Tourisme (%)</span>
+          <input type="number" id="set-ibs-btph" class="settings-input" value="23" min="0" max="100" step="0.1">
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label" data-t="settingsIBSComm">Commerce/Services (%)</span>
+          <input type="number" id="set-ibs-comm" class="settings-input" value="26" min="0" max="100" step="0.1">
+        </div>
+      </div>
+
+      <!-- TVA Settings -->
+      <div class="card">
+        <div class="settings-section-title" data-t="settingsTVA">TVA — Taxe sur la Valeur Ajoutée</div>
+        <div class="settings-row">
+          <span class="settings-row-label" data-t="settingsTVANormal">Taux normal (%)</span>
+          <input type="number" id="set-tva-normal" class="settings-input" value="19" min="0" max="100" step="0.1">
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label" data-t="settingsTVAReduced">Taux réduit (%)</span>
+          <input type="number" id="set-tva-reduced" class="settings-input" value="9" min="0" max="100" step="0.1">
+        </div>
+      </div>
+
+      <!-- Acompte Settings -->
+      <div class="card">
+        <div class="settings-section-title" data-t="settingsAcompte">Acompte Douanier (Import)</div>
+        <div class="settings-row">
+          <span class="settings-row-label" data-t="settingsAcomptGoods">Marchandises (%)</span>
+          <input type="number" id="set-acompte-goods" class="settings-input" value="2" min="0" max="100" step="0.1">
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label" data-t="settingsAcompteServ">Services (%)</span>
+          <input type="number" id="set-acompte-serv" class="settings-input" value="4" min="0" max="100" step="0.1">
+        </div>
+      </div>
+
+      <!-- BNC Settings -->
+      <div class="card">
+        <div class="settings-section-title" data-t="settingsBNC">BNC — Régime Réel Simplifié</div>
+        <div class="settings-row">
+          <span class="settings-row-label" data-t="settingsBNCRate">Taux IRG forfaitaire (%)</span>
+          <input type="number" id="set-bnc-rate" class="settings-input" value="19" min="0" max="100" step="0.1">
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label" data-t="settingsBNCMin">Plancher légal (DA)</span>
+          <input type="number" id="set-bnc-min" class="settings-input" value="10000" min="0">
+        </div>
+      </div>
+
+      <!-- IRG Brackets -->
+      <div class="card">
+        <div class="settings-section-title" data-t="settingsIRG">IRG — Barème Progressif</div>
+
+        <div class="bracket-row">
+          <div class="bracket-range bracket-range-label">Jusqu'à 240 000 DA</div>
+          <div class="bracket-rate-row">
+            <span class="bracket-rate-label" data-t="settingsRate">Taux (%)</span>
+            <input type="number" id="set-irg-rate-0" class="settings-input" value="0" min="0" max="100" step="0.1">
+          </div>
+        </div>
+        <div class="bracket-row">
+          <div class="bracket-range bracket-range-label">240 001 – 480 000 DA</div>
+          <div class="bracket-rate-row">
+            <span class="bracket-rate-label" data-t="settingsRate">Taux (%)</span>
+            <input type="number" id="set-irg-rate-1" class="settings-input" value="23" min="0" max="100" step="0.1">
+          </div>
+        </div>
+        <div class="bracket-row">
+          <div class="bracket-range bracket-range-label">480 001 – 960 000 DA</div>
+          <div class="bracket-rate-row">
+            <span class="bracket-rate-label" data-t="settingsRate">Taux (%)</span>
+            <input type="number" id="set-irg-rate-2" class="settings-input" value="27" min="0" max="100" step="0.1">
+          </div>
+        </div>
+        <div class="bracket-row">
+          <div class="bracket-range bracket-range-label">960 001 – 1 920 000 DA</div>
+          <div class="bracket-rate-row">
+            <span class="bracket-rate-label" data-t="settingsRate">Taux (%)</span>
+            <input type="number" id="set-irg-rate-3" class="settings-input" value="30" min="0" max="100" step="0.1">
+          </div>
+        </div>
+        <div class="bracket-row">
+          <div class="bracket-range bracket-range-label">1 920 001 – 3 840 000 DA</div>
+          <div class="bracket-rate-row">
+            <span class="bracket-rate-label" data-t="settingsRate">Taux (%)</span>
+            <input type="number" id="set-irg-rate-4" class="settings-input" value="33" min="0" max="100" step="0.1">
+          </div>
+        </div>
+        <div class="bracket-row">
+          <div class="bracket-range bracket-range-label">Au-delà de 3 840 000 DA</div>
+          <div class="bracket-rate-row">
+            <span class="bracket-rate-label" data-t="settingsRate">Taux (%)</span>
+            <input type="number" id="set-irg-rate-5" class="settings-input" value="35" min="0" max="100" step="0.1">
+          </div>
+        </div>
+      </div>
+
+      <!-- Reset -->
+      <div id="settings-saved-msg" class="alert-card alert-success hidden" style="margin-bottom:12px;">
+        <span class="alert-icon">✅</span>
+        <div><div class="alert-title" data-t="settingsSaved">Paramètres sauvegardés et recalculés</div></div>
+      </div>
+
+      <button id="btn-reset-settings" class="btn-secondary" style="margin-bottom:20px;">
+        🔄 <span data-t="settingsReset">Réinitialiser les valeurs par défaut</span>
       </button>
-    </div>
-  </header>
-  <main style="max-width:980px;margin:0 auto;padding:1.4rem 1rem 2.5rem;">
-    ${S.tab==="ifu"?panelIFU():S.tab==="reel"?panelReel():S.tab==="simp"?panelSimp():panelSettings()}
-  </main>
-  <footer style="text-align:center;padding:1rem;font-size:11px;color:#bbb;border-top:1px solid #ece9e3;">
-    ⚠ ${t.footer}
-  </footer>`;
+    </section>
 
-  /* bind inputs */
-  on("ifu-ca","input",e=>{
-    S.ifu.ca=e.target.value;
-    S.ifu.err=""; S.ifu.res=null;
-    /* live threshold check — re-render only if state changes */
-    const v=pf(e.target.value);
-    const wasOver=S.ifu.overThreshold;
-    S.ifu.overThreshold=(!isNaN(v)&&v>IFU_MAX_CA);
-    if(S.ifu.overThreshold!==wasOver) render();
-  });
-  on("ifu-act","change",e=>{S.ifu.act=e.target.value;S.ifu.res=null;});
-  on("reel-gross","input",e=>{S.reel.gross=e.target.value;S.reel.err="";S.reel.res=null;});
-  on("reel-exp","input",e=>{S.reel.exp=e.target.value;S.reel.res=null;});
-  on("reel-ibsact","change",e=>{S.reel.ibsAct=e.target.value;S.reel.res=null;});
-  on("simp-rec","input",e=>{S.simp.rec=e.target.value;S.simp.err="";S.simp.res=null;});
-  on("simp-exp","input",e=>{S.simp.exp=e.target.value;S.simp.res=null;});
+  </main><!-- end main-content -->
 
-  if($("exp-checklist-container")) renderExpChecklist();
-}
+  <!-- ==============================
+       BOTTOM NAV
+  ============================== -->
+  <nav id="bottom-nav">
+    <button class="nav-item active" data-nav="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span class="nav-label" data-t="navHome">Accueil</span>
+    </button>
 
-/* ── Global handlers ── */
-function setTab(id){S.tab=id;render();}
-function toggleLang(){
-  S.lang=S.lang==="fr"?"ar":"fr";
-  [S.ifu,S.reel,S.simp].forEach(m=>{m.res=null;m.err="";});
-  S.ifu.overThreshold=false; reportCache=[];
-  render();
-}
-function setEntity(v)      {S.reel.entity=v;        S.reel.res=null; render();}
-function setSector(v)      {S.reel.sector=v;         S.reel.res=null; render();}
-function setAcompteType(v) {S.reel.acompteType=v;    S.reel.res=null; render();}
-function toggleTVA(v)      {S.reel.tva=v;            S.reel.res=null; render();}
-function setTvaRate(r)     {S.reel.tvaRate=r;         S.reel.res=null; render();}
+    <button class="nav-item" data-nav="ifu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+      </svg>
+      <span class="nav-label" data-t="navIFU">IFU</span>
+    </button>
 
-/* modal backdrop close */
-document.getElementById("report-modal").addEventListener("click",function(e){
-  if(e.target===this) closeReport();
-});
+    <button class="nav-item" data-nav="reel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+      </svg>
+      <span class="nav-label" data-t="navReel">Réel</span>
+    </button>
 
-render();
-</script>
+    <button class="nav-item" data-nav="bnc">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+      </svg>
+      <span class="nav-label" data-t="navBNC">BNC</span>
+    </button>
+
+    <button class="nav-item" data-nav="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/>
+      </svg>
+      <span class="nav-label" data-t="navSettings">Réglages</span>
+    </button>
+  </nav>
+
+</div><!-- end #app -->
+</body>
+</html>
