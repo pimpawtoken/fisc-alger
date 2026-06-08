@@ -101,7 +101,6 @@ body.ar {
   gap: 9px;
 }
 
-/* Logo: stacked ج letters */
 .brand-icon {
   width: 34px;
   height: 34px;
@@ -272,11 +271,6 @@ body.ar {
   letter-spacing: 0.03em;
   text-transform: uppercase;
   white-space: nowrap;
-}
-
-/* Settings nav icon — gear/cogwheel inline SVG */
-.nav-gear svg {
-  /* uses the turbine SVG defined inline */
 }
 
 /* =============================================
@@ -544,11 +538,6 @@ select.input-field option {
   margin-top: 14px;
 }
 
-.result-block.result-blue {
-  background: rgba(59,130,246,0.08);
-  border-color: rgba(59,130,246,0.2);
-}
-
 .result-label {
   font-size: 10px;
   font-weight: 800;
@@ -557,8 +546,6 @@ select.input-field option {
   color: var(--c-bright);
   margin-bottom: 4px;
 }
-
-.result-block.result-blue .result-label { color: var(--c-bluef); }
 
 .result-amount {
   font-size: 24px;
@@ -569,15 +556,11 @@ select.input-field option {
   line-height: 1.2;
 }
 
-.result-block.result-blue .result-amount { color: #dbeafe; }
-
 .result-currency {
   font-size: 12px;
   color: var(--c-faint);
   margin-top: 3px;
 }
-
-.result-block.result-blue .result-currency { color: var(--c-bluef); }
 
 .result-rows { margin-top: 12px; }
 
@@ -664,22 +647,6 @@ body.ar .result-row { flex-direction: row-reverse; }
 body.ar .alert-card { flex-direction: row-reverse; }
 
 /* =============================================
-   EXPORT BADGE
-============================================= */
-.export-badge {
-  background: linear-gradient(135deg, rgba(5,150,105,0.18), rgba(13,148,136,0.14));
-  border: 1px solid rgba(16,185,129,0.28);
-  border-radius: var(--radius-lg);
-  padding: 22px 16px;
-  text-align: center;
-  margin-top: 10px;
-}
-
-.export-badge-icon { font-size: 40px; margin-bottom: 8px; }
-.export-badge-title { font-size: 18px; font-weight: 800; color: var(--c-bright); margin-bottom: 5px; }
-.export-badge-sub { font-size: 12px; color: var(--c-faint); line-height: 1.55; }
-
-/* =============================================
    STAT PILLS
 ============================================= */
 .stat-pill {
@@ -732,97 +699,6 @@ body.ar .stat-pill { flex-direction: row-reverse; }
 }
 
 /* =============================================
-   TOGGLE SWITCH
-============================================= */
-.toggle-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--c-border);
-}
-
-.toggle-label { font-size: 13px; color: var(--c-sub); }
-
-.toggle-switch {
-  position: relative;
-  width: 44px;
-  height: 24px;
-  flex-shrink: 0;
-}
-
-.toggle-switch input {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.toggle-slider {
-  position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background 0.25s, border-color 0.25s;
-}
-
-.toggle-slider::before {
-  content: '';
-  position: absolute;
-  left: 2px;
-  top: 2px;
-  width: 18px;
-  height: 18px;
-  background: var(--c-sub);
-  border-radius: 50%;
-  transition: transform 0.25s, background 0.25s;
-}
-
-.toggle-switch input:checked + .toggle-slider {
-  background: rgba(16,185,129,0.28);
-  border-color: rgba(16,185,129,0.5);
-}
-
-.toggle-switch input:checked + .toggle-slider::before {
-  transform: translateX(20px);
-  background: var(--c-em);
-}
-
-body.ar .toggle-row { flex-direction: row-reverse; }
-
-/* =============================================
-   TVA SELECTOR
-============================================= */
-.tva-selector {
-  display: flex;
-  gap: 7px;
-  margin-top: 8px;
-}
-
-.tva-option {
-  flex: 1;
-  padding: 9px;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.04);
-  color: var(--c-muted);
-  font-size: 12px;
-  font-weight: 700;
-  text-align: center;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
-}
-
-.tva-option.selected {
-  background: rgba(16,185,129,0.14);
-  border-color: rgba(16,185,129,0.4);
-  color: var(--c-bright);
-}
-
-/* =============================================
    COMPLIANCE CHIPS
 ============================================= */
 .chip-row {
@@ -844,52 +720,6 @@ body.ar .toggle-row { flex-direction: row-reverse; }
   color: var(--c-bluef);
   font-weight: 600;
 }
-
-/* =============================================
-   CHECKLIST (RSI compliance roadmap)
-============================================= */
-.checklist-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.055);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-
-.checklist-item:last-child { border-bottom: none; }
-
-.checklist-box {
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
-  border: 2px solid rgba(255,255,255,0.15);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 1px;
-  transition: background 0.2s, border-color 0.2s;
-}
-
-.checklist-item.checked .checklist-box {
-  background: var(--c-em);
-  border-color: var(--c-em);
-}
-
-.checklist-check { display: none; color: white; font-size: 12px; font-weight: 900; }
-.checklist-item.checked .checklist-check { display: block; }
-
-.checklist-text {
-  font-size: 12px;
-  color: var(--c-sub);
-  line-height: 1.65;
-  flex: 1;
-}
-
-.checklist-text strong { color: #e2e8f0; font-weight: 700; }
 
 /* =============================================
    SETTINGS PANEL
@@ -997,55 +827,6 @@ body.ar .bracket-rate-row { flex-direction: row-reverse; }
 .mt10 { margin-top: 10px; }
 .mt12 { margin-top: 12px; }
 .mt14 { margin-top: 14px; }
-
-/* G12 info card special */
-.g12-card {
-  background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(59,130,246,0.06));
-  border: 1px solid rgba(168,85,247,0.2);
-  border-radius: var(--radius-md);
-  padding: 13px 14px;
-  margin-top: 10px;
-}
-
-.g12-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--c-purplef);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.g12-item {
-  display: flex;
-  gap: 8px;
-  padding: 7px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  align-items: flex-start;
-}
-
-.g12-item:last-child { border-bottom: none; }
-.g12-badge {
-  flex-shrink: 0;
-  background: rgba(168,85,247,0.18);
-  color: var(--c-purplef);
-  border: 1px solid rgba(168,85,247,0.3);
-  border-radius: 5px;
-  font-size: 10px;
-  font-weight: 800;
-  padding: 2px 7px;
-  white-space: nowrap;
-}
-
-.g12-desc {
-  font-size: 11px;
-  color: var(--c-sub);
-  line-height: 1.55;
-}
-
-body.ar .g12-item { flex-direction: row-reverse; }
-body.ar .g12-title { flex-direction: row-reverse; }
 </style>
 
 <script>
@@ -1087,12 +868,10 @@ const T = {
     appTitle:'Fiscal Algérie', appSub:'Calculateur Fiscal', year:'Loi de Finances',
     heroTitle:'Système Fiscal Algérien',
     heroDesc:"Calculez vos impôts avec précision selon les lois fiscales algériennes en vigueur.",
-    navHome:'Accueil', navIFU:'IFU', navReel:'Réel', navRSI:'RSI', navSettings:'Réglages',
+    navHome:'Accueil', navIFU:'IFU', navSettings:'Réglages',
     homeTitle:'Bienvenue',
     homeSub:"Choisissez un module de calcul ou accédez aux réglages fiscaux.",
     quickIFU:'IFU — Forfait Unique', quickIFUSub:"Petites entreprises & auto-entrepreneurs",
-    quickReel:'Régime Réel',        quickReelSub:"Entreprises & particuliers (IBS/IRG)",
-    quickRSI:'Régime Réel Simplifié (RSI)', quickRSISub:"Professions libérales ≤ 8 000 000 DA",
     quickSettings:'Paramètres Fiscaux', quickSettingsSub:"Taux, barèmes et seuils en vigueur",
     // IFU
     ifuTitle:'Calcul IFU', ifuSub:"Impôt Forfaitaire Unique — Régime Jzafi",
@@ -1111,41 +890,6 @@ const T = {
     ifuMinimum:'Minimum légal', ifuDue:'IFU À PAYER',
     ifuMinApplied:'⚠️ Minimum légal appliqué',
     ifuCompliance:"التصريحات الجبائية إلزامية، ويجب احترام آجال إيداعها بدقة. أي تأخر أو عدم التصريح يعرض المكلف لتطبيق غرامات وعقوبات جبائية طبقًا للتشريع المعمول به.",
-    // Réel
-    reelTitle:'Régime Réel', reelSub:"Calcul IBS / IRG avec intégration Import-Export",
-    reelRevenue:"Chiffre d'affaires brut (DA)", reelExpenses:'Charges déductibles (DA)',
-    reelRevPlaceholder:'Ex : 50 000 000', reelExpPlaceholder:'Ex : 30 000 000',
-    reelEntityType:"Type d'entité", reelCompany:'Société (IBS)', reelIndividual:'Personne physique (IRG)',
-    reelSectorType:"Secteur d'activité", reelStandard:'Standard', reelImport:'Import', reelExport:'Export',
-    reelIBSSector:'Secteur (IBS)', reelIBSProd:'Production', reelIBSBTPH:'BTPH / Tourisme', reelIBSComm:'Commerce / Services',
-    reelTVAToggle:'Calculer la TVA estimée', reelTVARate:'Taux TVA',
-    reelCalc:"Calculer l'impôt", reelResultTitle:'Résultat — Régime Réel',
-    reelNetProfit:'Bénéfice net', reelTaxRate:"Taux d'imposition",
-    reelTaxDue:'IMPÔT DÛ (IBS/IRG)', reelTVADue:'TVA ESTIMÉE', reelTVABase:'Base TVA (HT)',
-    reelFilingDeadline:'Déclaration G50 mensuelle avant le 20 du mois suivant via Jibayatic.',
-    reelIRGDetails:'Détail tranches IRG',
-    reelImportAlert:'⚠️ Restriction IFU — Secteur Import',
-    reelImportAlertText:"Les importateurs sont obligatoirement soumis au régime IFU. L'accès au régime réel est restreint pour ce secteur.",
-    reelAcompteTitle:'Acompte Impôt (Importation)',
-    reelAcompteGoods:'Acompte marchandises (2%)', reelAcompteServices:'Acompte services (4%)',
-    reelFoodExemption:"🌾 Exemption alimentaire : Les importations de produits alimentaires de base (farine, semoule, lait, huile) bénéficient d'exonérations spéciales.",
-    reelExportTitle:'🏆 Exonération Totale — Export',
-    reelExportText:"Le secteur export bénéficie d'une exonération totale de 100% : IBS/IRG = 0%, TVA = 0%. Soutien à la production nationale.",
-    // RSI
-    rsiTitle:'Régime Réel Simplifié (RSI)', rsiSub:"Professions libérales & non-commerciales ≤ 8 000 000 DA",
-    rsiReceipts:'Total des recettes brutes (DA)', rsiExpenses:'Total des dépenses (DA)',
-    rsiRecPlaceholder:'Ex : 3 000 000', rsiExpPlaceholder:'Ex : 1 200 000',
-    rsiCalc:"Calculer l'IRG RSI",
-    rsiResultTitle:'Résultat RSI — IRG', rsiNetProfit:'Bénéfice net',
-    rsiFlatRate:'Taux IRG forfaitaire', rsiComputed:'IRG calculé',
-    rsiMinimum:'Plancher légal', rsiDue:'IRG RSI À PAYER',
-    rsiRoadmapTitle:'Feuille de route conformité RSI',
-    rsiCheck1:"Tenue d'un registre simplifié des recettes et dépenses",
-    rsiCheck2:'Dépôt de la déclaration G50 mensuelle via Jibayatic',
-    rsiCheck3:'Conservation des justificatifs de paiement (5 ans)',
-    rsiCheck4:'Déclaration annuelle du résultat fiscal avant le 30 avril',
-    rsiCheck5:'Inscription au registre des personnes physiques (NIF)',
-    rsiCheck6:'Utilisation du compte bancaire professionnel dédié',
     // Settings
     settingsTitle:'Paramètres Fiscaux',
     settingsSub:"Modifiez les taux et seuils — les calculs se mettent à jour instantanément.",
@@ -1173,25 +917,15 @@ const T = {
     bracket4Range:'960 001 – 1 920 000 DA',
     bracket5Range:'1 920 001 – 3 840 000 DA',
     bracket6Range:'Au-delà de 3 840 000 DA',
-    // G12
-    g12Title:'Déclarations G12 & G12 BIS',
-    g12Info1Title:'G12 — Déclaration Annuelle des Salaires',
-    g12Info1Desc:"Déclaration annuelle obligatoire des salaires versés à l'ensemble des employés. À déposer avant le 30 avril de l'année suivante. Concerne tous les employeurs soumis à l'IRG salaires.",
-    g12Info2Title:'G12 BIS — État des Honoraires & Commissions',
-    g12Info2Desc:"Déclaration des honoraires, commissions, courtages et rétributions versés à des tiers. À déposer avant le 30 avril. Applicable aux entreprises ayant versé des honoraires à des prestataires ou professions libérales.",
-    g12Info3Title:'Plateforme de dépôt',
-    g12Info3Desc:'Les deux déclarations G12 et G12 BIS sont déposées via la plateforme Jibayatic ou directement à la direction des impôts territorialement compétente.',
   },
   ar: {
     appTitle:'الجباية الجزائرية', appSub:'الحاسبة الجبائية', year:'قانون المالية',
     heroTitle:'النظام الجبائي الجزائري',
     heroDesc:'احسب ضرائبك بدقة وفق أحكام قانون المالية الجزائري.',
-    navHome:'الرئيسية', navIFU:'الجزافي', navReel:'الحقيقي', navRSI:'المبسط', navSettings:'الإعدادات',
+    navHome:'الرئيسية', navIFU:'الجزافي', navSettings:'الإعدادات',
     homeTitle:'أهلاً بك',
     homeSub:'اختر وحدة الحساب أو ادخل إلى الإعدادات الجبائية.',
     quickIFU:'النظام الجزافي الوحيد (IFU)', quickIFUSub:'المؤسسات الصغيرة والمقاولون الذاتيون',
-    quickReel:'النظام الحقيقي', quickReelSub:'الشركات والأفراد (IBS/IRG)',
-    quickRSI:'النظام الحقيقي المبسط (RSI)', quickRSISub:'المهن الحرة ≤ 8 مليون دج',
     quickSettings:'المعاملات الجبائية', quickSettingsSub:'النسب والجداول والحدود المعمول بها',
     ifuTitle:'حساب الضريبة الجزافية', ifuSub:'الضريبة الجزافية الوحيدة — النظام الجزافي',
     ifuCA:'رقم الأعمال السنوي (دج)', ifuCAPlaceholder:'مثال: 5,000,000',
@@ -1209,39 +943,6 @@ const T = {
     ifuMinimum:'الحد الأدنى القانوني', ifuDue:'الضريبة الجزافية المستحقة',
     ifuMinApplied:'⚠️ تم تطبيق الحد الأدنى القانوني',
     ifuCompliance:'إيداع التصريح G50 ثلاثي عبر منصة مصالحة قبل العشرين من الشهر الموالي لكل ثلاثي.',
-    reelTitle:'النظام الحقيقي', reelSub:'حساب IBS / IRG مع تكامل الاستيراد والتصدير',
-    reelRevenue:'رقم الأعمال الإجمالي (دج)', reelExpenses:'الأعباء القابلة للخصم (دج)',
-    reelRevPlaceholder:'مثال: 50,000,000', reelExpPlaceholder:'مثال: 30,000,000',
-    reelEntityType:'نوع الكيان', reelCompany:'شركة (IBS)', reelIndividual:'شخص طبيعي (IRG)',
-    reelSectorType:'قطاع النشاط', reelStandard:'عادي', reelImport:'استيراد', reelExport:'تصدير',
-    reelIBSSector:'القطاع (IBS)', reelIBSProd:'إنتاج', reelIBSBTPH:'بناء / سياحة', reelIBSComm:'تجارة / خدمات',
-    reelTVAToggle:'احتساب TVA التقديري', reelTVARate:'نسبة TVA',
-    reelCalc:'احسب الضريبة', reelResultTitle:'النتيجة — النظام الحقيقي',
-    reelNetProfit:'الربح الصافي', reelTaxRate:'نسبة الضريبة',
-    reelTaxDue:'الضريبة المستحقة (IBS/IRG)', reelTVADue:'TVA التقديرية', reelTVABase:'الأساس الخاضع لـ TVA',
-    reelFilingDeadline:'إيداع التصريح G50 الشهري قبل العشرين عبر منصة جبايتيك.',
-    reelIRGDetails:'تفاصيل شرائح IRG',
-    reelImportAlert:'⚠️ قيد الضريبة الجزافية — قطاع الاستيراد',
-    reelImportAlertText:'المستوردون خاضعون وجوباً للنظام الجزافي الوحيد. الوصول إلى النظام الحقيقي مقيد لهذا القطاع.',
-    reelAcompteTitle:'الدفع الجزئي المسبق (الاستيراد)',
-    reelAcompteGoods:'مسبق البضائع (2%)', reelAcompteServices:'مسبق الخدمات (4%)',
-    reelFoodExemption:'🌾 إعفاء غذائي: واردات المواد الغذائية الأساسية (دقيق، سميد، حليب، زيت) تستفيد من إعفاءات خاصة.',
-    reelExportTitle:'🏆 إعفاء كلي — التصدير',
-    reelExportText:'قطاع التصدير يستفيد من إعفاء تام 100%: IBS/IRG = 0%، TVA = 0%. دعماً للإنتاج الوطني.',
-    rsiTitle:'النظام الحقيقي المبسط (RSI)', rsiSub:'المهن الحرة والغير تجارية ≤ 8,000,000 دج',
-    rsiReceipts:'إجمالي المقبوضات الخامة (دج)', rsiExpenses:'إجمالي النفقات (دج)',
-    rsiRecPlaceholder:'مثال: 3,000,000', rsiExpPlaceholder:'مثال: 1,200,000',
-    rsiCalc:'احسب IRG المبسط',
-    rsiResultTitle:'نتيجة RSI — IRG', rsiNetProfit:'الربح الصافي',
-    rsiFlatRate:'نسبة IRG الجزافية', rsiComputed:'IRG المحتسب',
-    rsiMinimum:'الحد الأدنى القانوني', rsiDue:'IRG RSI المستحق',
-    rsiRoadmapTitle:'خارطة طريق الامتثال الجبائي RSI',
-    rsiCheck1:'مسك سجل بسيط للمقبوضات والمدفوعات',
-    rsiCheck2:'إيداع التصريح الشهري G50 عبر جبايتيك',
-    rsiCheck3:'الاحتفاظ بوثائق الدفع (5 سنوات)',
-    rsiCheck4:'التصريح السنوي بالنتيجة الجبائية قبل 30 أبريل',
-    rsiCheck5:'التسجيل في سجل الأشخاص الطبيعيين (NIF)',
-    rsiCheck6:'استخدام حساب بنكي مهني مخصص',
     settingsTitle:'الإعدادات الجبائية',
     settingsSub:'عدّل النسب والحدود — تُحدَّث الحسابات فوراً.',
     settingsIFU:'الضريبة الجزافية الوحيدة (IFU)',
@@ -1268,13 +969,6 @@ const T = {
     bracket4Range:'960,001 – 1,920,000 دج',
     bracket5Range:'1,920,001 – 3,840,000 دج',
     bracket6Range:'أكثر من 3,840,000 دج',
-    g12Title:'تصريحات G12 و G12 BIS',
-    g12Info1Title:'G12 — التصريح السنوي بالأجور',
-    g12Info1Desc:'تصريح سنوي إجباري بالأجور المصرفة لجميع الموظفين. يودَع قبل 30 أبريل من السنة الموالية. يخص كل أصحاب العمل الخاضعين لـ IRG على الأجور.',
-    g12Info2Title:'G12 BIS — كشف المكافآت والعمولات',
-    g12Info2Desc:'تصريح بالمكافآت والعمولات والأتعاب المدفوعة للغير. يودَع قبل 30 أبريل. يطبق على المؤسسات التي دفعت أتعاباً لمقدمي خدمات أو مهن حرة.',
-    g12Info3Title:'منصة الإيداع',
-    g12Info3Desc:'يودَع التصريحان G12 وG12 BIS عبر منصة جبايتيك أو مباشرة لدى مديرية الضرائب المختصة إقليمياً.',
   }
 };
 
@@ -1285,42 +979,10 @@ function t(key) { return T[STATE.lang][key] || key; }
 
 function fmt(v) {
   if (v === null || v === undefined || isNaN(v)) return '0.00';
-  return new Intl.NumberFormat('fr-DZ', { minimumFractionDigits:2, maximumFractionDigits:2 }).format(v);
+  return new Intl.NumberFormat('fr-FR', { minimumFractionDigits:2, maximumFractionDigits:2 }).format(v);
 }
 
 function fmtDA(v) { return fmt(v) + ' ' + t('da'); }
-
-function calcIRG(profit) {
-  const br = STATE.irg;
-  let tax = 0, prev = 0;
-  for (let i = 0; i < br.length; i++) {
-    if (profit <= prev) break;
-    const upper = isFinite(br[i].max) ? br[i].max : profit;
-    const taxable = Math.min(profit, upper) - prev;
-    if (taxable > 0) tax += taxable * (br[i].rate / 100);
-    prev = isFinite(br[i].max) ? br[i].max : profit;
-    if (profit <= upper) break;
-  }
-  return tax;
-}
-
-function getIRGBreakdown(profit) {
-  const br = STATE.irg, rows = [], ranges = [
-    t('bracket1Range'),t('bracket2Range'),t('bracket3Range'),
-    t('bracket4Range'),t('bracket5Range'),t('bracket6Range')
-  ];
-  let prev = 0;
-  for (let i = 0; i < br.length; i++) {
-    if (profit <= prev) break;
-    const upper = isFinite(br[i].max) ? br[i].max : profit;
-    const taxable = Math.min(profit, upper) - prev;
-    const taxAmt = taxable * (br[i].rate / 100);
-    if (taxable > 0 && br[i].rate > 0) rows.push({ range:ranges[i], rate:br[i].rate, taxable, taxAmt });
-    prev = isFinite(br[i].max) ? br[i].max : profit;
-    if (profit <= upper) break;
-  }
-  return rows;
-}
 
 // ================================================
 // NAVIGATION
@@ -1443,9 +1105,8 @@ function calcIFU() {
   let rate;
   if (activity === 'production') rate = STATE.ifu.rateProduction;
   else if (activity === 'services') rate = STATE.ifu.rateServices;
-  else rate = STATE.ifu.rateAutoEntrepreneur; // auto-entrepreneur
+  else rate = STATE.ifu.rateAutoEntrepreneur;
 
-  // For auto-entrepreneur use lower minimum, otherwise standard
   const isAutoE = (activity === 'autoentrepreneur');
   const minimum = isAutoE ? STATE.ifu.minAutoEntrepreneur : STATE.ifu.minStandard;
 
@@ -1498,9 +1159,8 @@ function calcIFU() {
       <span class="alert-icon">✅</span>
       <div>
         <div class="alert-title">modes de paiement-طرق الدفع</div>
-        <div class="alert-text">${t('')}</div>
       </div>
-      </div>
+    </div>
     <div class="chip-row">
       <span class="compliance-chip">🏢CPI/CDI</span>
       <span class="compliance-chip">🖥️ Jibayatec / CIB / ELDAHABIA </span>
@@ -1511,151 +1171,7 @@ function calcIFU() {
       <span class="compliance-chip">3eme 25% 📆15 désombre</span>
       <span class="compliance-chip">📋 G12bis📆 20 janvier N+1 </span>
     </div>
-
   `;
-}
-
-// ================================================
-// RÉGIME RÉEL CALCULATOR
-// ================================================
-function calcReel() {
-  const revenue    = parseFloat(document.getElementById('reel-revenue').value)  || 0;
-  const expenses   = parseFloat(document.getElementById('reel-expenses').value) || 0;
-  const entityType = document.getElementById('reel-entity').value;
-  const sectorType = document.getElementById('reel-sector').value;
-  const ibsSector  = document.getElementById('reel-ibs-sector').value;
-  const tvaOn      = document.getElementById('reel-tva-toggle').checked;
-  const selTVA     = parseFloat(document.querySelector('.tva-option.selected')?.dataset.rate) || STATE.tva.normal;
-
-  const res = document.getElementById('reel-result');
-  res.classList.remove('hidden');
-
-  if (sectorType === 'export') {
-    res.innerHTML = `
-      <div class="export-badge animate-up">
-        <div class="export-badge-icon">🏆</div>
-        <div class="export-badge-title">${t('reelExportTitle')}</div>
-        <div class="export-badge-sub">${t('reelExportText')}</div>
-      </div>
-      <div class="stat-pill mt10"><span class="stat-pill-label">IBS / IRG</span><span class="stat-pill-value" style="color:var(--c-bright)">0.00 ${t('da')}</span></div>
-      <div class="stat-pill"><span class="stat-pill-label">TVA</span><span class="stat-pill-value" style="color:var(--c-bright)">0.00 ${t('da')}</span></div>`;
-    return;
-  }
-
-  const netProfit = revenue - expenses;
-
-  if (sectorType === 'import') {
-    const ag = revenue * (STATE.acompte.goods / 100);
-    const as_ = revenue * (STATE.acompte.services / 100);
-    res.innerHTML = `
-      <div class="alert-card alert-danger animate-up">
-        <span class="alert-icon">🚫</span>
-        <div><div class="alert-title">${t('reelImportAlert')}</div><div class="alert-text">${t('reelImportAlertText')}</div></div>
-      </div>
-      <div class="card mt12">
-        <div class="card-header">
-          <div class="card-icon" style="background:rgba(245,158,11,0.15)">💰</div>
-          <div><div class="card-title">${t('reelAcompteTitle')}</div></div>
-        </div>
-        <div class="result-rows">
-          <div class="result-row"><span class="rrl">${t('reelAcompteGoods')}</span><span class="rrv">${fmtDA(ag)}</span></div>
-          <div class="result-row"><span class="rrl">${t('reelAcompteServices')}</span><span class="rrv">${fmtDA(as_)}</span></div>
-        </div>
-      </div>
-      <div class="alert-card alert-success mt8">
-        <span class="alert-icon">🌾</span>
-        <div><div class="alert-text">${t('reelFoodExemption')}</div></div>
-      </div>`;
-    return;
-  }
-
-  let taxDue = 0, taxRateDisplay = '', irgHTML = '';
-  if (entityType === 'company') {
-    let rate = STATE.ibs.rateCommerceServices;
-    if (ibsSector === 'production') rate = STATE.ibs.rateProduction;
-    else if (ibsSector === 'btph')  rate = STATE.ibs.rateBTPH;
-    taxDue = Math.max(0, netProfit) * (rate / 100);
-    taxRateDisplay = rate + '%';
-  } else {
-    taxDue = calcIRG(Math.max(0, netProfit));
-    const eff = netProfit > 0 ? (taxDue / netProfit * 100) : 0;
-    taxRateDisplay = eff.toFixed(2) + '%';
-    const brows = getIRGBreakdown(Math.max(0, netProfit));
-    if (brows.length) {
-      irgHTML = `<div style="margin-top:10px"><div class="result-label" style="margin-bottom:6px">${t('reelIRGDetails')}</div>
-        ${brows.map(r=>`<div class="result-row"><span class="rrl">${r.range} @ ${r.rate}%</span><span class="rrv">${fmtDA(r.taxAmt)}</span></div>`).join('')}
-      </div>`;
-    }
-  }
-
-  const tvaAmt = tvaOn ? revenue * (selTVA / 100) : 0;
-
-  res.innerHTML = `
-    <div class="result-block animate-up">
-      <div class="result-label">${t('reelTaxDue')}</div>
-      <div class="result-amount">${fmt(taxDue)}</div>
-      <div class="result-currency">${t('da')}</div>
-    </div>
-    <div class="result-rows">
-      <div class="result-row"><span class="rrl">${t('reelNetProfit')}</span><span class="rrv">${fmtDA(netProfit)}</span></div>
-      <div class="result-row"><span class="rrl">${t('reelTaxRate')}</span><span class="rrv">${taxRateDisplay}</span></div>
-      <div class="result-row"><span class="rrl rrl-green">${t('reelTaxDue')}</span><span class="rrv rrv-green">${fmtDA(taxDue)}</span></div>
-    </div>
-    ${irgHTML}
-    ${tvaOn ? `
-      <div class="result-block result-blue mt10">
-        <div class="result-label">${t('reelTVADue')}</div>
-        <div class="result-amount">${fmt(tvaAmt)}</div>
-        <div class="result-currency">${t('da')} — ${selTVA}%</div>
-      </div>
-      <div class="result-rows">
-        <div class="result-row"><span class="rrl">${t('reelTVABase')}</span><span class="rrv">${fmtDA(revenue)}</span></div>
-      </div>` : ''}
-    <div class="alert-card alert-info mt10">
-      <span class="alert-icon">📋</span>
-      <div>
-        <div class="alert-title">Jibayatic — جبايتيك</div>
-        <div class="alert-text">${t('reelFilingDeadline')}</div>
-      </div>
-    </div>
-    <div class="chip-row">
-      <span class="compliance-chip">📅 G50 Mensuel</span>
-      <span class="compliance-chip">🖥️ Jibayatic</span>
-      <span class="compliance-chip">📆 Avant le 20</span>
-    </div>`;
-}
-
-// ================================================
-// RSI CALCULATOR
-// ================================================
-function calcRSI() {
-  const receipts  = parseFloat(document.getElementById('rsi-receipts').value) || 0;
-  const expenses  = parseFloat(document.getElementById('rsi-expenses').value) || 0;
-  const netProfit = Math.max(0, receipts - expenses);
-  const rate      = STATE.bnc.flatRate;
-  const computed  = netProfit * (rate / 100);
-  const minimum   = STATE.bnc.minFloor;
-  const due       = Math.max(computed, minimum);
-
-  const res = document.getElementById('rsi-result');
-  res.classList.remove('hidden');
-  res.innerHTML = `
-    <div class="result-block animate-up">
-      <div class="result-label">${t('rsiDue')}</div>
-      <div class="result-amount">${fmt(due)}</div>
-      <div class="result-currency">${t('da')}</div>
-    </div>
-    <div class="result-rows">
-      <div class="result-row"><span class="rrl">${t('rsiNetProfit')}</span><span class="rrv">${fmtDA(netProfit)}</span></div>
-      <div class="result-row"><span class="rrl">${t('rsiFlatRate')}</span><span class="rrv">${rate}%</span></div>
-      <div class="result-row"><span class="rrl">${t('rsiComputed')}</span><span class="rrv">${fmtDA(computed)}</span></div>
-      <div class="result-row"><span class="rrl">${t('rsiMinimum')}</span><span class="rrv">${fmtDA(minimum)}</span></div>
-      <div class="result-row"><span class="rrl rrl-green">${t('rsiDue')}</span><span class="rrv rrv-green">${fmtDA(due)}</span></div>
-    </div>
-    ${computed < minimum ? `<div class="alert-card alert-warning mt10">
-      <span class="alert-icon">⚠️</span>
-      <div><div class="alert-title">${t('ifuMinApplied')}</div></div>
-    </div>` : ''}`;
 }
 
 // ================================================
@@ -1682,31 +1198,9 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => setLang(btn.dataset.lang));
   });
 
-  // Calculators
+  // Calculator
   document.getElementById('btn-calc-ifu').addEventListener('click', calcIFU);
-  document.getElementById('btn-calc-reel').addEventListener('click', calcReel);
-  document.getElementById('btn-calc-rsi').addEventListener('click', calcRSI);
   document.getElementById('btn-reset-settings').addEventListener('click', resetSettings);
-
-  // IBS sector visibility
-  const entitySel = document.getElementById('reel-entity');
-  const ibsRow    = document.getElementById('ibs-sector-row');
-  entitySel.addEventListener('change', () => {
-    ibsRow.classList.toggle('hidden', entitySel.value !== 'company');
-  });
-
-  // TVA options
-  document.querySelectorAll('.tva-option').forEach(opt => {
-    opt.addEventListener('click', () => {
-      document.querySelectorAll('.tva-option').forEach(o => o.classList.remove('selected'));
-      opt.classList.add('selected');
-    });
-  });
-
-  // Checklist
-  document.querySelectorAll('.checklist-item').forEach(item => {
-    item.addEventListener('click', () => item.classList.toggle('checked'));
-  });
 });
 </script>
 </head>
@@ -1748,24 +1242,6 @@ document.addEventListener('DOMContentLoaded', () => {
     <div>
       <div class="quick-card-title" data-t="quickIFU">IFU — Forfait Unique</div>
       <div class="quick-card-sub" data-t="quickIFUSub"></div>
-    </div>
-    <div class="quick-card-arrow">›</div>
-  </div>
-
-  <div class="quick-card" data-go="reel">
-    <div class="quick-card-icon" style="background:rgba(59,130,246,0.15)">🏢</div>
-    <div>
-      <div class="quick-card-title" data-t="quickReel">Régime Réel</div>
-      <div class="quick-card-sub" data-t="quickReelSub"></div>
-    </div>
-    <div class="quick-card-arrow">›</div>
-  </div>
-
-  <div class="quick-card" data-go="rsi">
-    <div class="quick-card-icon" style="background:rgba(168,85,247,0.15)">⚖️</div>
-    <div>
-      <div class="quick-card-title" data-t="quickRSI">Régime Réel Simplifié (RSI)</div>
-      <div class="quick-card-sub" data-t="quickRSISub"></div>
     </div>
     <div class="quick-card-arrow">›</div>
   </div>
@@ -1826,7 +1302,6 @@ document.addEventListener('DOMContentLoaded', () => {
     <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px">
       <div class="stat-pill" style="margin-bottom:0">
         <span class="stat-pill-label" data-t="ifuMinStd">Minimum (Standard) : 30 000 DA</span>
-
       </div>
       <div class="stat-pill" style="margin-bottom:0">
         <span class="stat-pill-label" data-t="ifuMinAuto">Minimum (Auto-Entrepreneur) : 10 000 DA</span>
@@ -1835,145 +1310,6 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 
   <div id="ifu-result" class="card hidden"></div>
-</section>
-
-<!-- ========== RÉGIME RÉEL ========== -->
-<section id="panel-reel" class="panel">
-  <div class="page-title" data-t="reelTitle">Régime Réel</div>
-  <div class="page-sub" data-t="reelSub"></div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="card-icon" style="background:rgba(59,130,246,0.15)">🏢</div>
-      <div>
-        <div class="card-title" data-t="reelTitle">Régime Réel</div>
-        <div class="card-sub"><span class="section-badge badge-blue">IBS / IRG</span></div>
-      </div>
-    </div>
-
-    <div class="input-group">
-      <label class="input-label" data-t="reelRevenue">CHIFFRE D'AFFAIRES BRUT (DA)</label>
-      <input type="number" id="reel-revenue" class="input-field" data-ph="reelRevPlaceholder" placeholder="Ex : 50 000 000" min="0" inputmode="decimal">
-    </div>
-    <div class="input-group">
-      <label class="input-label" data-t="reelExpenses">CHARGES DÉDUCTIBLES (DA)</label>
-      <input type="number" id="reel-expenses" class="input-field" data-ph="reelExpPlaceholder" placeholder="Ex : 30 000 000" min="0" inputmode="decimal">
-    </div>
-    <div class="input-group">
-      <label class="input-label" data-t="reelEntityType">TYPE D'ENTITÉ</label>
-      <select id="reel-entity" class="input-field">
-        <option value="company"    data-t="reelCompany">Société (IBS)</option>
-        <option value="individual" data-t="reelIndividual">Personne physique (IRG)</option>
-      </select>
-    </div>
-    <div class="input-group" id="ibs-sector-row">
-      <label class="input-label" data-t="reelIBSSector">SECTEUR (IBS)</label>
-      <select id="reel-ibs-sector" class="input-field">
-        <option value="production" data-t="reelIBSProd">Production</option>
-        <option value="btph"       data-t="reelIBSBTPH">BTPH / Tourisme</option>
-        <option value="commerce"   data-t="reelIBSComm">Commerce / Services</option>
-      </select>
-    </div>
-    <div class="input-group">
-      <label class="input-label" data-t="reelSectorType">SECTEUR D'ACTIVITÉ</label>
-      <select id="reel-sector" class="input-field">
-        <option value="standard" data-t="reelStandard">Standard</option>
-        <option value="import"   data-t="reelImport">Import</option>
-        <option value="export"   data-t="reelExport">Export</option>
-      </select>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="toggle-row">
-      <span class="toggle-label" data-t="reelTVAToggle">Calculer la TVA estimée</span>
-      <label class="toggle-switch">
-        <input type="checkbox" id="reel-tva-toggle">
-        <span class="toggle-slider"></span>
-      </label>
-    </div>
-
-    <div style="margin-top:8px">
-      <div class="input-label" data-t="reelTVARate">TAUX TVA</div>
-      <div class="tva-selector">
-        <div class="tva-option selected" data-rate="19">19% — Normal</div>
-        <div class="tva-option" data-rate="9">9% — Réduit</div>
-      </div>
-    </div>
-
-    <button id="btn-calc-reel" class="btn-primary" style="margin-top:14px">
-      <span data-t="reelCalc">Calculer l'impôt</span>
-    </button>
-  </div>
-
-  <div id="reel-result" class="card hidden"></div>
-</section>
-
-<!-- ========== RSI ========== -->
-<section id="panel-rsi" class="panel">
-  <div class="page-title" data-t="rsiTitle">Régime Réel Simplifié (RSI)</div>
-  <div class="page-sub" data-t="rsiSub"></div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="card-icon" style="background:rgba(168,85,247,0.15)">⚖️</div>
-      <div>
-        <div class="card-title" data-t="rsiTitle">RSI</div>
-        <div class="card-sub"><span class="section-badge badge-purple">RSI</span></div>
-      </div>
-    </div>
-    <div class="input-group">
-      <label class="input-label" data-t="rsiReceipts">TOTAL DES RECETTES BRUTES (DA)</label>
-      <input type="number" id="rsi-receipts" class="input-field" data-ph="rsiRecPlaceholder" placeholder="Ex : 3 000 000" min="0" inputmode="decimal">
-    </div>
-    <div class="input-group">
-      <label class="input-label" data-t="rsiExpenses">TOTAL DES DÉPENSES (DA)</label>
-      <input type="number" id="rsi-expenses" class="input-field" data-ph="rsiExpPlaceholder" placeholder="Ex : 1 200 000" min="0" inputmode="decimal">
-    </div>
-    <button id="btn-calc-rsi" class="btn-primary">
-      <span data-t="rsiCalc">Calculer l'IRG RSI</span>
-    </button>
-  </div>
-
-  <div id="rsi-result" class="card hidden"></div>
-
-  <!-- Compliance Roadmap -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-icon" style="background:rgba(245,158,11,0.15)">🗺️</div>
-      <div><div class="card-title" data-t="rsiRoadmapTitle">Feuille de route RSI</div></div>
-    </div>
-    <div class="checklist-item">
-      <div class="checklist-box"><span class="checklist-check">✓</span></div>
-      <div class="checklist-text" data-t="rsiCheck1"></div>
-    </div>
-    <div class="checklist-item">
-      <div class="checklist-box"><span class="checklist-check">✓</span></div>
-      <div class="checklist-text" data-t="rsiCheck2"></div>
-    </div>
-    <div class="checklist-item">
-      <div class="checklist-box"><span class="checklist-check">✓</span></div>
-      <div class="checklist-text" data-t="rsiCheck3"></div>
-    </div>
-    <div class="checklist-item">
-      <div class="checklist-box"><span class="checklist-check">✓</span></div>
-      <div class="checklist-text" data-t="rsiCheck4"></div>
-    </div>
-    <div class="checklist-item">
-      <div class="checklist-box"><span class="checklist-check">✓</span></div>
-      <div class="checklist-text" data-t="rsiCheck5"></div>
-    </div>
-    <div class="checklist-item">
-      <div class="checklist-box"><span class="checklist-check">✓</span></div>
-      <div class="checklist-text" data-t="rsiCheck6"></div>
-    </div>
-    <div class="chip-row">
-      <span class="compliance-chip">📅 G50</span>
-      <span class="compliance-chip">🖥️ Jibayatic</span>
-      <span class="compliance-chip">📆 Avant le 20</span>
-      <span class="compliance-chip">📁 5 ans</span>
-    </div>
-  </div>
 </section>
 
 <!-- ========== SETTINGS ========== -->
@@ -2141,25 +1477,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <span class="nav-label" data-t="navIFU">IFU</span>
   </button>
 
-  <button class="nav-item" data-nav="reel">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="12" y1="1" x2="12" y2="23"/>
-      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-    </svg>
-    <span class="nav-label" data-t="navReel">Réel</span>
-  </button>
-
-  <button class="nav-item" data-nav="rsi">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-      <polyline points="14 2 14 8 20 8"/>
-      <line x1="16" y1="13" x2="8" y2="13"/>
-      <line x1="16" y1="17" x2="8" y2="17"/>
-    </svg>
-    <span class="nav-label" data-t="navRSI">RSI</span>
-  </button>
-
-  <!-- Settings: turbine/gear icon -->
+  <!-- Settings: gear icon -->
   <button class="nav-item" data-nav="settings">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
       <path d="M12 2 L12 4 M12 20 L12 22 M4.22 4.22 L5.64 5.64 M18.36 18.36 L19.78 19.78 M2 12 L4 12 M20 12 L22 12 M4.22 19.78 L5.64 18.36 M18.36 5.64 L19.78 4.22"/>
