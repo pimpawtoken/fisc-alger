@@ -1110,7 +1110,7 @@ const T = {
     ifuRate:'Taux appliqué', ifuComputed:'Impôt calculé',
     ifuMinimum:'Minimum légal', ifuDue:'IFU À PAYER',
     ifuMinApplied:'⚠️ Minimum légal appliqué',
-    ifuCompliance:"Déclaration G50 Ter via la plateforme Moussamaha avant le 20 du mois suivant chaque trimestre.",
+    ifuCompliance:"التصريحات الجبائية إلزامية، ويجب احترام آجال إيداعها بدقة. أي تأخر أو عدم التصريح يعرض المكلف لتطبيق غرامات وعقوبات جبائية طبقًا للتشريع المعمول به.",
     // Réel
     reelTitle:'Régime Réel', reelSub:"Calcul IBS / IRG avec intégration Import-Export",
     reelRevenue:"Chiffre d'affaires brut (DA)", reelExpenses:'Charges déductibles (DA)',
@@ -1484,15 +1484,34 @@ function calcIFU() {
     <div class="alert-card alert-info" style="margin-top:10px;">
       <span class="alert-icon">📋</span>
       <div>
-        <div class="alert-title">Moussamaha — مصالحة</div>
+        <div class="alert-title">Déclaration — التصريحات</div>
         <div class="alert-text">${t('ifuCompliance')}</div>
       </div>
     </div>
     <div class="chip-row">
-      <span class="compliance-chip">📅 G50 Ter</span>
-      <span class="compliance-chip">🖥️ Moussamaha</span>
-      <span class="compliance-chip">📆 Trimestriel</span>
+      <span class="compliance-chip">📋 G12 prévisionelle - 📆20 جوان </span>
+      <span class="compliance-chip">📋 G12bis définitive - 📆 N+1 قبل 20 جانفي</span>
+      <span class="compliance-chip">📋 G50Ter - 📆Mensuelle : plus de 10 employés </span>
+      <span class="compliance-chip">📋 G50Ter- 📆Trimestrielle : moins de 10 employés </span>
     </div>
+    <div class="alert-card alert-info" style="margin-top:10px;">
+      <span class="alert-icon">✅</span>
+      <div>
+        <div class="alert-title">modes de paiement-طرق الدفع</div>
+        <div class="alert-text">${t('')}</div>
+      </div>
+      </div>
+    <div class="chip-row">
+      <span class="compliance-chip">🏢CPI/CDI</span>
+      <span class="compliance-chip">🖥️ Jibayatec / CIB / ELDAHABIA </span>
+      <span class="compliance-chip">📋G12 -paiment a la déclaration  : </span>
+      <span class="compliance-chip">📋G12 -paiment  par tranch : </span>
+      <span class="compliance-chip">1ere 50% 📆a la déclaration</span>
+      <span class="compliance-chip">2eme 25% 📆15 septombre</span>
+      <span class="compliance-chip">3eme 25% 📆15 désombre</span>
+      <span class="compliance-chip">📋 G12bis📆 20janvier N+1 </span>
+    </div>
+
   `;
 }
 
@@ -1703,7 +1722,6 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
     <div>
       <div class="brand-title" data-t="appTitle">Fiscal Algérie</div>
-      <div class="brand-sub" data-t="year">Loi de Finances</div>
     </div>
   </div>
   <div class="lang-toggle">
@@ -1720,7 +1738,6 @@ document.addEventListener('DOMContentLoaded', () => {
   <div class="hero-block">
     <div class="hero-flag">🇩🇿</div>
     <div class="hero-title" data-t="heroTitle">Système Fiscal Algérien</div>
-    <div class="hero-year" data-t="year">Loi de Finances</div>
     <div class="hero-desc" data-t="heroDesc"></div>
   </div>
 
@@ -1762,31 +1779,6 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="quick-card-arrow">›</div>
   </div>
 
-  <!-- G12 Info Card on Home -->
-  <div class="g12-card">
-    <div class="g12-title">📄 <span data-t="g12Title">Déclarations G12 &amp; G12 BIS</span></div>
-    <div class="g12-item">
-      <span class="g12-badge">G12</span>
-      <div>
-        <div style="font-size:12px;font-weight:700;color:#e2e8f0;margin-bottom:3px" data-t="g12Info1Title">G12 — Déclaration Annuelle des Salaires</div>
-        <div class="g12-desc" data-t="g12Info1Desc"></div>
-      </div>
-    </div>
-    <div class="g12-item">
-      <span class="g12-badge">G12 BIS</span>
-      <div>
-        <div style="font-size:12px;font-weight:700;color:#e2e8f0;margin-bottom:3px" data-t="g12Info2Title">G12 BIS — État des Honoraires</div>
-        <div class="g12-desc" data-t="g12Info2Desc"></div>
-      </div>
-    </div>
-    <div class="g12-item">
-      <span class="g12-badge">🖥️</span>
-      <div>
-        <div style="font-size:12px;font-weight:700;color:#e2e8f0;margin-bottom:3px" data-t="g12Info3Title">Plateforme de dépôt</div>
-        <div class="g12-desc" data-t="g12Info3Desc"></div>
-      </div>
-    </div>
-  </div>
 </section>
 
 <!-- ========== IFU ========== -->
