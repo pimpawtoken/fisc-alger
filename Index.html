@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>الحاسبة الجبائية الجزائرية | Calculateur Fiscal Algérien</title>
+<style>
+:root {
+  --font-ar: 'Segoe UI', 'Arial Unicode MS', Arial, sans-serif;
+  --font-fr: 'Segoe UI', Arial, Helvetica, sans-serif;
+  --font-mono: 'Courier New', Courier, monospace;
+  --c-bg:      #0a1628;
+  --c-bg2:     #0d1f3c;
+  --c-surface: rgba(255,255,255,0.04);
+  --c-border:  rgba(255,255,255,0.08);
+  --c-text:    #e2e8f0;
+  --c-muted:   #64748b;
+  --c-sub:     #94a3b8;
+  --c-em:      #10b981;
+  --c-em2:     #059669;
+  --c-em3:     #0d9488;
+  --c-bright:  #34d399;
+  --c-faint:   #6ee7b7;
+  --c-blue:    #3b82f6;
+  --c-bluef:   #93c5fd;
+  --c-amber:   #f59e0b;
+  --c-amberf:  #fcd34d;
+  --c-red:     #ef4444;
+  --c-redf:    #fca5a5;
+  --c-purple:  #a855f7;
+  --c-purplef: #c4b5fd;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+}
+
+*, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+html { height: 100%; }
+
+body {
+  background: var(--c-bg);
+  min-height: 100vh;
+  font-family: var(--font-fr);
+  font-size: 14px;
+  color: var(--c-text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  direction: ltr;
+}
+body.ar { font-family: var(--font-ar); direction: rtl; }
+
+#app {
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(160deg, #0d1f3c 0%, #0a1628 45%, #061020 100%);
+}
+
+/* HEADER */
+#top-header {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(10,22,40,0.94);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--c-border);
+  padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.header-brand { display: flex; align-items: center; gap: 9px; }
+.brand-icon {
+  width: 34px; height: 34px; border-radius: 9px;
+  background: linear-gradient(135deg, #059669, #0d9488);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; position: relative; overflow: hidden;
+  box-shadow: 0 2px 10px rgba(5,150,105,0.4);
+}
+.brand-icon .letter-white { font-size: 20px; font-weight: 900; color: white; line-height: 1; position: relative; z-index: 1; }
+.brand-icon .letter-red { font-size: 11px; font-weight: 900; color: #ef4444; position: absolute; top: 3px; right: 3px; z-index: 2; }
+.brand-title { font-size: 13px; font-weight: 700; color: #f1f5f9; line-height: 1.2; }
+
+.lang-toggle {
+  display: flex; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+  padding: 2px; gap: 2px; flex-shrink: 0;
+}
+.lang-btn {
+  padding: 4px 11px; border-radius: 16px; font-size: 11px; font-weight: 700;
+  border: none; cursor: pointer; color: var(--c-sub); background: transparent;
+  font-family: inherit; transition: background 0.2s, color 0.2s;
+}
+.lang-btn.active { background: linear-gradient(135deg, #059669, #0d9488); color: white; box-shadow: 0 2px 8px rgba(5,150,105,0.4); }
+
+/* MAIN */
+#main-content {
+  flex: 1; overflow-y: auto; padding: 12px 12px 90px;
+  scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+}
+#main-content::-webkit-scrollbar { width: 3px; }
+#main-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+/* PANELS */
+.panel { display: none; }
+.panel.active { display: block; animation: fadeSlide 0.28s ease forwards; }
+@keyframes fadeSlide { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp   { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+.animate-up { animation: slideUp 0.35s ease forwards; }
+
+/* BOTTOM NAV */
+#bottom-nav {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 430px;
+  background: rgba(10,22,40,0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--c-border);
+  display: flex; z-index: 200;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding: 8px 4px; cursor: pointer; border: none; background: transparent;
+  color: #4b5563; gap: 3px; font-family: inherit; touch-action: manipulation; transition: color 0.2s;
+}
+.nav-item.active { color: var(--c-em); }
+.nav-item svg { width: 22px; height: 22px; transition: transform 0.2s; flex-shrink: 0; }
+.nav-item.active svg { transform: scale(1.12); }
+.nav-label { font-size: 9px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; white-space: nowrap; }
+
+/* CARDS */
+.card { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 12px; }
+.card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.card-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.card-title { font-size: 14px; font-weight: 700; color: #f1f5f9; line-height: 1.3; }
+.card-sub { font-size: 11px; color: var(--c-muted); margin-top: 2px; }
+
+.page-title { font-size: 20px; font-weight: 800; color: #f1f5f9; margin-bottom: 4px; line-height: 1.2; }
+.page-sub { font-size: 12px; color: var(--c-muted); margin-bottom: 14px; line-height: 1.5; }
+
+/* FORMS */
+.input-group { margin-bottom: 12px; }
+.input-label { display: block; font-size: 11px; font-weight: 700; color: var(--c-sub); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+.input-field {
+  width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px; padding: 11px 14px; font-size: 14px; color: #f1f5f9;
+  font-family: inherit; outline: none; appearance: none; -webkit-appearance: none;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.input-field:focus { border-color: rgba(16,185,129,0.5); background: rgba(255,255,255,0.085); box-shadow: 0 0 0 3px rgba(16,185,129,0.1); }
+.input-field::placeholder { color: #4b5563; }
+select.input-field {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; background-size: 12px; padding-right: 36px; cursor: pointer;
+}
+body.ar select.input-field { background-position: left 12px center; padding-right: 14px; padding-left: 36px; }
+select.input-field option { background: #1e293b; color: #f1f5f9; }
+
+/* BUTTONS */
+.btn-primary {
+  width: 100%; padding: 13px 20px;
+  background: linear-gradient(135deg, #059669, #0d9488);
+  border: none; border-radius: var(--radius-md); color: white;
+  font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  touch-action: manipulation; box-shadow: 0 4px 15px rgba(5,150,105,0.28);
+  transition: transform 0.15s, opacity 0.15s;
+}
+.btn-primary:active { transform: scale(0.975); opacity: 0.88; }
+
+.btn-secondary {
+  width: 100%; padding: 11px 18px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px; color: var(--c-sub); font-size: 13px; font-weight: 600;
+  font-family: inherit; cursor: pointer; touch-action: manipulation;
+  transition: transform 0.15s, background 0.15s;
+}
+.btn-secondary:active { transform: scale(0.975); }
+
+.btn-blue {
+  width: 100%; padding: 11px 18px;
+  background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.28);
+  border-radius: 10px; color: var(--c-bluef); font-size: 13px; font-weight: 700;
+  font-family: inherit; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  touch-action: manipulation; transition: transform 0.15s, background 0.15s;
+  margin-bottom: 10px;
+}
+.btn-blue:active { transform: scale(0.975); background: rgba(59,130,246,0.22); }
+
+/* RESULT BLOCKS */
+.result-block {
+  background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2);
+  border-radius: 14px; padding: 14px; margin-top: 14px;
+}
+.result-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.09em; color: var(--c-bright); margin-bottom: 4px; }
+.result-amount { font-size: 24px; font-weight: 800; color: #ecfdf5; font-family: var(--font-mono); letter-spacing: -0.5px; line-height: 1.2; }
+.result-currency { font-size: 12px; color: var(--c-faint); margin-top: 3px; }
+.result-rows { margin-top: 12px; }
+.result-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.055); }
+.result-row:last-child { border-bottom: none; }
+.rrl { font-size: 12px; color: var(--c-sub); }
+.rrv { font-size: 13px; font-weight: 700; color: #f1f5f9; font-family: var(--font-mono); }
+.rrl-green { color: var(--c-bright); font-weight: 700; }
+.rrv-green { color: var(--c-bright); font-size: 14px; font-family: var(--font-mono); font-weight: 700; }
+body.ar .result-row { flex-direction: row-reverse; }
+
+/* ALERTS */
+.alert-card { border-radius: var(--radius-md); padding: 12px 14px; margin-top: 10px; display: flex; gap: 10px; align-items: flex-start; }
+.alert-danger  { background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.25); }
+.alert-warning { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); }
+.alert-info    { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); }
+.alert-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); }
+.alert-orange  { background: rgba(234,88,12,0.1);  border: 1px solid rgba(234,88,12,0.28); }
+.alert-icon { font-size: 20px; flex-shrink: 0; line-height: 1.3; }
+.alert-title { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+.alert-text { font-size: 11px; line-height: 1.65; color: var(--c-sub); }
+.alert-danger .alert-title  { color: var(--c-redf); }
+.alert-warning .alert-title { color: var(--c-amberf); }
+.alert-info .alert-title    { color: var(--c-bluef); }
+.alert-success .alert-title { color: var(--c-faint); }
+.alert-orange .alert-title  { color: #fdba74; }
+body.ar .alert-card { flex-direction: row-reverse; }
+
+/* STAT PILLS */
+.stat-pill { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 9px 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
+.stat-pill-label { font-size: 11px; color: var(--c-muted); }
+.stat-pill-value { font-size: 13px; font-weight: 700; color: #f1f5f9; font-family: var(--font-mono); }
+body.ar .stat-pill { flex-direction: row-reverse; }
+
+.section-badge { display: inline-flex; align-items: center; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; padding: 3px 8px; border-radius: 5px; }
+.badge-green  { background: rgba(16,185,129,0.14); color: var(--c-bright);  border: 1px solid rgba(16,185,129,0.25); }
+.badge-blue   { background: rgba(59,130,246,0.14); color: var(--c-bluef);   border: 1px solid rgba(59,130,246,0.2); }
+.badge-amber  { background: rgba(245,158,11,0.14); color: var(--c-amberf);  border: 1px solid rgba(245,158,11,0.25); }
+.badge-red    { background: rgba(239,68,68,0.14);  color: var(--c-redf);    border: 1px solid rgba(239,68,68,0.25); }
+
+.divider { height: 1px; background: var(--c-border); margin: 13px 0; }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.compliance-chip { display: inline-flex; align-items: center; gap: 4px; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); border-radius: 20px; padding: 4px 10px; font-size: 11px; color: var(--c-bluef); font-weight: 600; }
+
+/* SETTINGS */
+.settings-section-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--c-em); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.settings-section-title::after { content: ''; flex: 1; height: 1px; background: rgba(16,185,129,0.18); }
+body.ar .settings-section-title { flex-direction: row-reverse; }
+body.ar .settings-section-title::after { display: none; }
+body.ar .settings-section-title::before { content: ''; flex: 1; height: 1px; background: rgba(16,185,129,0.18); }
+.settings-row { display: flex; gap: 8px; margin-bottom: 9px; align-items: center; }
+.settings-row-label { font-size: 12px; color: var(--c-sub); flex: 1; min-width: 0; }
+.settings-input { width: 88px; flex-shrink: 0; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm); padding: 7px 10px; font-size: 13px; color: #f1f5f9; font-family: var(--font-mono); outline: none; text-align: right; transition: border-color 0.2s, box-shadow 0.2s; }
+body.ar .settings-input { text-align: left; }
+.settings-input:focus { border-color: rgba(16,185,129,0.4); box-shadow: 0 0 0 2px rgba(16,185,129,0.1); }
+body.ar .settings-row { flex-direction: row-reverse; }
+
+/* ========================
+   DAILY LEDGER SPECIFIC
+======================== */
+
+/* Today banner */
+.today-banner {
+  background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(13,148,136,0.07));
+  border: 1px solid rgba(16,185,129,0.2);
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.today-date-label { font-size: 11px; color: var(--c-bright); font-weight: 800; letter-spacing: 0.04em; }
+.today-date-value { font-size: 15px; color: #f1f5f9; font-weight: 700; margin-top: 1px; }
+.today-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--c-bright); flex-shrink: 0; box-shadow: 0 0 6px rgba(52,211,153,0.7); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* Summary triptych */
+.ledger-summary { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.summary-tile { border-radius: var(--radius-md); padding: 11px 10px; text-align: center; border: 1px solid; }
+.summary-tile.income  { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.2); }
+.summary-tile.expense { background: rgba(239,68,68,0.08);  border-color: rgba(239,68,68,0.2); }
+.summary-tile.profit  { background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.2); }
+.tile-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+.summary-tile.income  .tile-label { color: var(--c-bright); }
+.summary-tile.expense .tile-label { color: var(--c-redf); }
+.summary-tile.profit  .tile-label { color: var(--c-bluef); }
+.tile-value { font-size: 12px; font-weight: 800; font-family: var(--font-mono); line-height: 1.2; word-break: break-all; }
+.summary-tile.income  .tile-value { color: #ecfdf5; }
+.summary-tile.expense .tile-value { color: #fef2f2; }
+.summary-tile.profit  .tile-value { color: #eff6ff; }
+.tile-currency { font-size: 9px; font-weight: 600; opacity: 0.7; margin-top: 2px; }
+
+/* Quick action buttons */
+.quick-action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.btn-add-income {
+  padding: 12px 10px; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.28);
+  border-radius: var(--radius-md); color: var(--c-bright); font-size: 13px; font-weight: 700;
+  font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  gap: 5px; touch-action: manipulation; transition: transform 0.15s, background 0.15s;
+}
+.btn-add-income:active { transform: scale(0.97); background: rgba(16,185,129,0.22); }
+.btn-add-expense {
+  padding: 12px 10px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25);
+  border-radius: var(--radius-md); color: var(--c-redf); font-size: 13px; font-weight: 700;
+  font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  gap: 5px; touch-action: manipulation; transition: transform 0.15s, background 0.15s;
+}
+.btn-add-expense:active { transform: scale(0.97); background: rgba(239,68,68,0.18); }
+
+/* Transaction entry form */
+.tx-form-card {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-lg); padding: 14px; margin-bottom: 12px;
+  animation: fadeSlide 0.2s ease forwards;
+}
+.tx-form-title { font-size: 13px; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.tx-form-title.income-title  { color: var(--c-bright); }
+.tx-form-title.expense-title { color: var(--c-redf); }
+
+/* Date hint row */
+.date-hint {
+  font-size: 10px; color: var(--c-muted); margin-bottom: 8px;
+  display: flex; align-items: center; gap: 5px;
+}
+.date-hint-icon { font-size: 12px; }
+
+.tx-amount-row { margin-bottom: 10px; }
+.tx-date-row   { margin-bottom: 10px; }
+.tx-note-row   { margin-bottom: 10px; }
+
+.btn-submit-tx { padding: 10px 16px; border-radius: 9px; font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer; border: none; touch-action: manipulation; transition: transform 0.15s, opacity 0.15s; }
+.btn-submit-tx:active { transform: scale(0.975); opacity: 0.85; }
+.btn-submit-tx.income-submit  { background: linear-gradient(135deg, #059669, #10b981); color: white; }
+.btn-submit-tx.expense-submit { background: linear-gradient(135deg, #dc2626, #ef4444); color: white; }
+.btn-cancel-tx { padding: 10px 14px; border-radius: 9px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--c-muted); touch-action: manipulation; }
+.btn-form-row { display: flex; gap: 8px; }
+.btn-form-row > * { flex: 1; }
+
+/* Period filter tabs */
+.period-tabs { display: flex; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 3px; gap: 2px; margin-bottom: 12px; }
+.period-tab { flex: 1; padding: 6px 4px; border-radius: 7px; font-size: 11px; font-weight: 700; border: none; cursor: pointer; color: var(--c-muted); background: transparent; font-family: inherit; touch-action: manipulation; transition: background 0.2s, color 0.2s; }
+.period-tab.active { background: rgba(16,185,129,0.14); color: var(--c-bright); border: 1px solid rgba(16,185,129,0.22); }
+
+/* Report mode notice */
+.report-notice {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(59,130,246,0.07); border: 1px solid rgba(59,130,246,0.18);
+  border-radius: 9px; padding: 9px 12px; margin-bottom: 10px;
+  font-size: 11px; color: var(--c-bluef); font-weight: 600;
+}
+
+/* Transaction history */
+.tx-list { display: flex; flex-direction: column; gap: 6px; }
+.tx-item { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.07); border-radius: 11px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; animation: fadeSlide 0.22s ease forwards; }
+.tx-item.income-item  { border-left: 3px solid rgba(16,185,129,0.5); }
+.tx-item.expense-item { border-left: 3px solid rgba(239,68,68,0.5); }
+body.ar .tx-item.income-item  { border-left: none; border-right: 3px solid rgba(16,185,129,0.5); }
+body.ar .tx-item.expense-item { border-left: none; border-right: 3px solid rgba(239,68,68,0.5); }
+.tx-dot { width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.income-dot  { background: rgba(16,185,129,0.15); }
+.expense-dot { background: rgba(239,68,68,0.12); }
+.tx-body { flex: 1; min-width: 0; }
+.tx-note { font-size: 12px; font-weight: 600; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tx-meta { font-size: 10px; color: var(--c-muted); margin-top: 2px; }
+.tx-amount { font-size: 13px; font-weight: 800; font-family: var(--font-mono); flex-shrink: 0; text-align: right; }
+.income-amount  { color: var(--c-bright); }
+.expense-amount { color: var(--c-redf); }
+.tx-delete { width: 28px; height: 28px; border-radius: 7px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: var(--c-muted); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; touch-action: manipulation; font-family: inherit; transition: background 0.15s, color 0.15s; }
+.tx-delete:hover { background: rgba(239,68,68,0.15); color: var(--c-redf); }
+.tx-empty { text-align: center; padding: 28px 16px; color: var(--c-muted); }
+.tx-empty-icon { font-size: 36px; margin-bottom: 8px; }
+.tx-empty-text { font-size: 12px; line-height: 1.6; }
+
+/* Section label for report mode */
+.report-group-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.09em; color: var(--c-muted); padding: 6px 0 4px; margin-top: 4px; }
+
+/* Fiscal bridge card */
+.fiscal-bridge-card {
+  background: linear-gradient(135deg, rgba(59,130,246,0.07), rgba(16,185,129,0.05));
+  border: 1px solid rgba(59,130,246,0.2); border-radius: var(--radius-lg); padding: 14px;
+  margin-top: 12px; animation: slideUp 0.3s ease forwards;
+}
+.fiscal-bridge-header { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--c-bluef); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.fiscal-formula-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.055); }
+.fiscal-formula-row:last-child { border-bottom: none; }
+.ff-label { font-size: 11px; color: var(--c-sub); }
+.ff-value { font-size: 13px; font-weight: 700; font-family: var(--font-mono); }
+.ff-value.pos   { color: var(--c-bright); }
+.ff-value.neg   { color: var(--c-redf); }
+.ff-value.final { font-size: 15px; }
+body.ar .fiscal-formula-row { flex-direction: row-reverse; }
+
+.hidden { display: none !important; }
+.mono   { font-family: var(--font-mono); }
+</style>
+
+<script>
+// ================================================
+// CENTRAL STATE
+// ================================================
+const STATE = {
+  lang: 'fr',
+  ifu: {
+    minStandard: 30000, minAutoEntrepreneur: 10000,
+    rateProduction: 5, rateServices: 12, rateAutoEntrepreneur: 0.5
+  }
+};
+
+// ================================================
+// LEDGER — localStorage persistence
+// ================================================
+const LEDGER = {
+  _KEY: 'jibaya_ledger_v2',
+
+  load() {
+    try { const r = localStorage.getItem(this._KEY); return r ? JSON.parse(r) : []; }
+    catch(e) { return []; }
+  },
+
+  save(txs) { try { localStorage.setItem(this._KEY, JSON.stringify(txs)); } catch(e) {} },
+
+  add(tx) { const txs = this.load(); txs.unshift(tx); this.save(txs); },
+
+  remove(id) { const txs = this.load().filter(t => t.id !== id); this.save(txs); },
+
+  // Filter txs by period: 'today' | 'month' | 'year'
+  filter(period) {
+    const txs = this.load();
+    const now = new Date();
+    return txs.filter(tx => {
+      const d = new Date(tx.date);
+      if (period === 'today') return d.toDateString() === now.toDateString();
+      if (period === 'month') return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+      return d.getFullYear() === now.getFullYear();
+    });
+  },
+
+  summary(period) {
+    const filtered = this.filter(period);
+    const income   = filtered.filter(t => t.type === 'income').reduce((s,t)  => s + t.amount, 0);
+    const expenses = filtered.filter(t => t.type === 'expense').reduce((s,t) => s + t.amount, 0);
+    return { income, expenses, net: income - expenses };
+  },
+
+  annualTotals() {
+    const s = this.summary('year');
+    return { income: s.income, expenses: s.expenses };
+  }
+};
+
+// ================================================
+// TRANSLATIONS
+// ================================================
+const T = {
+  fr: {
+    appTitle:'Fiscal Algérie',
+    navLedger:'Dossier', navIFU:'IFU', navSettings:'Réglages',
+    ledgerTitle:'Dossier Comptable',
+    ledgerSub:'Saisie quotidienne — 100% hors-ligne & persistant.',
+    todayLabel:'Aujourd\'hui',
+    ledgerToday:'Aujourd\'hui', ledgerMonth:'Mois', ledgerYear:'Année',
+    ledgerIncome:'Recettes', ledgerExpenses:'Dépenses', ledgerNet:'Résultat',
+    btnAddIncome:'🟢 Ventes', btnAddExpense:'🔴 Dépenses',
+    addIncomeTitle:'🟢 Ajouter Recette', addExpenseTitle:'🔴 Ajouter Dépense',
+    txAmount:'Montant (DA)', txNote:'Description (optionnel)', txDate:'Date de l\'opération',
+    txAmountPh:'Ex : 15 000', txNotePh:'Ex : Vente, Loyer…',
+    dateHint:'Date auto (heure du téléphone) — modifiable pour opérations passées',
+    btnSave:'Enregistrer', btnCancel:'Annuler',
+    historyTitle:'Historique',
+    historyEmpty:'Aucune opération enregistrée.\nAppuyez sur 🟢 ou 🔴 pour saisir.',
+    reportNotice:'📊 Mode rapport — saisie désactivée pour cette période.',
+    da:'DA',
+    ifuTitle:'Calcul IFU', ifuSub:'Impôt Forfaitaire Unique — Régime Jzafi',
+    ifuCA:'Chiffre d\'affaires annuel (DA)', ifuCAPlaceholder:'Ex : 5 000 000',
+    ifuActivity:'Type d\'activité', ifuProduction:'Production',
+    ifuServices:'Services / Commerce', ifuAutoE:'Auto-Entrepreneur',
+    ifuCalc:'Calculer l\'IFU',
+    ifuImport:'📥 Importer depuis le Dossier',
+    ifuThresholdNoteTitle:'Passage au Régime Réel',
+    ifuThresholdNote:'Si le chiffre d\'affaires dépasse 8 000 000 DA deux années consécutives, l\'entreprise sera transférée au régime réel.',
+    ifuExceedAlert:'⚠️ CA > 8 000 000 DA — Seuil de passage au régime réel dépassé !',
+    ifuExceedText:'Votre chiffre d\'affaires dépasse 8 000 000 DA. Si ce dépassement se répète deux années consécutives, vous serez obligatoirement transféré au régime réel.',
+    ifuMinStd:'Minimum légal (Standard) : 30 000 DA',
+    ifuMinAuto:'Minimum légal (Auto-Entrepreneur) : 10 000 DA',
+    ifuResultTitle:'Résultat IFU', ifuTaxBase:'Base imposable',
+    ifuRate:'Taux appliqué', ifuComputed:'Impôt calculé',
+    ifuMinimum:'Minimum légal', ifuDue:'IFU À PAYER',
+    ifuMinApplied:'⚠️ Minimum légal appliqué',
+    ifuCompliance:'Les déclarations fiscales sont obligatoires. Tout retard expose le contribuable à des pénalités conformément à la législation en vigueur.',
+    bridgeTitle:'Résultat Fiscal Réel',
+    bridgeLedgerIncome:'Recettes annuelles (Dossier)',
+    bridgeLedgerExpenses:'Charges annuelles (Dossier)',
+    bridgeIFUTax:'IFU calculé',
+    bridgeFinalProfit:'Bénéfice Net Après Impôt',
+    bridgeNoData:'Aucun CA saisi. Calculez l\'IFU ci-dessus pour voir le résultat fiscal.',
+    settingsTitle:'Paramètres Fiscaux',
+    settingsSub:'Modifiez les taux et seuils — les calculs se mettent à jour instantanément.',
+    settingsIFU:'IFU — Impôt Forfaitaire Unique',
+    settingsMinStandard:'Minimum standard (DA)',
+    settingsMinAuto:'Minimum Auto-Entrepreneur (DA)',
+    settingsRateProd:'Taux Production (%)', settingsRateServ:'Taux Services/Commerce (%)',
+    settingsRateAutoE:'Taux Auto-Entrepreneur (%)',
+    settingsReset:'Réinitialiser les valeurs par défaut',
+    settingsSaved:'✅ Paramètres sauvegardés',
+    settingsClearLedger:'🗑️ Effacer tout le dossier',
+    settingsClearConfirm:'Dossier effacé.',
+  },
+  ar: {
+    appTitle:'الجباية الجزائرية',
+    navLedger:'الدفتر', navIFU:'الجزافي', navSettings:'الإعدادات',
+    ledgerTitle:'دفتر الحسابات اليومي',
+    ledgerSub:'التسجيل اليومي — يعمل بدون إنترنت.',
+    todayLabel:'اليوم',
+    ledgerToday:'اليوم', ledgerMonth:'الشهر', ledgerYear:'السنة',
+    ledgerIncome:'المبيعات', ledgerExpenses:'المصاريف', ledgerNet:'الصافي',
+    btnAddIncome:'🟢 مبيعات', btnAddExpense:'🔴 مصاريف',
+    addIncomeTitle:'🟢 تسجيل مبيعة', addExpenseTitle:'🔴 تسجيل مصروف',
+    txAmount:'المبلغ (دج)', txNote:'البيان (اختياري)', txDate:'تاريخ العملية',
+    txAmountPh:'مثال: 15,000', txNotePh:'مثال: بيع، إيجار…',
+    dateHint:'التاريخ تلقائي (وقت الهاتف) — قابل للتعديل للعمليات القديمة',
+    btnSave:'حفظ', btnCancel:'إلغاء',
+    historyTitle:'سجل العمليات',
+    historyEmpty:'لا توجد عمليات مسجلة.\nاضغط 🟢 أو 🔴 للبدء.',
+    reportNotice:'📊 وضع التقرير — التسجيل غير متاح لهذه الفترة.',
+    da:'دج',
+    ifuTitle:'حساب الضريبة الجزافية', ifuSub:'الضريبة الجزافية الوحيدة — النظام الجزافي',
+    ifuCA:'رقم الأعمال السنوي (دج)', ifuCAPlaceholder:'مثال: 5,000,000',
+    ifuActivity:'نوع النشاط', ifuProduction:'إنتاج',
+    ifuServices:'خدمات / تجارة', ifuAutoE:'مقاول ذاتي',
+    ifuCalc:'احسب الضريبة الجزافية',
+    ifuImport:'📥 جلب البيانات من الدفتر',
+    ifuThresholdNoteTitle:'الانتقال إلى النظام الحقيقي',
+    ifuThresholdNote:'إذا تجاوز رقم الأعمال 8,000,000 دج لعامين متتاليين، يُحوَّل المكلف تلقائياً إلى النظام الحقيقي.',
+    ifuExceedAlert:'⚠️ رقم الأعمال > 8,000,000 دج — تجاوز حد الانتقال !',
+    ifuExceedText:'رقم أعمالك يتجاوز 8,000,000 دج. إذا تكرر هذا لعامين متتاليين، ستنتقل وجوباً إلى النظام الحقيقي.',
+    ifuMinStd:'الحد الأدنى (عادي): 30,000 دج',
+    ifuMinAuto:'الحد الأدنى (مقاول ذاتي): 10,000 دج',
+    ifuResultTitle:'نتيجة الضريبة الجزافية', ifuTaxBase:'الوعاء الضريبي',
+    ifuRate:'النسبة المطبقة', ifuComputed:'الضريبة المحتسبة',
+    ifuMinimum:'الحد الأدنى القانوني', ifuDue:'الضريبة الجزافية المستحقة',
+    ifuMinApplied:'⚠️ تم تطبيق الحد الأدنى القانوني',
+    ifuCompliance:'التصريحات الجبائية إلزامية، ويجب احترام آجال إيداعها.',
+    bridgeTitle:'النتيجة الجبائية الحقيقية',
+    bridgeLedgerIncome:'مجموع المبيعات السنوي (الدفتر)',
+    bridgeLedgerExpenses:'مجموع المصاريف السنوي (الدفتر)',
+    bridgeIFUTax:'الضريبة الجزافية المحتسبة',
+    bridgeFinalProfit:'صافي الربح بعد الضريبة',
+    bridgeNoData:'لم يتم حساب الضريبة بعد. احسب IFU أعلاه لرؤية النتيجة.',
+    settingsTitle:'الإعدادات الجبائية',
+    settingsSub:'عدّل النسب والحدود — تُحدَّث الحسابات فوراً.',
+    settingsIFU:'الضريبة الجزافية الوحيدة (IFU)',
+    settingsMinStandard:'الحد الأدنى العادي (دج)',
+    settingsMinAuto:'الحد الأدنى للمقاول الذاتي (دج)',
+    settingsRateProd:'نسبة الإنتاج (%)', settingsRateServ:'نسبة الخدمات/التجارة (%)',
+    settingsRateAutoE:'نسبة المقاول الذاتي (%)',
+    settingsReset:'إعادة ضبط القيم الافتراضية',
+    settingsSaved:'✅ تم حفظ الإعدادات',
+    settingsClearLedger:'🗑️ مسح جميع بيانات الدفتر',
+    settingsClearConfirm:'تم مسح الدفتر.',
+    da:'دج',
+  }
+};
+
+// ================================================
+// HELPERS
+// ================================================
+function t(key) { return T[STATE.lang][key] || key; }
+
+// Full number formatting with thousands separator — NO K/M abbreviation
+function fmt(v) {
+  if (v === null || v === undefined || isNaN(v)) return '0.00';
+  return new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
+}
+
+function fmtDA(v) { return fmt(v) + ' ' + t('da'); }
+
+// For tiles: full integer format, no decimals, no abbreviation
+function fmtTile(v) {
+  if (!v && v !== 0) return '0';
+  return new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Math.round(v));
+}
+
+// Returns today's date as YYYY-MM-DD in LOCAL timezone
+function todayISO() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+// Human-readable date label
+function dateLabel(iso) {
+  try {
+    const [y, m, d] = iso.split('-').map(Number);
+    const date = new Date(y, m - 1, d);
+    return date.toLocaleDateString(STATE.lang === 'ar' ? 'ar-DZ' : 'fr-FR', { weekday: 'short', day: '2-digit', month: 'short' });
+  } catch(e) { return iso; }
+}
+
+// Full date label for today banner
+function fullDateLabel() {
+  const now = new Date();
+  return now.toLocaleDateString(STATE.lang === 'ar' ? 'ar-DZ' : 'fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ================================================
+// NAVIGATION
+// ================================================
+function navigate(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const panel = document.getElementById('panel-' + id);
+  if (panel) panel.classList.add('active');
+  const nav = document.querySelector('[data-nav="' + id + '"]');
+  if (nav) nav.classList.add('active');
+  document.getElementById('main-content').scrollTop = 0;
+  if (id === 'ledger') renderLedger();
+}
+
+// ================================================
+// LANGUAGE
+// ================================================
+function setLang(lang) {
+  STATE.lang = lang;
+  if (lang === 'ar') {
+    document.body.classList.add('ar');
+    document.documentElement.setAttribute('dir', 'rtl');
+    document.documentElement.setAttribute('lang', 'ar');
+  } else {
+    document.body.classList.remove('ar');
+    document.documentElement.setAttribute('dir', 'ltr');
+    document.documentElement.setAttribute('lang', 'fr');
+  }
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  renderAll();
+  renderLedger();
+}
+
+function renderAll() {
+  document.querySelectorAll('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
+  document.querySelectorAll('[data-ph]').forEach(el => { el.placeholder = t(el.dataset.ph); });
+}
+
+// ================================================
+// SETTINGS
+// ================================================
+function bindSetting(id, setter) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('input', () => { const v = parseFloat(el.value); if (!isNaN(v)) setter(v); });
+}
+
+function bindSettings() {
+  bindSetting('set-ifu-min-std',    v => STATE.ifu.minStandard = v);
+  bindSetting('set-ifu-min-auto',   v => STATE.ifu.minAutoEntrepreneur = v);
+  bindSetting('set-ifu-rate-prod',  v => STATE.ifu.rateProduction = v);
+  bindSetting('set-ifu-rate-serv',  v => STATE.ifu.rateServices = v);
+  bindSetting('set-ifu-rate-autoe', v => STATE.ifu.rateAutoEntrepreneur = v);
+}
+
+function loadSettings() {
+  function sv(id, v) { const el = document.getElementById(id); if (el) el.value = v; }
+  sv('set-ifu-min-std',    STATE.ifu.minStandard);
+  sv('set-ifu-min-auto',   STATE.ifu.minAutoEntrepreneur);
+  sv('set-ifu-rate-prod',  STATE.ifu.rateProduction);
+  sv('set-ifu-rate-serv',  STATE.ifu.rateServices);
+  sv('set-ifu-rate-autoe', STATE.ifu.rateAutoEntrepreneur);
+}
+
+function resetSettings() {
+  STATE.ifu = { minStandard:30000, minAutoEntrepreneur:10000, rateProduction:5, rateServices:12, rateAutoEntrepreneur:0.5 };
+  loadSettings();
+  showMsg('settings-saved-msg', t('settingsSaved'));
+}
+
+function clearLedger() {
+  const msg = STATE.lang === 'ar' ? 'هل أنت متأكد من مسح جميع بيانات الدفتر؟' : 'Effacer toutes les transactions du dossier ?';
+  if (!confirm(msg)) return;
+  localStorage.removeItem(LEDGER._KEY);
+  renderLedger();
+  showMsg('settings-saved-msg', t('settingsClearConfirm'));
+}
+
+function showMsg(id, text) {
+  const el = document.getElementById(id);
+  el.querySelector('.alert-title').textContent = text;
+  el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 2400);
+}
+
+// ================================================
+// LEDGER UI STATE
+// ================================================
+let activePeriod = 'today';
+let activeForm   = null; // 'income' | 'expense' | null
+
+function renderLedger() {
+  renderTodayBanner();
+  renderSummary();
+  renderQuickActions();
+  renderHistory();
+}
+
+function renderTodayBanner() {
+  const el = document.getElementById('today-banner');
+  if (!el) return;
+  el.innerHTML = `
+    <div>
+      <div class="today-date-label">${t('todayLabel')}</div>
+      <div class="today-date-value">${fullDateLabel()}</div>
+    </div>
+    <div class="today-dot"></div>
+  `;
+}
+
+function renderSummary() {
+  const s  = LEDGER.summary(activePeriod);
+  const el = document.getElementById('ledger-summary');
+  if (!el) return;
+  const netColor = s.net >= 0 ? '#eff6ff' : '#fef2f2';
+  el.innerHTML = `
+    <div class="summary-tile income">
+      <div class="tile-label">${t('ledgerIncome')}</div>
+      <div class="tile-value">${fmtTile(s.income)}</div>
+      <div class="tile-currency">${t('da')}</div>
+    </div>
+    <div class="summary-tile expense">
+      <div class="tile-label">${t('ledgerExpenses')}</div>
+      <div class="tile-value">${fmtTile(s.expenses)}</div>
+      <div class="tile-currency">${t('da')}</div>
+    </div>
+    <div class="summary-tile profit">
+      <div class="tile-label">${t('ledgerNet')}</div>
+      <div class="tile-value" style="color:${netColor}">${fmtTile(s.net)}</div>
+      <div class="tile-currency">${t('da')}</div>
+    </div>
+  `;
+}
+
+function renderQuickActions() {
+  const el = document.getElementById('quick-actions-area');
+  if (!el) return;
+
+  // Only show entry buttons in TODAY mode
+  if (activePeriod !== 'today') {
+    el.innerHTML = `
+      <div class="report-notice">
+        <span>📊</span>
+        <span>${t('reportNotice')}</span>
+      </div>`;
+    return;
+  }
+
+  let formHtml = '';
+  if (activeForm === 'income')   formHtml = buildForm('income');
+  else if (activeForm === 'expense') formHtml = buildForm('expense');
+
+  el.innerHTML = `
+    <div class="quick-action-row">
+      <button class="btn-add-income"  onclick="openForm('income')">${t('btnAddIncome')}</button>
+      <button class="btn-add-expense" onclick="openForm('expense')">${t('btnAddExpense')}</button>
+    </div>
+    ${formHtml}
+  `;
+}
+
+function buildForm(type) {
+  const isIncome = type === 'income';
+  const today    = todayISO();
+  return `
+    <div class="tx-form-card">
+      <div class="tx-form-title ${isIncome ? 'income-title' : 'expense-title'}">
+        ${isIncome ? t('addIncomeTitle') : t('addExpenseTitle')}
+      </div>
+
+      <div class="tx-amount-row input-group" style="margin-bottom:10px">
+        <label class="input-label">${t('txAmount')}</label>
+        <input type="number" id="tx-amount" class="input-field"
+          placeholder="${t('txAmountPh')}" inputmode="decimal" min="0" autofocus>
+      </div>
+
+      <div class="tx-date-row input-group" style="margin-bottom:6px">
+        <label class="input-label">${t('txDate')}</label>
+        <input type="date" id="tx-date" class="input-field" value="${today}">
+      </div>
+      <div class="date-hint">
+        <span class="date-hint-icon">🕐</span>
+        <span>${t('dateHint')}</span>
+      </div>
+
+      <div class="tx-note-row input-group" style="margin-bottom:10px">
+        <label class="input-label">${t('txNote')}</label>
+        <input type="text" id="tx-note" class="input-field"
+          placeholder="${t('txNotePh')}" maxlength="60">
+      </div>
+
+      <div class="btn-form-row">
+        <button class="btn-submit-tx ${isIncome ? 'income-submit' : 'expense-submit'}"
+          onclick="submitTx('${type}')">${t('btnSave')}</button>
+        <button class="btn-cancel-tx" onclick="closeForm()">${t('btnCancel')}</button>
+      </div>
+    </div>
+  `;
+}
+
+function openForm(type) {
+  activeForm = type;
+  renderQuickActions();
+  setTimeout(() => { const el = document.getElementById('tx-amount'); if (el) el.focus(); }, 80);
+}
+
+function closeForm() {
+  activeForm = null;
+  renderQuickActions();
+}
+
+function submitTx(type) {
+  const amount = parseFloat(document.getElementById('tx-amount').value);
+  const note   = (document.getElementById('tx-note').value || '').trim();
+  const dateEl = document.getElementById('tx-date');
+  const date   = (dateEl && dateEl.value) ? dateEl.value : todayISO();
+
+  if (!amount || amount <= 0) {
+    const el = document.getElementById('tx-amount');
+    el.style.borderColor = 'rgba(239,68,68,0.7)';
+    el.style.boxShadow   = '0 0 0 3px rgba(239,68,68,0.15)';
+    setTimeout(() => { el.style.borderColor = ''; el.style.boxShadow = ''; }, 1400);
+    return;
+  }
+
+  LEDGER.add({
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    type,
+    amount,
+    note: note || (type === 'income'
+      ? (STATE.lang === 'ar' ? 'مبيعة' : 'Vente')
+      : (STATE.lang === 'ar' ? 'مصروف' : 'Dépense')),
+    date
+  });
+
+  activeForm = null;
+  renderLedger();
+}
+
+function deleteTx(id) {
+  LEDGER.remove(id);
+  renderLedger();
+}
+
+function setPeriod(p) {
+  activePeriod = p;
+  document.querySelectorAll('.period-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.period === p);
+  });
+  activeForm = null;
+  renderSummary();
+  renderQuickActions();
+  renderHistory();
+}
+
+function renderHistory() {
+  const el = document.getElementById('ledger-history');
+  if (!el) return;
+
+  const txs = LEDGER.filter(activePeriod);
+
+  if (txs.length === 0) {
+    el.innerHTML = `
+      <div class="tx-empty">
+        <div class="tx-empty-icon">📒</div>
+        <div class="tx-empty-text">${t('historyEmpty').replace('\n', '<br>')}</div>
+      </div>`;
+    return;
+  }
+
+  // For month/year: group by date
+  if (activePeriod !== 'today') {
+    // Build groups by date string
+    const groups = {};
+    txs.forEach(tx => {
+      if (!groups[tx.date]) groups[tx.date] = [];
+      groups[tx.date].push(tx);
+    });
+    const dates = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+    let html = '<div class="tx-list">';
+    dates.forEach(date => {
+      html += `<div class="report-group-label">${dateLabel(date)}</div>`;
+      groups[date].forEach(tx => { html += txItemHtml(tx); });
+    });
+    html += '</div>';
+    el.innerHTML = html;
+  } else {
+    el.innerHTML = '<div class="tx-list">' + txs.map(txItemHtml).join('') + '</div>';
+  }
+}
+
+function txItemHtml(tx) {
+  const isIncome = tx.type === 'income';
+  return `
+    <div class="tx-item ${isIncome ? 'income-item' : 'expense-item'}">
+      <div class="tx-dot ${isIncome ? 'income-dot' : 'expense-dot'}">${isIncome ? '🟢' : '🔴'}</div>
+      <div class="tx-body">
+        <div class="tx-note">${escapeHtml(tx.note)}</div>
+        <div class="tx-meta">${dateLabel(tx.date)}</div>
+      </div>
+      <div class="tx-amount ${isIncome ? 'income-amount' : 'expense-amount'}">
+        ${isIncome ? '+' : '−'}${fmt(tx.amount)} ${t('da')}
+      </div>
+      <button class="tx-delete" onclick="deleteTx('${tx.id}')" title="Supprimer">✕</button>
+    </div>`;
+}
+
+// ================================================
+// IFU CALCULATOR
+// ================================================
+let _lastIFUResult = null;
+
+function calcIFU() {
+  const ca       = parseFloat(document.getElementById('ifu-ca').value) || 0;
+  const activity = document.getElementById('ifu-activity').value;
+
+  let rate;
+  if (activity === 'production')      rate = STATE.ifu.rateProduction;
+  else if (activity === 'services')   rate = STATE.ifu.rateServices;
+  else                                rate = STATE.ifu.rateAutoEntrepreneur;
+
+  const isAutoE     = activity === 'autoentrepreneur';
+  const minimum     = isAutoE ? STATE.ifu.minAutoEntrepreneur : STATE.ifu.minStandard;
+  const computed    = ca * (rate / 100);
+  const due         = Math.max(computed, minimum);
+  const minApplied  = computed < minimum;
+  const exceedSeuil = ca > 8000000;
+
+  _lastIFUResult = { ca, due, activity };
+
+  const res = document.getElementById('ifu-result');
+  res.classList.remove('hidden');
+  res.innerHTML = `
+    ${exceedSeuil ? `
+    <div class="alert-card alert-orange animate-up">
+      <span class="alert-icon">🚨</span>
+      <div>
+        <div class="alert-title">${t('ifuExceedAlert')}</div>
+        <div class="alert-text">${t('ifuExceedText')}</div>
+      </div>
+    </div>` : ''}
+    <div class="result-block animate-up" style="margin-top:${exceedSeuil ? '10px' : '14px'}">
+      <div class="result-label">${t('ifuResultTitle')}</div>
+      <div class="result-amount">${fmt(due)}</div>
+      <div class="result-currency">${t('da')}</div>
+    </div>
+    <div class="result-rows">
+      <div class="result-row"><span class="rrl">${t('ifuTaxBase')}</span><span class="rrv">${fmtDA(ca)}</span></div>
+      <div class="result-row"><span class="rrl">${t('ifuRate')}</span><span class="rrv">${rate}%</span></div>
+      <div class="result-row"><span class="rrl">${t('ifuComputed')}</span><span class="rrv">${fmtDA(computed)}</span></div>
+      <div class="result-row"><span class="rrl">${t('ifuMinimum')}</span><span class="rrv">${fmtDA(minimum)}</span></div>
+      <div class="result-row"><span class="rrl rrl-green">${t('ifuDue')}</span><span class="rrv-green">${fmtDA(due)}</span></div>
+    </div>
+    ${minApplied ? `<div class="alert-card alert-warning" style="margin-top:10px">
+      <span class="alert-icon">⚠️</span>
+      <div><div class="alert-title">${t('ifuMinApplied')}</div></div>
+    </div>` : ''}
+    <div class="alert-card alert-info" style="margin-top:10px">
+      <span class="alert-icon">📋</span>
+      <div>
+        <div class="alert-title">Déclaration — التصريحات</div>
+        <div class="alert-text">${t('ifuCompliance')}</div>
+      </div>
+    </div>
+    <div class="chip-row">
+      <span class="compliance-chip">📋 G12 prévisionelle — 📆 20 جوان</span>
+      <span class="compliance-chip">📋 G12bis définitive — 📆 N+1 قبل 20 جانفي</span>
+      <span class="compliance-chip">📋 G50Ter — 📆 Mensuelle : +10 employés</span>
+      <span class="compliance-chip">📋 G50Ter — 📆 Trimestrielle : -10 employés</span>
+    </div>
+    <div class="alert-card alert-info" style="margin-top:10px">
+      <span class="alert-icon">✅</span>
+      <div><div class="alert-title">Modes de paiement — طرق الدفع</div></div>
+    </div>
+    <div class="chip-row">
+      <span class="compliance-chip">🏢 CPI/CDI</span>
+      <span class="compliance-chip">🖥️ Jibayatec / CIB / ELDAHABIA</span>
+      <span class="compliance-chip">1ère tranche 50% — à la déclaration</span>
+      <span class="compliance-chip">2ème tranche 25% — 📆 15 septembre</span>
+      <span class="compliance-chip">3ème tranche 25% — 📆 15 décembre</span>
+      <span class="compliance-chip">📋 G12bis — 📆 20 janvier N+1</span>
+    </div>
+  `;
+
+  // Render fiscal bridge BELOW the result
+  renderFiscalBridge();
+}
+
+function importFromLedger() {
+  const totals = LEDGER.annualTotals();
+  const caInput = document.getElementById('ifu-ca');
+  caInput.value = totals.income > 0 ? totals.income : '';
+  caInput.focus();
+  caInput.style.borderColor = 'rgba(16,185,129,0.7)';
+  caInput.style.boxShadow   = '0 0 0 3px rgba(16,185,129,0.15)';
+  setTimeout(() => { caInput.style.borderColor = ''; caInput.style.boxShadow = ''; }, 1600);
+}
+
+function renderFiscalBridge() {
+  const el = document.getElementById('fiscal-bridge');
+  if (!el) return;
+
+  if (!_lastIFUResult || !_lastIFUResult.ca) {
+    el.innerHTML = `
+      <div class="fiscal-bridge-card">
+        <div class="fiscal-bridge-header">📊 ${t('bridgeTitle')}</div>
+        <div style="font-size:11px;color:var(--c-muted);text-align:center;padding:8px 0">${t('bridgeNoData')}</div>
+      </div>`;
+    return;
+  }
+
+  const totals      = LEDGER.annualTotals();
+  const income      = _lastIFUResult.ca;
+  const expenses    = totals.expenses;
+  const ifuTax      = _lastIFUResult.due;
+  const finalProfit = income - expenses - ifuTax;
+  const finalColor  = finalProfit >= 0 ? 'var(--c-amberf)' : 'var(--c-redf)';
+
+  el.innerHTML = `
+    <div class="fiscal-bridge-card">
+      <div class="fiscal-bridge-header">📊 ${t('bridgeTitle')}</div>
+      <div class="fiscal-formula-row">
+        <span class="ff-label">${t('bridgeLedgerIncome')}</span>
+        <span class="ff-value pos">+ ${fmtDA(income)}</span>
+      </div>
+      <div class="fiscal-formula-row">
+        <span class="ff-label">${t('bridgeLedgerExpenses')}</span>
+        <span class="ff-value neg">− ${fmtDA(expenses)}</span>
+      </div>
+      <div class="fiscal-formula-row">
+        <span class="ff-label">${t('bridgeIFUTax')}</span>
+        <span class="ff-value neg">− ${fmtDA(ifuTax)}</span>
+      </div>
+      <div class="fiscal-formula-row" style="border-top:1px solid rgba(245,158,11,0.2);margin-top:4px;padding-top:10px">
+        <span class="ff-label" style="font-weight:800;color:#f1f5f9">${t('bridgeFinalProfit')}</span>
+        <span class="ff-value final" style="color:${finalColor}">${fmtDA(finalProfit)}</span>
+      </div>
+    </div>`;
+}
+
+// ================================================
+// INIT
+// ================================================
+document.addEventListener('DOMContentLoaded', () => {
+  setLang('fr');
+  navigate('ledger');
+  loadSettings();
+  bindSettings();
+
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.addEventListener('click', () => navigate(btn.dataset.nav));
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLang(btn.dataset.lang));
+  });
+  document.querySelectorAll('.period-tab').forEach(btn => {
+    btn.addEventListener('click', () => setPeriod(btn.dataset.period));
+  });
+
+  document.getElementById('btn-calc-ifu').addEventListener('click', calcIFU);
+  document.getElementById('btn-import-ledger').addEventListener('click', importFromLedger);
+  document.getElementById('btn-reset-settings').addEventListener('click', resetSettings);
+  document.getElementById('btn-clear-ledger').addEventListener('click', clearLedger);
+
+  // Init bridge placeholder
+  renderFiscalBridge();
+});
+</script>
+</head>
+<body>
+<div id="app">
+
+<!-- TOP HEADER -->
+<header id="top-header">
+  <div class="header-brand">
+    <div class="brand-icon">
+      <span class="letter-white">ج</span>
+      <span class="letter-red">ج</span>
+    </div>
+    <div>
+      <div class="brand-title" data-t="appTitle">Fiscal Algérie</div>
+    </div>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="fr">FR</button>
+    <button class="lang-btn" data-lang="ar">عر</button>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+
+<!-- ========== TAB 1: DAILY LEDGER ========== -->
+<section id="panel-ledger" class="panel active">
+
+  <div class="page-title" data-t="ledgerTitle">Dossier Comptable</div>
+  <div class="page-sub" data-t="ledgerSub"></div>
+
+  <!-- Today banner -->
+  <div class="today-banner" id="today-banner"></div>
+
+  <!-- Period tabs -->
+  <div class="period-tabs">
+    <button class="period-tab active" data-period="today" data-t="ledgerToday">Aujourd'hui</button>
+    <button class="period-tab" data-period="month" data-t="ledgerMonth">Mois</button>
+    <button class="period-tab" data-period="year"  data-t="ledgerYear">Année</button>
+  </div>
+
+  <!-- Summary tiles -->
+  <div id="ledger-summary" class="ledger-summary"></div>
+
+  <!-- Quick actions / form area -->
+  <div id="quick-actions-area"></div>
+
+  <!-- History card -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:rgba(59,130,246,0.13)">📒</div>
+      <div>
+        <div class="card-title" data-t="historyTitle">Historique</div>
+        <div class="card-sub"><span class="section-badge badge-blue">OFFLINE</span></div>
+      </div>
+    </div>
+    <div id="ledger-history"></div>
+  </div>
+
+</section>
+
+<!-- ========== TAB 2: IFU CALCULATOR ========== -->
+<section id="panel-ifu" class="panel">
+
+  <div class="page-title" data-t="ifuTitle">Calcul IFU</div>
+  <div class="page-sub" data-t="ifuSub"></div>
+
+  <!-- Import button -->
+  <button class="btn-blue" id="btn-import-ledger">
+    <span data-t="ifuImport">📥 Importer depuis le Dossier</span>
+  </button>
+
+  <!-- IFU calc card -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:rgba(16,185,129,0.15)">📊</div>
+      <div>
+        <div class="card-title" data-t="ifuTitle">Calcul IFU</div>
+        <div class="card-sub"><span class="section-badge badge-green">IFU</span></div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label" data-t="ifuCA">CHIFFRE D'AFFAIRES ANNUEL (DA)</label>
+      <input type="number" id="ifu-ca" class="input-field" data-ph="ifuCAPlaceholder"
+        placeholder="Ex : 5 000 000" min="0" inputmode="decimal">
+    </div>
+
+    <div class="input-group">
+      <label class="input-label" data-t="ifuActivity">TYPE D'ACTIVITÉ</label>
+      <select id="ifu-activity" class="input-field">
+        <option value="production"      data-t="ifuProduction">Production</option>
+        <option value="services"        data-t="ifuServices">Services / Commerce</option>
+        <option value="autoentrepreneur" data-t="ifuAutoE">Auto-Entrepreneur</option>
+      </select>
+    </div>
+
+    <button id="btn-calc-ifu" class="btn-primary">
+      <span data-t="ifuCalc">Calculer l'IFU</span>
+    </button>
+
+    <div class="alert-card alert-warning" style="margin-top:12px">
+      <span class="alert-icon">⚠️</span>
+      <div>
+        <div class="alert-title" data-t="ifuThresholdNoteTitle">Passage au Régime Réel</div>
+        <div class="alert-text" data-t="ifuThresholdNote"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px">
+      <div class="stat-pill" style="margin-bottom:0">
+        <span class="stat-pill-label" data-t="ifuMinStd">Minimum (Standard) : 30 000 DA</span>
+      </div>
+      <div class="stat-pill" style="margin-bottom:0">
+        <span class="stat-pill-label" data-t="ifuMinAuto">Minimum (Auto-Entrepreneur) : 10 000 DA</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- IFU result (injected by JS) -->
+  <div id="ifu-result" class="card hidden"></div>
+
+  <!-- Fiscal Bridge — BELOW ifu result (injected by JS) -->
+  <div id="fiscal-bridge"></div>
+
+</section>
+
+<!-- ========== TAB 3: SETTINGS ========== -->
+<section id="panel-settings" class="panel">
+
+  <div class="page-title" data-t="settingsTitle">Paramètres Fiscaux</div>
+  <div class="page-sub" data-t="settingsSub"></div>
+
+  <div class="card">
+    <div class="settings-section-title" data-t="settingsIFU">IFU</div>
+    <div class="settings-row">
+      <span class="settings-row-label" data-t="settingsMinStandard">Minimum standard (DA)</span>
+      <input type="number" id="set-ifu-min-std" class="settings-input" value="30000" min="0">
+    </div>
+    <div class="settings-row">
+      <span class="settings-row-label" data-t="settingsMinAuto">Minimum Auto-Entrepreneur (DA)</span>
+      <input type="number" id="set-ifu-min-auto" class="settings-input" value="10000" min="0">
+    </div>
+    <div class="settings-row">
+      <span class="settings-row-label" data-t="settingsRateProd">Taux Production (%)</span>
+      <input type="number" id="set-ifu-rate-prod" class="settings-input" value="5" min="0" max="100" step="0.1">
+    </div>
+    <div class="settings-row">
+      <span class="settings-row-label" data-t="settingsRateServ">Taux Services/Commerce (%)</span>
+      <input type="number" id="set-ifu-rate-serv" class="settings-input" value="12" min="0" max="100" step="0.1">
+    </div>
+    <div class="settings-row">
+      <span class="settings-row-label" data-t="settingsRateAutoE">Taux Auto-Entrepreneur (%)</span>
+      <input type="number" id="set-ifu-rate-autoe" class="settings-input" value="0.5" min="0" max="100" step="0.1">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="settings-section-title">📒 Dossier — الدفتر</div>
+    <div class="alert-card alert-warning" style="margin-top:0;margin-bottom:12px">
+      <span class="alert-icon">⚠️</span>
+      <div>
+        <div class="alert-title" style="color:var(--c-amberf)">Sauvegarde locale — حفظ محلي</div>
+        <div class="alert-text">Données stockées sur cet appareil uniquement. البيانات محفوظة محلياً على هذا الجهاز فقط.</div>
+      </div>
+    </div>
+    <button id="btn-clear-ledger" class="btn-secondary"
+      style="border-color:rgba(239,68,68,0.25);color:var(--c-redf)">
+      <span data-t="settingsClearLedger">🗑️ Effacer tout le dossier</span>
+    </button>
+  </div>
+
+  <div id="settings-saved-msg" class="alert-card alert-success hidden" style="margin-bottom:12px">
+    <span class="alert-icon">✅</span>
+    <div><div class="alert-title" data-t="settingsSaved">Paramètres sauvegardés</div></div>
+  </div>
+
+  <button id="btn-reset-settings" class="btn-secondary" style="margin-bottom:24px">
+    🔄 <span data-t="settingsReset">Réinitialiser</span>
+  </button>
+
+</section>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav id="bottom-nav">
+
+  <button class="nav-item active" data-nav="ledger">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="16" y1="13" x2="8" y2="13"/>
+      <line x1="16" y1="17" x2="8" y2="17"/>
+      <line x1="10" y1="9"  x2="8" y2="9"/>
+    </svg>
+    <span class="nav-label" data-t="navLedger">Dossier</span>
+  </button>
+
+  <button class="nav-item" data-nav="ifu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="2" width="16" height="20" rx="2"/>
+      <line x1="8" y1="10" x2="16" y2="10"/>
+      <line x1="8" y1="14" x2="16" y2="14"/>
+      <line x1="8" y1="18" x2="12" y2="18"/>
+      <circle cx="17" cy="18" r="3"/>
+      <line x1="15.8" y1="18" x2="18.2" y2="18"/>
+      <line x1="17" y1="16.8" x2="17" y2="19.2"/>
+    </svg>
+    <span class="nav-label" data-t="navIFU">IFU</span>
+  </button>
+
+  <button class="nav-item" data-nav="settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2 L12 4 M12 20 L12 22 M4.22 4.22 L5.64 5.64 M18.36 18.36 L19.78 19.78 M2 12 L4 12 M20 12 L22 12 M4.22 19.78 L5.64 18.36 M18.36 5.64 L19.78 4.22"/>
+      <circle cx="12" cy="12" r="4"/>
+      <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+    </svg>
+    <span class="nav-label" data-t="navSettings">Réglages</span>
+  </button>
+
+</nav>
+
+</div>
+</body>
+</html>
